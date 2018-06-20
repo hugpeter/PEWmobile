@@ -5,6 +5,7 @@ import { Button, Input, Overlay, CheckBox } from 'react-native-elements';
 import { notasFetchData } from '../actions/notasActions';
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
+import gradeColor from '../utils/gradeColor';
 import { 
   Entypo
 } from 'react-native-vector-icons';
@@ -91,7 +92,7 @@ class Grades extends React.Component {
                         </Text>
                       </View>
                       <View style={styles.grade}>
-                        <Text style={styles.data}>
+                        <Text style={{...gradeColor[Math.floor(nota.average)]}}>
                           { (Math.round(nota.average * 10) / 10).toFixed(1) }
                         </Text>
                       </View>
@@ -115,7 +116,7 @@ class Grades extends React.Component {
                         </Text>
                       </View>
                       <View style={styles.grade}>
-                        <Text style={styles.data}>
+                        <Text style={{...gradeColor[Math.floor(nota.average)]}}>
                           { (Math.round(nota.average * 10) / 10).toFixed(1) }
                         </Text>
                       </View>

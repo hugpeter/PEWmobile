@@ -5,6 +5,7 @@ import colors from '../utils/colors';
 import { 
   Entypo
 } from 'react-native-vector-icons';
+import gradeColor from '../utils/gradeColor';
 
 @translate(['gradesDetail', 'common'], { wait: true })
 export default class GradesDetail extends React.Component {
@@ -55,7 +56,7 @@ export default class GradesDetail extends React.Component {
                         </Text>
                       </View>
                       <View style={styles.grade}>
-                        <Text style={styles.data}>
+                        <Text style={{...gradeColor[Math.floor(assignment.grade)]}}>
                           {assignment.grade.toFixed(1)}
                         </Text>
                       </View>
@@ -73,7 +74,7 @@ export default class GradesDetail extends React.Component {
                         </Text>
                       </View>
                       <View style={styles.grade}>
-                        <Text style={styles.data}>
+                        <Text style={{...gradeColor[Math.floor(assignment.grade)]}}>
                           {assignment.grade.toFixed(1)}
                         </Text>
                       </View>
