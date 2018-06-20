@@ -56,7 +56,7 @@ export default class GradesDetail extends React.Component {
                       </View>
                       <View style={styles.grade}>
                         <Text style={styles.data}>
-                          {assignment.grade}
+                          {assignment.grade.toFixed(1)}
                         </Text>
                       </View>
                     </View>
@@ -74,7 +74,7 @@ export default class GradesDetail extends React.Component {
                       </View>
                       <View style={styles.grade}>
                         <Text style={styles.data}>
-                          {assignment.grade}
+                          {assignment.grade.toFixed(1)}
                         </Text>
                       </View>
                     </View>

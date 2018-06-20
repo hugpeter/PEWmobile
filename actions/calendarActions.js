@@ -93,7 +93,7 @@ export function calendarDetailFetchData(idColegio, ano, currentDate, cedula, tok
             // causing a loop of 'Unexpected batch number' errors.
             // https://github.com/facebook/react/issues/6895
         )
-        .then (json =>
+        .then(json =>
             {
                 if(json){
                     dispatch(fetchingCalendarDetailDataSuccess(json));
