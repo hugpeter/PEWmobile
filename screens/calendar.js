@@ -8,6 +8,7 @@ import {
   Entypo,
 } from 'react-native-vector-icons';
 import { calendarFetchData } from '../actions/calendarActions';
+import gradeColor from '../utils/gradeColor';
 
 LocaleConfig.locales['en'] = {
   monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -154,6 +155,7 @@ class CalendarScreen extends React.Component {
                 >
                     <Text style={styles.itemFont}>{item.titulo}</Text>
                     <Text style={styles.itemFont}>{item.actividad}</Text>
+                    <Text style={{...gradeColor[Math.floor(item.grade)]}}>{item.grade.toFixed(1)}</Text>
                 </TouchableOpacity>
               );
             }

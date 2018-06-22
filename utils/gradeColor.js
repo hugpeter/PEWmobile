@@ -7,8 +7,11 @@ const gradeColor = [
     {color: 'green'}
   ];
 
-gradeColor.forEach(color => {
-    color.fontSize = 18;
+gradeColor.forEach(grade => {
+    grade.fontSize = 18;
+    grade.textShadowColor = 'rgba(0, 0, 0, 1.0)',
+    grade.textShadowOffset = { width: -0.25, height: 0.25 },
+    grade.textShadowRadius = 1
 });
 
 export default gradeColor;

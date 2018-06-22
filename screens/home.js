@@ -83,25 +83,40 @@ class Home extends React.Component {
     const {state} = navigation;
 
     if(state.params != undefined){
-      return { 
-        headerTitle:  <ModalDropdown
-                        onSelect={(idx, value) => state.params.changeFamilyMember(idx)}
-                        defaultValue={state.params.familyOptions[state.params.currentFamilyMemberIndex]}
-                        defaultIndex={0} 
-                        options={state.params.familyOptions}
-                        style={styles.changeFamStyle}
-                        textStyle={styles.changeFamText}
-                        dropdownStyle={styles.changeFamDropdownStyle}
-                      />,
-        headerTintColor: colors.blue,
-        headerRight: (
-          <TouchableOpacity  
-            style={styles.headerRight}
-            onPress={() => navigation.navigate('Alerts')}
-          >
-            <Entypo name={'bell'} size={25} color={colors.blue}/>
-          </TouchableOpacity> 
-        )
+      if(state.params.familyOptions != undefined){
+        return { 
+          headerTitle:  <ModalDropdown
+                          onSelect={(idx, value) => state.params.changeFamilyMember(idx)}
+                          defaultValue={state.params.familyOptions[state.params.currentFamilyMemberIndex]}
+                          defaultIndex={0} 
+                          options={state.params.familyOptions}
+                          style={styles.changeFamStyle}
+                          textStyle={styles.changeFamText}
+                          dropdownStyle={styles.changeFamDropdownStyle}
+                        />,
+          headerTintColor: colors.blue,
+          headerRight: (
+            <TouchableOpacity  
+              style={styles.headerRight}
+              onPress={() => navigation.navigate('Alerts')}
+            >
+              <Entypo name={'bell'} size={25} color={colors.blue}/>
+            </TouchableOpacity> 
+          )
+        }
+      } else {
+        return { 
+          headerTitle:  <View />,
+          headerTintColor: colors.blue,
+          headerRight: (
+            <TouchableOpacity  
+              style={styles.headerRight}
+              onPress={() => navigation.navigate('Alerts')}
+            >
+              <Entypo name={'bell'} size={25} color={colors.blue}/>
+            </TouchableOpacity> 
+          )
+        }
       }
     }
   };
