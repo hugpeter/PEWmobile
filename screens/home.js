@@ -261,7 +261,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     changeFamilyMember: (index) => {
       console.log('changing family member index to: ' + index);
-      dispatch(invalidateCache(['notasReducer', 'calendarReducer', 'calendarDetailReducer']));
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer'
+      ]));
       dispatch(changeFamilyMember(index)); 
     }
   }
