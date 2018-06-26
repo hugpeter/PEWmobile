@@ -46,11 +46,11 @@ const buttons = [
     navTo: 'Alerts',
     symbol: (<Entypo name={'bell'} size={symbolSize} color={colors.blue}/>)
   },
-  {
-    name: 'home:buttons.messages',
-    navTo: 'Messages',
-    symbol: (<Entypo name={'mail'} size={symbolSize} color={colors.blue}/>)
-  },
+  // {
+  //   name: 'home:buttons.messages',
+  //   navTo: 'Messages',
+  //   symbol: (<Entypo name={'mail'} size={symbolSize} color={colors.blue}/>)
+  // },
   {
     name: 'home:buttons.cashflow',
     navTo: 'Cashflow',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 200,
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'flex-start'
   },
   bold: {
     fontWeight: 'bold'

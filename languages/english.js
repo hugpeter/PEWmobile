@@ -68,9 +68,13 @@ const english = {
             saturday: 'Saturday'
         }
     },
+    inbox: {
+        title: 'Inbox',
+    },
     navigation: {
         homeTab: 'Home',
         settingsTab: 'Settings',
+        messagesTab: 'Messages'
     },
     common: {
         currentLanguage: 'The current language is "{{lng}}"'

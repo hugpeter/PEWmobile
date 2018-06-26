@@ -1,10 +1,19 @@
 import React from 'react';
-import { createSwitchNavigator, createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { 
+  createSwitchNavigator, 
+  createStackNavigator, 
+  createBottomTabNavigator,
+  createDrawerNavigator
+} from 'react-navigation';
+import { TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from 'react-native-vector-icons';
 
 import HomeScreen from './screens/home';
 import AlertScreen from './screens/alerts';
-import MessagesScreen from './screens/messages';
+import InboxScreen from './screens/inbox';
+// import SentScreen from './screens/sent';
+// import DeletedScreen from './screens/deleted';
+// import NewMessageScreen from './screens/newMessage';
 import CouponsScreen from './screens/coupons';
 import CalendarScreen from './screens/calendar';
 import CalendarDetailScreen from './screens/calendarDetail';
@@ -17,13 +26,41 @@ import AuthLoadingScreen from './screens/authLoadingScreen';
 import SignInScreen from './screens/signInScreen';
 
 import colors from './utils/colors';
-import { translate } from 'react-i18next';
+
+const InboxStack = createStackNavigator(
+  {
+    Inbox: InboxScreen
+  },
+  {
+    initialRouteName: 'Inbox',
+    navigationOptions: {
+      
+    }
+  }
+)
+
+const MessagesDrawer = createDrawerNavigator(
+  {
+    Inbox: InboxStack,
+    // Sent: SentScreen,
+    // Deleted: DeletedScreen,
+    // NewMessage: NewMessageScreen
+  }, 
+  {
+    initialRouteName: 'Inbox',
+    navigationOptions: {
+
+    },
+    contentOptions: {
+        activeTintColor: colors.yellow,
+        activeBackgroundColor: colors.blue
+    }
+  });
 
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     Alerts: AlertScreen,
-    Messages: MessagesScreen,
     Coupons: CouponsScreen,
     Calendar: CalendarScreen,
     CalendarDetail: CalendarDetailScreen,
@@ -67,6 +104,15 @@ const AppTab = createBottomTabNavigator(
           <Ionicons name={'ios-home'} size={30} color={colors.blue} />
         ),
         tabBarLabel: screenProps.t('navigation:homeTab')
+      })
+    },
+    Messages: {
+      screen: MessagesDrawer,
+      navigationOptions: ({navigation, screenProps}) => ({
+        tabBarIcon: (
+          <Ionicons name={'ios-mail'} size={30} color={colors.blue} />
+        ),
+        tabBarLabel: screenProps.t('navigation:messagesTab')
       })
     },
     Settings: {
