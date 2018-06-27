@@ -8,6 +8,7 @@ import timeConvert from '../utils/timeConvert';
 import { 
   Ionicons
 } from 'react-native-vector-icons';
+import NavigationStateNotifier from '../NavigationStateNotifier';
 
 class Inbox extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -26,9 +27,25 @@ class Inbox extends React.Component {
     )
   });
 
+  constructor (props) {
+    super(props)
+    NavigationStateNotifier.newListener(
+      this,
+      () => {
+        // anything else that you'd like to do when this screen is navigated to
+        console.log('inbox screen was navigated to');
+        const { idColegio, cedula, token, getInbox } = this.props;
+        getInbox( idColegio, cedula, token );
+      },
+      () => {
+        // anything else that you'd like to do when this screen is navigated off of
+        console.log('inbox screen was navigated away from');
+      }
+    )
+  }
+
   componentDidMount = () => {
-    const { idColegio, cedula, token, getInbox } = this.props;
-    getInbox( idColegio, cedula, token );
+    
   }
 
   render() {
@@ -73,7 +90,7 @@ class Inbox extends React.Component {
           <ScrollView contentContainerStyle={styles.scrollView}>
             {
               inbox.map((message, index) => {
-                var date = timeConvert(message.FECHAENVIO);
+                var date = timeConvert(message.FECHAENVIO, i18n.language);
                   if(message.estado.substring(0, 1) == '<'){
                     return (
                       <TouchableOpacity 

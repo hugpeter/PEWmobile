@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { I18nextProvider, translate } from 'react-i18next';
 import configureStore from './configureStore';
 import i18n from './i18n';
+import NavigationStateNotifier from './NavigationStateNotifier';
 
 //this is just to remove a particular warning
 import { YellowBox } from 'react-native';
@@ -19,7 +20,13 @@ import SwitchNav from './routes';
 //The hoc is set to only trigger rerender on
 //languageChanged
 const WrappedStack = () => {
-  return <SwitchNav screenProps={{ t: i18n.getFixedT() }} />;
+  return (
+    <SwitchNav 
+    screenProps={{ t: i18n.getFixedT() }} 
+    onNavigationStateChange={(prevState, currentState) =>
+      NavigationStateNotifier.onNavigationStateChange(prevState, currentState)}
+  />
+  );
 }
 const ReloadAppOnLanguageChange = translate('common', {
   bindI18n: 'languageChanged',

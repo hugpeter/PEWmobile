@@ -28,7 +28,7 @@ export function fetchingInboxSuccess(inbox) {
   
 export function inboxFetchData(idColegio, cedula, token) {
     return (dispatch, getState) => {
-        const isCacheValid = checkCacheValid(getState, "notasReducer");
+        const isCacheValid = checkCacheValid(getState, "inboxReducer");
         if (isCacheValid) { return null; }
   
         dispatch(fetchingInbox(true));
