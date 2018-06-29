@@ -71,6 +71,11 @@ const english = {
     inbox: {
         title: 'Inbox',
     },
+    message: {
+        from: 'From: ',
+        to: 'To: ',
+        title: ''
+    },
     navigation: {
         homeTab: 'Home',
         settingsTab: 'Settings',

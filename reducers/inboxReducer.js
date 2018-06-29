@@ -1,7 +1,8 @@
 import { 
     REQUEST_INBOX, 
     INBOX_HAS_ERROR, 
-    INBOX 
+    INBOX,
+    MESSAGE_READ 
 } from '../actions/inboxActions';
 import { DEFAULT_KEY, generateCacheTTL } from "redux-cache";
 
@@ -28,7 +29,19 @@ export default function loginReducer(state =
         return Object.assign({}, state, {
             isFetchingInbox: false,
             inboxHasError: true
-        })
+        }) 
+      case MESSAGE_READ:
+        var inbox = state.inbox.map(x => ({...x}));
+        var newReadMessage = inbox.filter(msg => msg.idmensaje == action.payload)[0];
+        newReadMessage.estado = 'test';
+
+        if(newReadMessage){
+            return Object.assign({}, state, {
+                inbox: inbox
+            })
+        } else {
+            return state;
+        }
       default:
         return state;
     }

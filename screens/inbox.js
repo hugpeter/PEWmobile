@@ -96,9 +96,10 @@ class Inbox extends React.Component {
                       <TouchableOpacity 
                         style={styles.inboxMessage}
                         key={index}
-                        onPress={() => navigation.navigate('',
+                        onPress={() => navigation.navigate('Message',
                           {
-                            
+                            messageID: message.idmensaje,
+                            date: date
                           }
                         )}
                       >
@@ -121,9 +122,10 @@ class Inbox extends React.Component {
                       <TouchableOpacity 
                         style={styles.inboxMessage}
                         key={index}
-                        onPress={() => navigation.navigate('',
+                        onPress={() => navigation.navigate('Message',
                           {
-                            
+                            messageID: message.idmensaje,
+                            date: date
                           }
                         )}
                       >
@@ -257,6 +259,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   console.log(state.loginReducer.CurrentFamilyMemberIndex);
+  console.log(state.inboxReducer.inbox);
   return {
     isFetching: state.inboxReducer.isFetchingInbox,
     hasError: state.inboxReducer.inboxHasError,

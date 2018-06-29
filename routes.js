@@ -11,6 +11,7 @@ import { Ionicons } from 'react-native-vector-icons';
 import HomeScreen from './screens/home';
 import AlertScreen from './screens/alerts';
 import InboxScreen from './screens/inbox';
+import MessageScreen from './screens/messageScreen';
 // import SentScreen from './screens/sent';
 // import DeletedScreen from './screens/deleted';
 // import NewMessageScreen from './screens/newMessage';
@@ -29,7 +30,8 @@ import colors from './utils/colors';
 
 const InboxStack = createStackNavigator(
   {
-    Inbox: InboxScreen
+    Inbox: InboxScreen,
+    Message: MessageScreen
   },
   {
     initialRouteName: 'Inbox',

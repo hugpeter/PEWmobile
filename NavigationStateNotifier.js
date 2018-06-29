@@ -33,19 +33,21 @@ class Notifier {
       const prevKey = findRouteKey(prevState);
       const currKey = findRouteKey(currState);
 
-      // Handle all exit events...
-      this.listeners.forEach((listener) => {
-        if (listener.key === prevKey) {
-          listener.onNavExit()
-        }
-      })
-  
-      // ...then all enter events
-      this.listeners.forEach((listener) => {
-        if (listener.key === currKey) {
-          listener.onNavEnter()
-        }
-      })
+      if(prevKey != currKey){
+        // Handle all exit events...
+        this.listeners.forEach((listener) => {
+          if (listener.key === prevKey) {
+            listener.onNavExit()
+          }
+        })
+    
+        // ...then all enter events
+        this.listeners.forEach((listener) => {
+          if (listener.key === currKey) {
+            listener.onNavEnter()
+          }
+        })
+      }
     }
   
     newListener (screen, onNavEnter, onNavExit) {

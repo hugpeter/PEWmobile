@@ -193,8 +193,9 @@ const styles = StyleSheet.create({
   buttons: {
    alignItems: 'center',
    justifyContent: 'space-evenly',
-   margin: 10,
-   width: '42%',
+   marginTop: 10,
+   marginBottom: 10,
+   width: '50%',
    height: '25%',
    backgroundColor: colors.white
   },
@@ -265,7 +266,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         'notasReducer', 
         'calendarReducer', 
         'calendarDetailReducer', 
-        'inboxReducer'
+        'inboxReducer',
+        'messagesReducer'
       ]));
       dispatch(changeFamilyMember(index)); 
     }
