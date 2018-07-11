@@ -2,11 +2,10 @@ import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
     TouchableOpacity, ActivityIndicator, 
-    Button, StatusBar, Platform, WebView, Dimensions } from 'react-native';
+    Dimensions, Animated, Easing } from 'react-native';
 import { connect } from 'react-redux';
 import { messageFetchData, messageIsRead } from '../actions/inboxActions';
 import colors from '../utils/colors';
-import timeConvert from '../utils/timeConvert';
 import { 
   Ionicons,
   FontAwesome, 
@@ -28,7 +27,7 @@ class Message extends React.Component {
   });
 
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
         showDetail: false
     }
@@ -49,11 +48,55 @@ class Message extends React.Component {
         const { updateMessageState } = this.props;
         updateMessageState(messageID);
       }
-    )
+    );
+
+    //define animation props
+    this.aBottom = new Animated.Value(0);
+    
   }
 
   componentDidMount = () => {
-    
+
+  }
+
+  openMessageOptions = () => {
+    this.aBottom.setValue(0);
+
+    const createAnimation = function (value, duration, easing, delay = 0) {
+      return Animated.timing(
+        value,
+        {
+          toValue: 1,
+          duration,
+          easing,
+          delay
+        }
+      )
+    }
+
+    Animated.parallel([
+      createAnimation(this.aBottom, 300, Easing.ease),       
+    ]).start();
+  }
+
+  closeMessageOptions = () => {
+    this.aBottom.setValue(1);
+
+    const createAnimation = function (value, duration, easing, delay = 0) {
+      return Animated.timing(
+        value,
+        {
+          toValue: 0,
+          duration,
+          easing,
+          delay
+        }
+      )
+    }
+
+    Animated.parallel([
+      createAnimation(this.aBottom, 300, Easing.ease),
+    ]).start();
   }
 
   render() {
@@ -62,6 +105,11 @@ class Message extends React.Component {
     const { messages, showDetail } = this.props;
     const { isFetching, hasError } = this.props;
     var message;
+
+    const aBottom = this.aBottom.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-300, 0]
+    })
 
     if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
@@ -92,21 +140,64 @@ class Message extends React.Component {
     }
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
-            <View>
-              <Text style={styles.infoHeader}>{t('message:from')}</Text>
-              <Text>{message.RemNombre}</Text>
-              <Text style={styles.infoHeader}>{t('message:to')}</Text>
-              <Text>{message.DesNombre.substring(0,15)}...</Text>
-              <View style={styles.divider}></View>
-              <Text style={styles.infoHeader}>{message.Asunto}</Text>
-              <Text style={styles.date}>{date}</Text>
-              <View style={styles.divider}></View>
-            </View>
-            <View style={{paddingBottom: 100}}>
-                <HTML  html={message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
-            </View>
-        </ScrollView>
+      <View style={styles.container}>
+        <TouchableOpacity 
+          style={styles.composeMsg}
+          onPress={() => this.openMessageOptions()}
+        >
+          <Entypo name={'dots-three-horizontal'} size={30} color={colors.white} />
+        </TouchableOpacity>
+        <Animated.View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            position: 'absolute',
+            left: 0,
+            bottom: aBottom,
+            backgroundColor: colors.white,
+            padding: 10,
+            width: '100%',
+            height: 300,
+            zIndex: 1
+          }}>
+          <TouchableOpacity style={styles.messageAction}>
+            <Entypo name={'reply'} size={30} color={colors.white} />
+            <Text style={{color: colors.white}}>Reply</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.messageAction}>
+            <Entypo name={'reply-all'} size={30} color={colors.white} />
+            <Text style={{color: colors.white}}>Reply All</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.messageAction}>
+            <Entypo name={'forward'} size={30} color={colors.white} />
+            <Text style={{color: colors.white}}>Forward</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.messageAction, {backgroundColor: 'red'}]} 
+            onPress={() => this.closeMessageOptions()}
+          >
+            <MaterialIcons name={'cancel'} size={30} color={colors.white} />
+            <Text style={{color: colors.white}}>Cancel</Text>
+          </TouchableOpacity>
+        </Animated.View>
+        <View style={{height: '100%'}} >
+          <ScrollView style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
+              <View>
+                <Text style={styles.infoHeader}>{t('message:from')}</Text>
+                <Text>{message.RemNombre}</Text>
+                <Text style={styles.infoHeader}>{t('message:to')}</Text>
+                <Text>{message.DesNombre.substring(0,15)}...</Text>
+                <View style={styles.divider}></View>
+                <Text style={styles.infoHeader}>{message.Asunto}</Text>
+                <Text style={styles.date}>{date}</Text>
+                <View style={styles.divider}></View>
+              </View>
+              <View style={{paddingBottom: 100}}>
+                  <HTML  html={message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
+              </View>
+          </ScrollView>
+        </View>
+      </View>
     );
   }
 }
@@ -123,6 +214,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'space-evenly'
+  },
+  composeMsg: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    zIndex: 1,
+    right: 20,
+    bottom: 20,
+    backgroundColor: colors.blue,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    shadowOffset: {  width: 2.5,  height: 5,  },
+    shadowColor: colors.black,
+    shadowOpacity: 0.5,
+  },
+  messageAction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    padding: 10,
+    width: '100%',
+    backgroundColor: colors.blue,
+    marginBottom: 10,
+    borderRadius: 5
   },
   messageInfo: {
       width: '100%',

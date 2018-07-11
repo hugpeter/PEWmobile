@@ -44,7 +44,6 @@ export default class GradesDetail extends React.Component {
           <ScrollView contentContainerStyle={styles.scrollView}>
             {
               assignments.map((assignment, index) => {
-                if(index & 1){
                   return (
                     <View 
                       style={styles.notas}
@@ -60,27 +59,9 @@ export default class GradesDetail extends React.Component {
                           {assignment.grade.toFixed(1)}
                         </Text>
                       </View>
+                      <View style={styles.divider}></View>
                     </View>
                   )
-                } else {
-                  return (
-                    <View 
-                      style={styles.notasAlt}
-                      key={index}
-                    >
-                      <View style={styles.class}>
-                        <Text style={styles.data}>
-                          {assignment.item}
-                        </Text>
-                      </View>
-                      <View style={styles.grade}>
-                        <Text style={{...gradeColor[Math.floor(assignment.grade)]}}>
-                          {assignment.grade.toFixed(1)}
-                        </Text>
-                      </View>
-                    </View>
-                  )
-                }
               })
             }
           </ScrollView>
@@ -96,6 +77,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  divider: {
+    marginTop: 30,
+    height: 1,
+    backgroundColor: colors.greyLight,
+    width: '100%'
   },
   fetchingContainer: {
     flex: 1,
@@ -122,18 +109,16 @@ const styles = StyleSheet.create({
   },
   notas: {
     flexDirection: 'row',
-    paddingTop: 15,
-    paddingBottom: 15
-  },
-  notasAlt: {
-    flexDirection: 'row',
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: colors.greyLight
+    flexWrap:'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5
   },
   header: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 20
   },
   data: {
     fontSize: 18

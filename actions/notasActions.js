@@ -33,15 +33,24 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, token) 
 
       dispatch(fetchingNotas(true));
 
-      const options = {
+      const postBody = {
+        idcolegio: idColegio,
+        ano: ano,
+        bimestre: bimestre,
+        cedula: cedula
+      }
+
+      var options = {
         headers: new Headers({
           'content-type': 'application/json',
           'Cache-Control': 'no-cache',
           'Authorization' : 'Bearer ' + token
-        })
+        }),
+        method: 'post',
+        body: JSON.stringify(postBody)
       }
 
-      fetch(`http://192.168.111.62:3000/api/notas?ano=${ano}&idColegio=${idColegio}&idioma=${idioma}&cedula=${cedula}`, options)
+      fetch(`http://192.168.111.62:3000/api/boletin`, options)
       .then(response => {
           console.log(response.status);
           if(response.status != 200){
@@ -60,6 +69,14 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, token) 
             console.log(json);
             notas = new Array();
             var notasList = json;
+
+            options = {
+              headers: new Headers({
+                'content-type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Authorization' : 'Bearer ' + token
+              })
+            }
 
             if(json){
               //take list of classes and store in notas object  
@@ -80,21 +97,18 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, token) 
                           var assignmentsPre = json;
                           var assignmentsPost = [];
 
-                          nota.class = currentNota.materia;
+                          nota.class = currentNota.nommat;
 
-                          var gradeSum = 0;
                           //loop through assignments and find the average grade for the class
                           assignmentsPre.forEach(function(assignment) {
                             assignmentsPost.push({
                               item: assignment.item,
                               grade: assignment.calificacion
                             });
-
-                            gradeSum += assignment.calificacion;
                           });
 
                           //get average grade for the class
-                          nota.average = gradeSum / assignmentsPost.length;
+                          nota.average = currentNota.I;
                           nota.needed = 0;
                           nota.assignments = assignmentsPost;
 

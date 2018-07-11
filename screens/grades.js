@@ -74,7 +74,6 @@ class Grades extends React.Component {
           <ScrollView contentContainerStyle={styles.scrollView}>
             {
               notas.map((nota, index) => {
-                if(index & 1){
                   return (
                     <TouchableOpacity 
                       style={styles.notas}
@@ -96,34 +95,10 @@ class Grades extends React.Component {
                           { (Math.round(nota.average * 10) / 10).toFixed(1) }
                         </Text>
                       </View>
+                      <View style={styles.divider}></View>
                     </TouchableOpacity>
                   )  
-                } else {
-                  return (
-                    <TouchableOpacity 
-                      style={styles.notasAlt}
-                      key={index}
-                      onPress={() => navigation.navigate('GradesDetail',
-                        {
-                          assignments: nota.assignments,
-                          class: nota.class
-                        }
-                      )}
-                    >
-                      <View style={styles.class}>
-                        <Text style={styles.data}>
-                          {nota.class}
-                        </Text>
-                      </View>
-                      <View style={styles.grade}>
-                        <Text style={{...gradeColor[Math.floor(nota.average)]}}>
-                          { (Math.round(nota.average * 10) / 10).toFixed(1) }
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  )
-                }
-              })
+                })
             }
           </ScrollView>
         </View>
@@ -138,6 +113,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'flex-start',
+  },
+  divider: {
+    marginTop: 30,
+    height: 1,
+    backgroundColor: colors.greyLight,
+    width: '100%'
   },
   msgContainer: {
     flex: 1,
@@ -164,18 +145,16 @@ const styles = StyleSheet.create({
   },
   notas: {
     flexDirection: 'row',
-    paddingTop: 15,
-    paddingBottom: 15
-  },
-  notasAlt: {
-    flexDirection: 'row',
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: colors.greyLight
+    flexWrap:'wrap',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5
   },
   header: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 20
   },
   data: {
     fontSize: 18

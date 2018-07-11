@@ -1,6 +1,9 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, ActivityIndicator, Button, StatusBar, Platform } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, 
+  ActivityIndicator, Button, StatusBar, Platform,
+  TouchableHighlight, Animated, Easing
+ } from 'react-native';
 import { connect } from 'react-redux';
 import { inboxFetchData } from '../actions/inboxActions';
 import colors from '../utils/colors';
@@ -28,7 +31,7 @@ class Inbox extends React.Component {
   });
 
   constructor (props) {
-    super(props)
+    super(props);
     NavigationStateNotifier.newListener(
       this,
       () => {
@@ -41,11 +44,12 @@ class Inbox extends React.Component {
         // anything else that you'd like to do when this screen is navigated off of
         console.log('inbox screen was navigated away from');
       }
-    )
+    );
+    
   }
 
   componentDidMount = () => {
-    
+
   }
 
   render() {
@@ -64,7 +68,6 @@ class Inbox extends React.Component {
     if (isFetching) {
       return (
         <View style={styles.msgContainer}>
-          <Text>{t('inbox:isFetching')}</Text>
           <ActivityIndicator size='large'/>
         </View>
       )
@@ -82,7 +85,7 @@ class Inbox extends React.Component {
       <View style={styles.container}>
         <TouchableOpacity 
           style={styles.composeMsg}
-          onPress={() => console.log('pressed compose button')}
+          onPress={() => console.log('write message button pressed')}
         >
           <Ionicons name={'md-create'} size={30} color={colors.white} />
         </TouchableOpacity>
@@ -92,54 +95,54 @@ class Inbox extends React.Component {
               inbox.map((message, index) => {
                 var date = timeConvert(message.FECHAENVIO, i18n.language);
                   if(message.estado.substring(0, 1) == '<'){
-                    return (
-                      <TouchableOpacity 
-                        style={styles.inboxMessage}
-                        key={index}
-                        onPress={() => navigation.navigate('Message',
-                          {
-                            messageID: message.idmensaje,
-                            date: date
-                          }
-                        )}
-                      >
-                        <View style={styles.new}>
-                        </View>
-                        <Text style={styles.name}>
-                            {message.REMITENTE_NOMBRE}
-                        </Text>
-                        <Text style={styles.date}>
-                            {date}
-                        </Text>
-                        <Text style={styles.subject}>
-                            {message.asunto}
-                        </Text>
-                        <View style={styles.divider}></View>
-                      </TouchableOpacity>
+                    return (                     
+                        <TouchableOpacity 
+                          style={styles.inboxMessage}
+                          key={index}
+                          onPress={() => navigation.navigate('Message',
+                            {
+                              messageID: message.idmensaje,
+                              date: date
+                            }
+                          )}
+                        >
+                          <View style={styles.new}>
+                          </View>
+                          <Text style={styles.name}>
+                              {message.REMITENTE_NOMBRE}
+                          </Text>
+                          <Text style={styles.date}>
+                              {date}
+                          </Text>
+                          <Text style={styles.subject}>
+                              {message.asunto}
+                          </Text>
+                          <View style={styles.divider}></View>
+                        </TouchableOpacity>
                     )  
                   } else {
                     return (
-                      <TouchableOpacity 
-                        style={styles.inboxMessage}
-                        key={index}
-                        onPress={() => navigation.navigate('Message',
-                          {
-                            messageID: message.idmensaje,
-                            date: date
-                          }
-                        )}
-                      >
-                        <Text style={styles.name}>
-                            {message.REMITENTE_NOMBRE}
-                        </Text>
-                        <Text style={styles.date}>
-                            {date}
-                        </Text>
-                        <Text style={styles.subject}>
-                            {message.asunto}
-                        </Text>
-                        <View style={styles.divider}></View>
-                      </TouchableOpacity>
+                        <TouchableOpacity 
+                          style={styles.inboxMessage}
+                          key={index}
+                          onPress={() => navigation.navigate('Message',
+                            {
+                              messageID: message.idmensaje,
+                              date: date
+                            }
+                          )}
+                        >
+                          <Text style={styles.name}>
+                              {message.REMITENTE_NOMBRE}
+                          </Text>
+                          <Text style={styles.date}>
+                              {date}
+                          </Text>
+                          <Text style={styles.subject}>
+                              {message.asunto}
+                          </Text>
+                          <View style={styles.divider}></View>
+                        </TouchableOpacity>
                     )  
                   }
               })
