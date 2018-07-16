@@ -24,6 +24,7 @@ import {
   Ionicons, 
   FontAwesome, 
   Entypo,
+  Feather,
   MaterialCommunityIcons,
   MaterialIcons,
   SimpleLineIcons
@@ -41,35 +42,30 @@ const buttons = [
     navTo: 'Grades',
     symbol: (<FontAwesome name={'graduation-cap'} size={symbolSize} color={colors.blue}/>)
   },
-  { 
-    name: 'home:buttons.alerts',
-    navTo: 'Alerts',
-    symbol: (<Entypo name={'bell'} size={symbolSize} color={colors.blue}/>)
-  },
-  // {
-  //   name: 'home:buttons.messages',
-  //   navTo: 'Messages',
-  //   symbol: (<Entypo name={'mail'} size={symbolSize} color={colors.blue}/>)
+  // { 
+  //   name: 'home:buttons.alerts',
+  //   navTo: 'Alerts',
+  //   symbol: (<Entypo name={'bell'} size={symbolSize} color={colors.blue}/>)
   // },
-  {
-    name: 'home:buttons.cashflow',
-    navTo: 'Cashflow',
-    symbol: (<MaterialIcons name={'attach-money'} size={symbolSize} color={colors.blue}/>)
-  },
+  // {
+  //   name: 'home:buttons.cashflow',
+  //   navTo: 'Cashflow',
+  //   symbol: (<MaterialIcons name={'attach-money'} size={symbolSize} color={colors.blue}/>)
+  // },
   {
     name: 'home:buttons.calendar',
     navTo: 'Calendar',
     symbol: (<FontAwesome name={'calendar'} size={symbolSize} color={colors.blue}/>)
   },
   {
-    name: 'home:buttons.print',
-    navTo: 'Print',
-    symbol: (<FontAwesome name={'print'} size={symbolSize} color={colors.blue}/>)
+    name: 'home:buttons.documents',
+    navTo: 'Documents',
+    symbol: (<Feather name={'file-text'} size={symbolSize} color={colors.blue}/>)
   },
   {
-    name: 'home:buttons.browse',
-    navTo: 'Browse',
-    symbol: (<MaterialCommunityIcons name={'library'} size={symbolSize} color={colors.blue}/>)
+    name: 'home:buttons.coupons',
+    navTo: 'Coupons',
+    symbol: (<Entypo name={'ticket'} size={symbolSize} color={colors.blue}/>)
   },
   {
     name: 'home:buttons.logout',
@@ -95,14 +91,14 @@ class Home extends React.Component {
                           dropdownStyle={styles.changeFamDropdownStyle}
                         />,
           headerTintColor: colors.blue,
-          headerRight: (
-            <TouchableOpacity  
-              style={styles.headerRight}
-              onPress={() => navigation.navigate('Alerts')}
-            >
-              <Entypo name={'bell'} size={25} color={colors.blue}/>
-            </TouchableOpacity> 
-          )
+          // headerRight: (
+          //   <TouchableOpacity  
+          //     style={styles.headerRight}
+          //     onPress={() => navigation.navigate('Alerts')}
+          //   >
+          //     <Entypo name={'bell'} size={25} color={colors.blue}/>
+          //   </TouchableOpacity> 
+          // )
         }
       } else {
         return { 
@@ -196,7 +192,7 @@ const styles = StyleSheet.create({
    marginTop: 10,
    marginBottom: 10,
    width: '50%',
-   height: '25%',
+   height: 150,
    backgroundColor: colors.white
   },
   buttonText: {

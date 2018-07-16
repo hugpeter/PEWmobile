@@ -7,9 +7,8 @@ import i18n from './i18n';
 import NavigationStateNotifier from './NavigationStateNotifier';
 
 //this is just to remove a particular warning
-import { YellowBox } from 'react-native';
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated in plain JavaScript React classes. Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks.', 'Module RCTImageLoader']);
-console.disableYellowBox = true;
+// import { YellowBox } from 'react-native';
+// YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 //store setup
 const store = configureStore();

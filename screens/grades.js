@@ -14,14 +14,14 @@ class Grades extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     title: screenProps.t('grades:title'),
     headerTintColor: colors.blue,
-    headerRight: (
-      <TouchableOpacity  
-        style={styles.headerRight}
-        onPress={() => navigation.navigate('Alerts')}
-      >
-        <Entypo name={'bell'} size={25} color={colors.blue}/>
-      </TouchableOpacity> 
-    )
+    // headerRight: (
+    //   <TouchableOpacity  
+    //     style={styles.headerRight}
+    //     onPress={() => navigation.navigate('Alerts')}
+    //   >
+    //     <Entypo name={'bell'} size={25} color={colors.blue}/>
+    //   </TouchableOpacity> 
+    // )
   });
 
   state = {

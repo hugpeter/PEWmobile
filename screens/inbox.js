@@ -1,8 +1,7 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, 
-  ActivityIndicator, Button, StatusBar, Platform,
-  TouchableHighlight, Animated, Easing
+  ActivityIndicator
  } from 'react-native';
 import { connect } from 'react-redux';
 import { inboxFetchData } from '../actions/inboxActions';
@@ -12,6 +11,8 @@ import {
   Ionicons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
+import Swipeout from 'react-native-swipeout';
+
 
 class Inbox extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -85,7 +86,7 @@ class Inbox extends React.Component {
       <View style={styles.container}>
         <TouchableOpacity 
           style={styles.composeMsg}
-          onPress={() => console.log('write message button pressed')}
+          onPress={() => navigation.navigate('NewMessage')}
         >
           <Ionicons name={'md-create'} size={30} color={colors.white} />
         </TouchableOpacity>
@@ -93,12 +94,22 @@ class Inbox extends React.Component {
           <ScrollView contentContainerStyle={styles.scrollView}>
             {
               inbox.map((message, index) => {
+                // Buttons
+                var swipeoutBtns = [
+                  {
+                    text: 'Delete',
+                    type: 'delete',
+                    onPress: () => {
+                      console.log(message.asunto)
+                    }
+                  }
+                ]
                 var date = timeConvert(message.FECHAENVIO, i18n.language);
                   if(message.estado.substring(0, 1) == '<'){
-                    return (                     
+                    return (
+                      <Swipeout right={swipeoutBtns} autoClose={true} backgroundColor={'transparent'} key={index}>                  
                         <TouchableOpacity 
                           style={styles.inboxMessage}
-                          key={index}
                           onPress={() => navigation.navigate('Message',
                             {
                               messageID: message.idmensaje,
@@ -119,12 +130,13 @@ class Inbox extends React.Component {
                           </Text>
                           <View style={styles.divider}></View>
                         </TouchableOpacity>
+                      </Swipeout>
                     )  
                   } else {
                     return (
+                      <Swipeout right={swipeoutBtns} autoClose={true} backgroundColor={'transparent'} key={index}>
                         <TouchableOpacity 
                           style={styles.inboxMessage}
-                          key={index}
                           onPress={() => navigation.navigate('Message',
                             {
                               messageID: message.idmensaje,
@@ -143,6 +155,7 @@ class Inbox extends React.Component {
                           </Text>
                           <View style={styles.divider}></View>
                         </TouchableOpacity>
+                      </Swipeout>
                     )  
                   }
               })

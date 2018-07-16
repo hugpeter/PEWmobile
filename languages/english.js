@@ -16,11 +16,11 @@ const english = {
         buttons: {
             alerts: 'Alerts',
             messages: 'Messages',
-            browse: 'Browse',
+            coupons: 'Coupons',
             calendar: 'Calendar',
             cashflow: 'Payments',
             grades: 'Grades',
-            print: 'Print',
+            documents: 'Documents',
             logout: 'Logout'
         }
     },  
@@ -80,6 +80,15 @@ const english = {
         homeTab: 'Home',
         settingsTab: 'Settings',
         messagesTab: 'Messages'
+    },
+    coupons: {
+        title: 'Coupons',
+        categories: {
+            restaurants: 'Restaurants',
+            travel: 'Travel',
+            electronics: 'Electronics',
+            entertainment: 'Entertainment'
+        }
     },
     common: {
         currentLanguage: 'The current language is "{{lng}}"'

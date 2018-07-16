@@ -43,14 +43,14 @@ class CalendarScreen extends React.Component {
       return { 
         title: screenProps.t('calendar:title'),
         headerTintColor: colors.blue,
-        headerRight: (
-          <TouchableOpacity  
-            style={styles.headerRight}
-            onPress={() => navigation.navigate('Alerts')}
-          >
-            <Entypo name={'bell'} size={25} color={colors.blue}/>
-          </TouchableOpacity> 
-        )
+        // headerRight: (
+        //   <TouchableOpacity  
+        //     style={styles.headerRight}
+        //     onPress={() => navigation.navigate('Alerts')}
+        //   >
+        //     <Entypo name={'bell'} size={25} color={colors.blue}/>
+        //   </TouchableOpacity> 
+        // )
       }
   };
 

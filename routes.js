@@ -9,20 +9,30 @@ import { TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from 'react-native-vector-icons';
 
 import HomeScreen from './screens/home';
+
 import AlertScreen from './screens/alerts';
+
 import InboxScreen from './screens/inbox';
 import MessageScreen from './screens/messageScreen';
 // import SentScreen from './screens/sent';
 // import DeletedScreen from './screens/deleted';
-// import NewMessageScreen from './screens/newMessage';
+import NewMessageScreen from './screens/newMessage';
+
 import CouponsScreen from './screens/coupons';
+import CouponViewerScreen from './screens/couponViewer';
+
 import CalendarScreen from './screens/calendar';
 import CalendarDetailScreen from './screens/calendarDetail';
+
 import CashflowScreen from './screens/cashflow';
+
 import GradesScreen from './screens/grades';
 import GradesDetailScreen from './screens/gradesDetail';
-import PrintScreen from './screens/print';
+
+import DocumentsScreen from './screens/documents';
+
 import settingsScreen from './screens/settings';
+
 import AuthLoadingScreen from './screens/authLoadingScreen';
 import SignInScreen from './screens/signInScreen';
 
@@ -31,7 +41,8 @@ import colors from './utils/colors';
 const InboxStack = createStackNavigator(
   {
     Inbox: InboxScreen,
-    Message: MessageScreen
+    Message: MessageScreen,
+    
   },
   {
     initialRouteName: 'Inbox',
@@ -41,9 +52,21 @@ const InboxStack = createStackNavigator(
   }
 )
 
-const MessagesDrawer = createDrawerNavigator(
+const mainInboxStack = createStackNavigator(
   {
     Inbox: InboxStack,
+    NewMessage: NewMessageScreen
+  }, 
+  {
+    initialRouteName: 'Inbox',
+    mode: 'modal',
+    headerMode: 'none',
+  }
+)
+
+const MessagesDrawer = createDrawerNavigator(
+  {
+    Inbox: mainInboxStack,
     // Sent: SentScreen,
     // Deleted: DeletedScreen,
     // NewMessage: NewMessageScreen
@@ -64,12 +87,13 @@ const HomeStack = createStackNavigator(
     Home: HomeScreen,
     Alerts: AlertScreen,
     Coupons: CouponsScreen,
+    CouponViewer: CouponViewerScreen,
     Calendar: CalendarScreen,
     CalendarDetail: CalendarDetailScreen,
     Cashflow: CashflowScreen,
     Grades: GradesScreen,
     GradesDetail: GradesDetailScreen,
-    Print: PrintScreen
+    Documents: DocumentsScreen
   },
   {
     initialRouteName: 'Home',

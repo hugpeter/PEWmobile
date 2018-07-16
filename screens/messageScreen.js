@@ -160,15 +160,24 @@ class Message extends React.Component {
             height: 300,
             zIndex: 1
           }}>
-          <TouchableOpacity style={styles.messageAction}>
+          <TouchableOpacity 
+            style={styles.messageAction}
+            onPress={() => navigation.navigate('NewMessage')}
+          >
             <Entypo name={'reply'} size={30} color={colors.white} />
             <Text style={{color: colors.white}}>Reply</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.messageAction}>
+          <TouchableOpacity 
+            style={styles.messageAction}
+            onPress={() => navigation.navigate('NewMessage')}
+          >
             <Entypo name={'reply-all'} size={30} color={colors.white} />
             <Text style={{color: colors.white}}>Reply All</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.messageAction}>
+          <TouchableOpacity 
+            style={styles.messageAction}
+            onPress={() => navigation.navigate('NewMessage')}
+          >
             <Entypo name={'forward'} size={30} color={colors.white} />
             <Text style={{color: colors.white}}>Forward</Text>
           </TouchableOpacity>
