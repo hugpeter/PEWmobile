@@ -21,7 +21,9 @@ const chinese = {
             cashflow: '支付',
             grades: '级别',
             print: '印刷',
-            logout: '登出'
+            logout: '登出',
+            coupons: '优惠券',
+            documents: '文件'
         }
     },  
     settings: {
@@ -68,9 +70,27 @@ const chinese = {
             saturday: '星期六'
         }
     },
+    inbox: {
+        title: '收件箱',
+    },
+    message: {
+        from: '从: ',
+        to: '对于: ',
+        title: ''
+    },
+    coupons: {
+        title: '优惠券',
+        categories: {
+            restaurants: '餐馆',
+            travel: '旅行',
+            electronics: '电子产品',
+            entertainment: '娱乐'
+        }
+    },
     navigation: {
         homeTab: '家',
         settingsTab: '组态',
+        messagesTab: '消息'
     },
     common: {
         currentLanguage: '目前的语言是 "{{lng}}"'

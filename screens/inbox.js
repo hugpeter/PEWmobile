@@ -16,7 +16,7 @@ import Swipeout from 'react-native-swipeout';
 
 class Inbox extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
-    title: screenProps.t('inbox:title'),
+    drawerLabel: screenProps.t('inbox:title'),
     headerStyle: {
       backgroundColor: colors.white
     },

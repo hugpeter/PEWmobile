@@ -21,7 +21,9 @@ const portuguese = {
             cashflow: 'Pagamentos',
             grades: 'Notas',
             print: 'Imprimir',
-            logout: 'Sair'
+            logout: 'Sair',
+            coupons: 'Cupões',
+            documents: 'Documentos'
         }
     },  
     settings: {
@@ -68,9 +70,27 @@ const portuguese = {
             saturday: 'Sábado'
         }
     },
+    inbox: {
+        title: 'Entrada',
+    },
+    message: {
+        from: 'De: ',
+        to: 'Para: ',
+        title: ''
+    },
+    coupons: {
+        title: 'Cupões',
+        categories: {
+            restaurants: 'Restaurantes',
+            travel: 'Viagem',
+            electronics: 'Eletrônicos',
+            entertainment: 'Entretenimento'
+        }
+    },
     navigation: {
         homeTab: 'Começar',
         settingsTab: 'Configurações',
+        messagesTab: 'Mensagens'
     },
     common: {
         currentLanguage: 'A linguagem atual é "{{lng}}"'

@@ -21,7 +21,9 @@ const spanish = {
             cashflow: 'Pagos',
             grades: 'Notas',
             print: 'Imprimir',
-            logout: 'Cerrar Sesión'
+            logout: 'Cerrar Sesión',
+            coupons: 'Cupones',
+            documents: 'Documentos'
         }
     },  
     settings: {
@@ -68,9 +70,27 @@ const spanish = {
             saturday: 'Sábado'
         }
     },
+    inbox: {
+        title: 'Entrada',
+    },
+    message: {
+        from: 'De: ',
+        to: 'Para: ',
+        title: ''
+    },
     navigation: {
         homeTab: 'Inicio',
         settingsTab: 'Ajustes',
+        messagesTab: 'Mensajes'
+    },
+    coupons: {
+        title: 'Cupones',
+        categories: {
+            restaurants: 'Restaurantes',
+            travel: 'Viajes',
+            electronics: 'Electrónica',
+            entertainment: 'Entretenimiento'
+        }
     },
     common: {
         currentLanguage: 'El idioma actual es "{{lng}}"',
