@@ -6,7 +6,7 @@ import {
   createDrawerNavigator
 } from 'react-navigation';
 import { TouchableOpacity, Text } from 'react-native';
-import { Ionicons } from 'react-native-vector-icons';
+import { Ionicons, FontAwesome } from 'react-native-vector-icons';
 
 import HomeScreen from './screens/home';
 
@@ -66,16 +66,21 @@ const mainInboxStack = createStackNavigator(
 
 const MessagesDrawer = createDrawerNavigator(
   {
-    Inbox: mainInboxStack,
+    Inbox: {
+      screen: mainInboxStack,
+      navigationOptions: ({screenProps}) => ({
+        drawerLabel: screenProps.t('inbox:title'),
+        drawerIcon:(
+          <FontAwesome name={'inbox'} size={25} color={colors.yellow} />
+        )
+      })
+    }
     // Sent: SentScreen,
     // Deleted: DeletedScreen,
     // NewMessage: NewMessageScreen
-  }, 
+  },
   {
     initialRouteName: 'Inbox',
-    navigationOptions: {
-
-    },
     contentOptions: {
         activeTintColor: colors.yellow,
         activeBackgroundColor: colors.blue
@@ -98,6 +103,8 @@ const HomeStack = createStackNavigator(
   {
     initialRouteName: 'Home',
     navigationOptions: {
+      headerTintColor: colors.blue,
+      headerBackTitle: null,
       headerStyle: {
         // paddingTop: 0, // clears the default Header margin for the status bar
         height: 60 // sets new height for the Header

@@ -90,7 +90,6 @@ class Home extends React.Component {
                           textStyle={styles.changeFamText}
                           dropdownStyle={styles.changeFamDropdownStyle}
                         />,
-          headerTintColor: colors.blue,
           // headerRight: (
           //   <TouchableOpacity  
           //     style={styles.headerRight}

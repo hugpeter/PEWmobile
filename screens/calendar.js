@@ -73,7 +73,7 @@ class CalendarScreen extends React.Component {
 
   getFechaI = (d) => {
     var currentMonth = d.getMonth() + 1;
-    var month = currentMonth - 5;
+    var month = currentMonth - 2;
     var year = d.getFullYear();
 
     //check to see if month is now negative, if so, subtract it from 13 to get new month and decrement current year
@@ -91,7 +91,7 @@ class CalendarScreen extends React.Component {
 
   getFechaF = (d) => {
     var currentMonth = d.getMonth() + 1;
-    var month = currentMonth + 5;
+    var month = currentMonth + 2;
     var year = d.getFullYear();
 
     //check to see if month is over 12, if so subtract 12 from it to get new month and increment current year
@@ -134,9 +134,9 @@ class CalendarScreen extends React.Component {
           // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
           // maxDate={'2019-05-30'}
           // Max amount of months allowed to scroll to the past. Default = 50
-          pastScrollRange={5}
+          pastScrollRange={2}
           // Max amount of months allowed to scroll to the future. Default = 50
-          futureScrollRange={5}
+          futureScrollRange={2}
           // specify how each item should be rendered in agenda
           renderItem={(item, firstItemInDay) => {
               const ano = item.fecha.slice(0,4);
