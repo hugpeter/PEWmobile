@@ -76,7 +76,11 @@ const chinese = {
     message: {
         from: '从: ',
         to: '对于: ',
-        title: ''
+        title: '',
+        reply: '回复',
+        replyall: '全部回复',
+        forward: '前锋',
+        cancel: '取消'
     },
     coupons: {
         title: '优惠券',

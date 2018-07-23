@@ -76,7 +76,11 @@ const portuguese = {
     message: {
         from: 'De: ',
         to: 'Para: ',
-        title: ''
+        title: '',
+        reply: 'Resposta',
+        replyall: 'Responder todos',
+        forward: 'Frente',
+        cancel: 'Cancelar'
     },
     coupons: {
         title: 'Cupões',

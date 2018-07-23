@@ -118,7 +118,6 @@ class Message extends React.Component {
     if(message == undefined && !isFetching){
       return (
         <View style={styles.msgContainer}>
-          {/* <Text>{t('message:noMessages')}</Text> */}
         </View>
       )
     }
@@ -162,47 +161,59 @@ class Message extends React.Component {
           }}>
           <TouchableOpacity 
             style={styles.messageAction}
-            onPress={() => navigation.navigate('NewMessage')}
+            onPress={() => navigation.navigate('NewMessage', {
+              messageID: message.idxMensaje,
+              type: 'Reply',
+              date: date
+            })}
           >
             <Entypo name={'reply'} size={30} color={colors.white} />
-            <Text style={{color: colors.white}}>Reply</Text>
+            <Text style={{color: colors.white}}>{t('message:reply')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.messageAction}
-            onPress={() => navigation.navigate('NewMessage')}
+            onPress={() => navigation.navigate('NewMessage', {
+              messageID: message.idxMensaje,
+              type: 'ReplyAll',
+              date: date
+            })}
           >
             <Entypo name={'reply-all'} size={30} color={colors.white} />
-            <Text style={{color: colors.white}}>Reply All</Text>
+            <Text style={{color: colors.white}}>{t('message:replyall')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.messageAction}
-            onPress={() => navigation.navigate('NewMessage')}
+            onPress={() => navigation.navigate('NewMessage', {
+              messageID: message.idxMensaje,
+              type: 'Forward',
+              date: date
+            })}
           >
             <Entypo name={'forward'} size={30} color={colors.white} />
-            <Text style={{color: colors.white}}>Forward</Text>
+            <Text style={{color: colors.white}}>{t('message:forward')}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={[styles.messageAction, {backgroundColor: 'red'}]} 
             onPress={() => this.closeMessageOptions()}
           >
             <MaterialIcons name={'cancel'} size={30} color={colors.white} />
-            <Text style={{color: colors.white}}>Cancel</Text>
+            <Text style={{color: colors.white}}>{t('message:cancel')}</Text>
           </TouchableOpacity>
         </Animated.View>
-        <View style={{height: '100%'}} >
+        <View style={{height: '100%'}}>
           <ScrollView style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
               <View>
                 <Text style={styles.infoHeader}>{t('message:from')}</Text>
                 <Text>{message.RemNombre}</Text>
                 <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                <Text>{message.DesNombre.substring(0,15)}...</Text>
+                <Text>{message.DesNombre}...</Text>
                 <View style={styles.divider}></View>
                 <Text style={styles.infoHeader}>{message.Asunto}</Text>
                 <Text style={styles.date}>{date}</Text>
                 <View style={styles.divider}></View>
               </View>
               <View style={{paddingBottom: 100}}>
-                  <HTML  html={message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
+                  <HTML html={message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
               </View>
           </ScrollView>
         </View>
@@ -276,8 +287,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log(state.loginReducer.CurrentFamilyMemberIndex);
-  console.log(state.inboxReducer.inbox);
   return {
     isFetching: state.messagesReducer.isFetchingMessage,
     hasError: state.messagesReducer.messageHasError,

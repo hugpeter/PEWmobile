@@ -76,7 +76,11 @@ const spanish = {
     message: {
         from: 'De: ',
         to: 'Para: ',
-        title: ''
+        title: '',
+        reply: 'Respuesta',
+        replyall: 'Responder a todos',
+        forward: 'Reenviar',
+        cancel: 'Cancelar'
     },
     navigation: {
         homeTab: 'Inicio',

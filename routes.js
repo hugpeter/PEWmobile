@@ -55,7 +55,15 @@ const InboxStack = createStackNavigator(
 const mainInboxStack = createStackNavigator(
   {
     Inbox: InboxStack,
-    NewMessage: NewMessageScreen
+    NewMessage: {
+      screen: NewMessageScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+        headerStyle:{
+          marginTop: Expo.Constants.statusBarHeight 
+        }
+      } 
+    }
   }, 
   {
     initialRouteName: 'Inbox',

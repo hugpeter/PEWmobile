@@ -1,5 +1,5 @@
-const timeConverter = (UNIX_timestamp, language) => {
-    var d = UNIX_timestamp;
+const timeConverter = (timestamp, language) => {
+    var d = timestamp;
     var time = {};
     switch(language){
       case 'en':

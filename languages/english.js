@@ -74,7 +74,11 @@ const english = {
     message: {
         from: 'From: ',
         to: 'To: ',
-        title: ''
+        title: '',
+        reply: 'Reply',
+        replyall: 'Reply All',
+        forward: 'Forward',
+        cancel: 'Cancel'
     },
     navigation: {
         homeTab: 'Home',
