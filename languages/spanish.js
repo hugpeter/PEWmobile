@@ -73,6 +73,9 @@ const spanish = {
     inbox: {
         title: 'Entrada',
     },
+    sent: {
+        title: 'Expedido',
+    },
     message: {
         from: 'De: ',
         to: 'Para: ',

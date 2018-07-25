@@ -73,6 +73,9 @@ const portuguese = {
     inbox: {
         title: 'Entrada',
     },
+    sent: {
+        title: 'Enviado',
+    },
     message: {
         from: 'De: ',
         to: 'Para: ',

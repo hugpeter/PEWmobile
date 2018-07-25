@@ -73,6 +73,9 @@ const chinese = {
     inbox: {
         title: '收件箱',
     },
+    sent: {
+        title: '发送',
+    },
     message: {
         from: '从: ',
         to: '对于: ',

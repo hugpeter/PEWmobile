@@ -34,6 +34,7 @@ import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
 import { changeFamilyMember } from '../actions/loginActions';
 import { invalidateCache } from "redux-cache";
+import { getNewMessageCount } from '../actions/inboxActions';
 
 const symbolSize = 60;
 const buttons = [
@@ -75,9 +76,8 @@ const buttons = [
 ];
 
 class Home extends React.Component {
-  static navigationOptions = ({ navigation, screenProps}) => {
+  static navigationOptions = ({ navigation }) => {
     const {state} = navigation;
-
     if(state.params != undefined){
       if(state.params.familyOptions != undefined){
         return { 
@@ -119,13 +119,16 @@ class Home extends React.Component {
   componentWillMount(){
     const {setParams} = this.props.navigation;
     const changeFamilyMember = this.props.changeFamilyMember;
-    console.log('current family index on will mount: ' + this.props.currentFamilyMemberIndex);
 
     setParams({
       familyOptions: this.props.familyOptions,
       currentFamilyMemberIndex: this.props.currentFamilyMemberIndex,
       changeFamilyMember: changeFamilyMember
     });
+  }
+
+  componentDidMount = () => {
+    
   }
 
   render() {
@@ -249,7 +252,7 @@ const mapStateToProps = (state) => {
     familyMembers: state.loginReducer.FamilyMembers,
     currentFamilyMemberIndex: state.loginReducer.CurrentFamilyMemberIndex,
     student: state.loginReducer.Student,
-    familyOptions: state.loginReducer.FamilyOptions
+    familyOptions: state.loginReducer.FamilyOptions,
   }
 }
 
@@ -264,7 +267,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         'inboxReducer',
         'messagesReducer'
       ]));
-      dispatch(changeFamilyMember(index)); 
+      dispatch(changeFamilyMember(index));
+    },
+    newMessageCount: (idColegio, cedula, token) => {
+      dispatch(getNewMessageCount(idColegio, cedula, token));
     }
   }
 }

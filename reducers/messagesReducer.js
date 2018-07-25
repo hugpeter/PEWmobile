@@ -10,7 +10,8 @@ export default function loginReducer(state =
         [DEFAULT_KEY]: null,
         isFetchingMessage: false,
         messageHasError: false,
-        messages: []
+        messages: [],
+        newMessageCount: 0
     }, action) {
     switch (action.type) {
       case REQUEST_MESSAGE:

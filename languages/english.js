@@ -71,6 +71,10 @@ const english = {
     inbox: {
         title: 'Inbox',
     },
+    sent: {
+        title: 'Sent',
+        noMessages: 'No Sent Messages'
+    },
     message: {
         from: 'From: ',
         to: 'To: ',

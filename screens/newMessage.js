@@ -17,15 +17,37 @@ import {
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import HTML from 'react-native-render-html';
 import timeConvert from '../utils/timeConvert';
+import sendMail from '../utils/sendMail';
 
 class NewMessage extends React.Component {
-
     state = {
-      body: '',
-      subject: ''
+      m: {
+        idColegio: this.props.idColegio,
+        remidxMaestro: this.props.idxMaestro,
+        remTipoMaestro: this.props.tipoMaestro,
+        remCedula: this.props.cedula,
+        remNombre: '',
+        respondeAidxMsg: 0,
+        desidxMaestro: '',
+        desNombre: '',
+        desidxMaestroCC: '',
+        desNombreCC: '',
+        asunto: '',
+        contenido: '',
+        urgente: 0,
+        archivo: '',
+        paraApps: 0,
+        backgrount: ''
+      }
+    }
+
+    handleMessageSend = (m) => {
+      const { token } = this.props;
+      sendMail(m, token);
     }
 
     render() {
+      const { m } = this.state;
       const { t, i18n } = this.props;
       const { messageID, type, date } = this.props.navigation.state.params;
       const { messages } = this.props;
@@ -105,7 +127,7 @@ class NewMessage extends React.Component {
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.sendMsg}
-                    onPress={() => console.log('messege sent')}
+                    onPress={() => this.handleMessageSend(m)}
                   >
                     <FontAwesome name={'send'} size={25} color={colors.blue} />
                   </TouchableOpacity>
@@ -122,8 +144,13 @@ class NewMessage extends React.Component {
                         style={styles.infoHeader}
                         placeholder="Subject"
                         multiline={false}
-                        onChangeText={(text) => this.setState({subject: text})}
-                        value={this.state.subject}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            asunto: text
+                          }
+                        })}
+                        value={this.state.m.asunto}
                       />
                       <Text style={styles.date}>{timeConvert(currentDate.toJSON(), i18n.language)}</Text>
                       <View style={styles.divider}></View>
@@ -134,8 +161,13 @@ class NewMessage extends React.Component {
                         placeholder="Type here..."
                         multiline={true}
                         numberOfLines={10}
-                        onChangeText={(text) => this.setState({body: text})}
-                        value={this.state.body}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            contenido: text
+                          }
+                        })}
+                        value={this.state.m.contenido}
                       />
                     </View>
                 </ScrollView>

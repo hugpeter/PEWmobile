@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity,
   ActivityIndicator
  } from 'react-native';
 import { connect } from 'react-redux';
-import { inboxFetchData } from '../actions/inboxActions';
+import { sentBoxFetchData } from '../actions/sentBoxActions';
 import colors from '../utils/colors';
 import timeConvert from '../utils/timeConvert';
 import { 
@@ -13,9 +13,9 @@ import {
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import Swipeout from 'react-native-swipeout';
 
-class Inbox extends React.Component {
+class Sent extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
-    drawerLabel: screenProps.t('inbox:title'),
+    drawerLabel: screenProps.t('sent:title'),
     headerStyle: {
       backgroundColor: colors.white
     },
@@ -36,13 +36,13 @@ class Inbox extends React.Component {
       this,
       () => {
         // anything else that you'd like to do when this screen is navigated to
-        console.log('inbox screen was navigated to');
-        const { idColegio, cedula, token, getInbox } = this.props;
-        getInbox( idColegio, cedula, token );
+        console.log('sent screen was navigated to');
+        const { idColegio, cedula, token, getSentBox } = this.props;
+        getSentBox( idColegio, cedula, token );
       },
       () => {
         // anything else that you'd like to do when this screen is navigated off of
-        console.log('inbox screen was navigated away from');
+        console.log('sent screen was navigated away from');
       }
     );
     
@@ -54,13 +54,13 @@ class Inbox extends React.Component {
 
   render() {
     const { t, i18n, navigation } = this.props;
-    const { inbox } = this.props;
+    const { sentBox } = this.props;
     const { isFetching, hasError } = this.props;
 
-    if(inbox.length == 0 && !isFetching){
+    if(sentBox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
-          <Text>{t('inbox:noMessages')}</Text>
+          <Text>{t('sent:noMessages')}</Text>
         </View>
       )
     }
@@ -76,7 +76,7 @@ class Inbox extends React.Component {
     if (hasError) {
       return (
         <View style={styles.msgContainer}>
-              <Text>{t('inbox:hasError')}</Text>
+              <Text>{t('sent:hasError')}</Text>
         </View>
       )
     }
@@ -95,71 +95,44 @@ class Inbox extends React.Component {
         <View style={{height: '100%'}} >
           <ScrollView contentContainerStyle={styles.scrollView}>
             {
-              inbox.map((message, index) => {
+              sentBox.map((message, index) => {
                 // Buttons
                 var swipeoutBtns = [
                   {
                     text: 'Delete',
                     type: 'delete',
                     onPress: () => {
-                      console.log(message.asunto)
+                      console.log(message.Asunto)
                     }
                   }
                 ]
-                var date = timeConvert(message.FECHAENVIO, i18n.language);
-                  if(message.estado.substring(0, 1) == '<'){
-                    return (
-                      <Swipeout right={swipeoutBtns} autoClose={true} backgroundColor={'transparent'} key={index}>                  
+
+                var date = timeConvert(message.FechaEnvio, i18n.language);
+                  
+                return (
+                    <Swipeout right={swipeoutBtns} autoClose={true} backgroundColor={'transparent'} key={index}>
                         <TouchableOpacity 
                           style={styles.inboxMessage}
                           onPress={() => navigation.navigate('Message',
                             {
-                              messageID: message.idmensaje,
-                              date: date
-                            }
-                          )}
-                        >
-                          <View style={styles.new}>
-                          </View>
-                          <Text style={styles.name}>
-                              {message.REMITENTE_NOMBRE}
-                          </Text>
-                          <Text style={styles.date}>
-                              {date}
-                          </Text>
-                          <Text style={styles.subject}>
-                              {message.asunto}
-                          </Text>
-                          <View style={styles.divider}></View>
-                        </TouchableOpacity>
-                      </Swipeout>
-                    )  
-                  } else {
-                    return (
-                      <Swipeout right={swipeoutBtns} autoClose={true} backgroundColor={'transparent'} key={index}>
-                        <TouchableOpacity 
-                          style={styles.inboxMessage}
-                          onPress={() => navigation.navigate('Message',
-                            {
-                              messageID: message.idmensaje,
+                              messageID: message.idxmensaje,
                               date: date
                             }
                           )}
                         >
                           <Text style={styles.name}>
-                              {message.REMITENTE_NOMBRE}
+                              {message.DesNombre}
                           </Text>
                           <Text style={styles.date}>
                               {date}
                           </Text>
                           <Text style={styles.subject}>
-                              {message.asunto}
+                              {message.Asunto}
                           </Text>
                           <View style={styles.divider}></View>
                         </TouchableOpacity>
-                      </Swipeout>
-                    )  
-                  }
+                    </Swipeout>
+                )  
               })
             }
           </ScrollView>
@@ -282,19 +255,19 @@ const mapStateToProps = (state) => {
     token: state.loginReducer.Token,
     idColegio: state.loginReducer.Student.IdColegio,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
-    inbox: state.inboxReducer.inbox
+    sentBox: state.sentBoxReducer.sentBox
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getInbox: (idColegio, cedula, token) => {
-      dispatch(inboxFetchData(idColegio, cedula, token)); 
+    getSentBox: (idColegio, cedula, token) => {
+      dispatch(sentBoxFetchData(idColegio, cedula, token)); 
     }
   }
 }
 
-export default translate(['inbox', 'common'], { wait: true})(connect(
+export default translate(['sent', 'common'], { wait: true})(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Inbox));
+)(Sent));

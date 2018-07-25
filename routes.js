@@ -14,7 +14,7 @@ import AlertScreen from './screens/alerts';
 
 import InboxScreen from './screens/inbox';
 import MessageScreen from './screens/messageScreen';
-// import SentScreen from './screens/sent';
+import SentScreen from './screens/sent';
 // import DeletedScreen from './screens/deleted';
 import NewMessageScreen from './screens/newMessage';
 
@@ -72,6 +72,40 @@ const mainInboxStack = createStackNavigator(
   }
 )
 
+const SentStack = createStackNavigator(
+  {
+    Sent: SentScreen,
+    Message: MessageScreen,
+    
+  },
+  {
+    initialRouteName: 'Inbox',
+    navigationOptions: {
+      
+    }
+  }
+)
+
+const mainSentStack = createStackNavigator(
+  {
+    Sent: SentStack,
+    NewMessage: {
+      screen: NewMessageScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+        headerStyle: {
+          marginTop: Expo.Constants.statusBarHeight
+        }
+      }
+    }
+  },
+  {
+    initialRouteName: 'Sent',
+    mode: 'modal',
+    headerMode: 'none'
+  }
+)
+
 const MessagesDrawer = createDrawerNavigator(
   {
     Inbox: {
@@ -79,19 +113,29 @@ const MessagesDrawer = createDrawerNavigator(
       navigationOptions: ({screenProps}) => ({
         drawerLabel: screenProps.t('inbox:title'),
         drawerIcon:(
-          <FontAwesome name={'inbox'} size={25} color={colors.yellow} />
+          <FontAwesome name={'inbox'} size={25} color={colors.blue}/>
+        )
+      })
+    },
+    Sent: {
+      screen: mainSentStack,
+      navigationOptions: ({screenProps}) => ({
+        drawerLabel: screenProps.t('sent:title'),
+        drawerIcon:(
+          <Ionicons name={'md-send'} size={25} color={colors.blue}/>
         )
       })
     }
-    // Sent: SentScreen,
     // Deleted: DeletedScreen,
     // NewMessage: NewMessageScreen
   },
   {
     initialRouteName: 'Inbox',
     contentOptions: {
-        activeTintColor: colors.yellow,
-        activeBackgroundColor: colors.blue
+        activeTintColor: colors.blue,
+        activeBackgroundColor: colors.greyLight,
+        inactiveTintColor: colors.grey,
+        inactiveBackgroundColor: colors.white
     }
   });
 

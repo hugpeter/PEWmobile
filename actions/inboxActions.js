@@ -63,6 +63,65 @@ export function inboxFetchData(idColegio, cedula, token) {
     }
 }
 
+export const REQUEST_NMC = 'REQUEST_NMC';
+export const NMC = 'NMC';
+export const NMC_HAS_ERROR = 'NMC_HAS_ERROR';
+
+export function fetchingNMC(bool){
+    return {
+        type: REQUEST_NMC,
+        payload: bool
+    };
+}
+
+export function nmcHasError(bool){
+    return {
+        type: NMC_HAS_ERROR,
+        payload: bool
+    };
+}
+
+export function fetchingNMCSuccess(nmc){
+    return {
+        type: NMC,
+        payload: nmc
+    };
+}
+
+export function getNewMessageCount(idColegio, cedula, token){
+    return (dispatch, getState) => {
+        const isCacheValid = checkCacheValid(getState, "inboxReducer");
+        if (isCacheValid) { return null; }
+
+        dispatch(fetchingNMC(true));
+
+        var options = {
+            headers: new Headers({
+                'content-type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Authorization': 'Bearer ' + token
+            })
+        }
+
+        fetch(`http://192.168.111.62:3000/api/newMessageCount?idColegio=${idColegio}&cedula=${cedula}`, options)
+        .then(response => {
+            console.log(response.status);
+            if(response.status != 200){
+              dispatch(nmcHasError(true));
+            } else {
+              return response.json();
+            }
+        })
+        .then(json => {
+            if(json){
+                console.log(json[0].Cantidad);
+
+                dispatch(fetchingNMCSuccess(json[0].Cantidad));
+            }
+        })
+    }
+}
+
 export const REQUEST_MESSAGE = 'REQUEST_MESSAGE';
 export const MESSAGE = 'MESSAGE';
 export const MESSAGE_HAS_ERROR = 'MESSAGE_HAS_ERROR';
