@@ -75,6 +75,13 @@ const english = {
         title: 'Sent',
         noMessages: 'No Sent Messages'
     },
+    deleted: {
+        title: 'Deleted',
+        noMessages: 'No Deleted Messages'
+    },
+    documents: {
+        title: 'Documents'
+    },
     message: {
         from: 'From: ',
         to: 'To: ',

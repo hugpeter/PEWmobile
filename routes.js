@@ -6,7 +6,7 @@ import {
   createDrawerNavigator
 } from 'react-navigation';
 import { TouchableOpacity, Text } from 'react-native';
-import { Ionicons, FontAwesome } from 'react-native-vector-icons';
+import { Ionicons, FontAwesome, MaterialCommunityIcons } from 'react-native-vector-icons';
 
 import HomeScreen from './screens/home';
 
@@ -15,7 +15,7 @@ import AlertScreen from './screens/alerts';
 import InboxScreen from './screens/inbox';
 import MessageScreen from './screens/messageScreen';
 import SentScreen from './screens/sent';
-// import DeletedScreen from './screens/deleted';
+import DeletedScreen from './screens/deleted';
 import NewMessageScreen from './screens/newMessage';
 
 import CouponsScreen from './screens/coupons';
@@ -30,6 +30,7 @@ import GradesScreen from './screens/grades';
 import GradesDetailScreen from './screens/gradesDetail';
 
 import DocumentsScreen from './screens/documents';
+import DocumentScreen from './screens/documentScreen';
 
 import settingsScreen from './screens/settings';
 
@@ -59,7 +60,7 @@ const mainInboxStack = createStackNavigator(
       screen: NewMessageScreen,
       navigationOptions: {
         gesturesEnabled: false,
-        headerStyle:{
+        headerStyle: {
           marginTop: Expo.Constants.statusBarHeight 
         }
       } 
@@ -79,7 +80,7 @@ const SentStack = createStackNavigator(
     
   },
   {
-    initialRouteName: 'Inbox',
+    initialRouteName: 'Sent',
     navigationOptions: {
       
     }
@@ -106,6 +107,39 @@ const mainSentStack = createStackNavigator(
   }
 )
 
+const DeletedStack = createStackNavigator(
+  {
+    Deleted: DeletedScreen,
+    Message: MessageScreen
+  },
+  {
+    initialRouteName: 'Deleted',
+    navigationOptions: {
+      
+    }
+  }
+)
+
+const mainDeletedStack = createStackNavigator(
+  {
+    Deleted: DeletedStack,
+    NewMessage: {
+      screen: NewMessageScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+        headerStyle: {
+          marginTop: Expo.Constants.statusBarHeight
+        }
+      }
+    }
+  },
+  {
+    initialRouteName: 'Deleted',
+    mode: 'modal',
+    headerMode: 'none'
+  }
+)
+
 const MessagesDrawer = createDrawerNavigator(
   {
     Inbox: {
@@ -125,9 +159,16 @@ const MessagesDrawer = createDrawerNavigator(
           <Ionicons name={'md-send'} size={25} color={colors.blue}/>
         )
       })
-    }
-    // Deleted: DeletedScreen,
-    // NewMessage: NewMessageScreen
+    },
+    Deleted: {
+      screen: mainDeletedStack,
+      navigationOptions: ({screenProps}) => ({
+        drawerLabel: screenProps.t('deleted:title'),
+        drawerIcon:(
+          <MaterialCommunityIcons name={'delete'} size={25} color={colors.blue}/>
+        )
+      })
+    } 
   },
   {
     initialRouteName: 'Inbox',
@@ -150,7 +191,8 @@ const HomeStack = createStackNavigator(
     Cashflow: CashflowScreen,
     Grades: GradesScreen,
     GradesDetail: GradesDetailScreen,
-    Documents: DocumentsScreen
+    Documents: DocumentsScreen,
+    Document: DocumentScreen
   },
   {
     initialRouteName: 'Home',

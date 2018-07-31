@@ -12,6 +12,8 @@ import {
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import Swipeout from 'react-native-swipeout';
+import { invalidateCache } from "redux-cache";
+import { deleteMail } from '../utils/deleteMail';
 
 class Inbox extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -45,11 +47,18 @@ class Inbox extends React.Component {
         console.log('inbox screen was navigated away from');
       }
     );
-    
   }
 
   componentDidMount = () => {
 
+  }
+
+  handleMessageDelete = (idMensaje) => {
+    const { idxEstudiante, token, invalidate } = this.props;
+    deleteMail(idMensaje, idxEstudiante, token);
+    invalidate();
+    const { idColegio, cedula, getInbox } = this.props;
+    getInbox( idColegio, cedula, token );
   }
 
   render() {
@@ -102,7 +111,7 @@ class Inbox extends React.Component {
                     text: 'Delete',
                     type: 'delete',
                     onPress: () => {
-                      console.log(message.asunto)
+                      this.handleMessageDelete(message.idmensaje);
                     }
                   }
                 ]
@@ -282,7 +291,9 @@ const mapStateToProps = (state) => {
     token: state.loginReducer.Token,
     idColegio: state.loginReducer.Student.IdColegio,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
-    inbox: state.inboxReducer.inbox
+    inbox: state.inboxReducer.inbox,
+    idMaestro: state.loginReducer.Student.IdxMaestro,
+    idxEstudiante: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].IdxEstudiante : state.loginReducer.Student.IdxMaestro,
   }
 }
 
@@ -290,6 +301,14 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getInbox: (idColegio, cedula, token) => {
       dispatch(inboxFetchData(idColegio, cedula, token)); 
+    },
+    invalidate: () => {
+      dispatch(invalidateCache([
+        'inboxReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer'
+      ]));
     }
   }
 }

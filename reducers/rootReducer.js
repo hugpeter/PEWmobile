@@ -5,7 +5,9 @@ import calendarReducer from './calendarReducer';
 import calendarDetailReducer from './calendarDetailReducer';
 import inboxReducer from './inboxReducer';
 import sentBoxReducer from './sentBoxReducer';
+import deletedBoxReducer from './deletedBoxReducer';
 import messagesReducer from './messagesReducer';
+import documentsReducer from './documentsReducer';
 
 const rootReducer = combineReducers({
   loginReducer,
@@ -14,7 +16,9 @@ const rootReducer = combineReducers({
   calendarDetailReducer,
   inboxReducer,
   sentBoxReducer,
-  messagesReducer
+  deletedBoxReducer,
+  messagesReducer,
+  documentsReducer
 });
 
 export default rootReducer;

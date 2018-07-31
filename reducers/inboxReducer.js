@@ -37,7 +37,7 @@ export default function loginReducer(state =
       case MESSAGE_READ:
         var inbox = state.inbox.map(x => ({...x}));
         var newReadMessage = inbox.filter(msg => msg.idmensaje == action.payload)[0];
-        newReadMessage.estado = 'test';
+        newReadMessage.estado = '(leído)';
         var numUnread = state.newMessageCount - 1;
 
         if(newReadMessage){

@@ -18,18 +18,20 @@ import NavigationStateNotifier from '../NavigationStateNotifier';
 import HTML from 'react-native-render-html';
 import timeConvert from '../utils/timeConvert';
 import sendMail from '../utils/sendMail';
+import { invalidateCache } from "redux-cache";
 
 class NewMessage extends React.Component {
     state = {
+      sendingMessage: false,
       m: {
         idColegio: this.props.idColegio,
         remidxMaestro: this.props.idxMaestro,
         remTipoMaestro: this.props.tipoMaestro,
         remCedula: this.props.cedula,
-        remNombre: '',
+        remNombre: this.props.nombre,
         respondeAidxMsg: 0,
         desidxMaestro: '',
-        desNombre: '',
+        desNombre: 'Steve',
         desidxMaestroCC: '',
         desNombreCC: '',
         asunto: '',
@@ -42,12 +44,15 @@ class NewMessage extends React.Component {
     }
 
     handleMessageSend = (m) => {
-      const { token } = this.props;
+      this.setState({sendingMessage: true})
+      const { token, navigation, invalidate } = this.props;
       sendMail(m, token);
+      invalidate();
+      navigation.goBack();
     }
 
     render() {
-      const { m } = this.state;
+      const { m, sendingMessage } = this.state;
       const { t, i18n } = this.props;
       const { messageID, type, date } = this.props.navigation.state.params;
       const { messages } = this.props;
@@ -57,6 +62,14 @@ class NewMessage extends React.Component {
 
       if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
+      }
+
+      if(sendingMessage){
+        return(
+          <View>
+            <ActivityIndicator />
+          </View>
+        )
       }
 
       switch(type){
@@ -266,13 +279,21 @@ const mapStateToProps = (state) => {
     idxMaestro: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].IdxEstudiante : state.loginReducer.Student.IdxMaestro,
     tipoMaestro: state.loginReducer.Student.TipoMaestro,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
-    messages: state.messagesReducer.messages
+    messages: state.messagesReducer.messages,
+    nombre: state.loginReducer.IsFamilia ? state.loginReducer.FamilyOptions[state.loginReducer.CurrentFamilyMemberIndex] : state.loginReducer.Student.Nombre
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    invalidate: () => {
+      dispatch(invalidateCache([
+        'inboxReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer'
+      ]));
+    }
   }
 }
 

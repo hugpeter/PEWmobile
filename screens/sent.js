@@ -12,6 +12,8 @@ import {
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import Swipeout from 'react-native-swipeout';
+import { deleteSentMail } from '../utils/deleteMail';
+import { invalidateCache } from "redux-cache";
 
 class Sent extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -50,6 +52,14 @@ class Sent extends React.Component {
 
   componentDidMount = () => {
 
+  }
+
+  handleMessageDelete = (idMensaje) => {
+    const { idxEstudiante, token, invalidate } = this.props;
+    deleteSentMail(idMensaje, idxEstudiante, token);
+    invalidate();
+    const { idColegio, cedula, getSentBox } = this.props;
+    getSentBox( idColegio, cedula, token );
   }
 
   render() {
@@ -102,7 +112,7 @@ class Sent extends React.Component {
                     text: 'Delete',
                     type: 'delete',
                     onPress: () => {
-                      console.log(message.Asunto)
+                      this.handleMessageDelete(message.idxMensaje);
                     }
                   }
                 ]
@@ -115,8 +125,9 @@ class Sent extends React.Component {
                           style={styles.inboxMessage}
                           onPress={() => navigation.navigate('Message',
                             {
-                              messageID: message.idxmensaje,
-                              date: date
+                              messageID: message.idxMensaje,
+                              date: date,
+                              isSentMsg: true
                             }
                           )}
                         >
@@ -255,7 +266,8 @@ const mapStateToProps = (state) => {
     token: state.loginReducer.Token,
     idColegio: state.loginReducer.Student.IdColegio,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
-    sentBox: state.sentBoxReducer.sentBox
+    sentBox: state.sentBoxReducer.sentBox,
+    idxEstudiante: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].IdxEstudiante : state.loginReducer.Student.IdxMaestro
   }
 }
 
@@ -263,6 +275,14 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getSentBox: (idColegio, cedula, token) => {
       dispatch(sentBoxFetchData(idColegio, cedula, token)); 
+    },
+    invalidate: () => {
+      dispatch(invalidateCache([
+        'inboxReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer'
+      ]));
     }
   }
 }

@@ -265,7 +265,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         'calendarReducer', 
         'calendarDetailReducer', 
         'inboxReducer',
-        'messagesReducer'
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
       ]));
       dispatch(changeFamilyMember(index));
     },

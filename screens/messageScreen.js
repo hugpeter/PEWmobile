@@ -44,9 +44,11 @@ class Message extends React.Component {
       () => {
         // anything else that you'd like to do when this screen is navigated off of
         console.log('message screen was navigated away from');
-        const { messageID } = this.props.navigation.state.params;
-        const { updateMessageState } = this.props;
-        updateMessageState(messageID);
+        const { messageID, isSentMsg } = this.props.navigation.state.params;
+        if(!isSentMsg){
+          const { updateMessageState } = this.props;
+          updateMessageState(messageID);
+        }
       }
     );
 
@@ -113,6 +115,7 @@ class Message extends React.Component {
 
     if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
+        
     }
 
     if(message == undefined && !isFetching){
@@ -200,13 +203,13 @@ class Message extends React.Component {
             <Text style={{color: colors.white}}>{t('message:cancel')}</Text>
           </TouchableOpacity>
         </Animated.View>
-        <View style={{height: '100%'}}>
-          <ScrollView style={{ flex: 1, backgroundColor: '#fff', padding: 10 }}>
+        <View style={{height: '100%', width: '100%'}}>
+          <ScrollView style={{ width: '100%', flex: 1, backgroundColor: '#fff', padding: 10 }}>
               <View>
                 <Text style={styles.infoHeader}>{t('message:from')}</Text>
                 <Text>{message.RemNombre}</Text>
                 <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                <Text>{message.DesNombre}...</Text>
+                <Text>{message.DesNombre.substring(0,14)}...</Text>
                 <View style={styles.divider}></View>
                 <Text style={styles.infoHeader}>{message.Asunto}</Text>
                 <Text style={styles.date}>{date}</Text>
