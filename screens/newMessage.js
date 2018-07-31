@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
     TouchableOpacity, ActivityIndicator, 
@@ -23,23 +23,30 @@ import { invalidateCache } from "redux-cache";
 class NewMessage extends React.Component {
     state = {
       sendingMessage: false,
+      
       m: {
         idColegio: this.props.idColegio,
+
         remidxMaestro: this.props.idxMaestro,
         remTipoMaestro: this.props.tipoMaestro,
         remCedula: this.props.cedula,
         remNombre: this.props.nombre,
+
         respondeAidxMsg: 0,
+
         desidxMaestro: '',
-        desNombre: 'Steve',
+        desNombre: '',
         desidxMaestroCC: '',
         desNombreCC: '',
+        desidxMaestroCCO: '',
+        desNombreCCO: '',
+
         asunto: '',
         contenido: '',
         urgente: 0,
-        archivo: '',
-        paraApps: 0,
-        backgrount: ''
+        archivo: '0',
+        paraApps: 1,
+        background: ''
       }
     }
 
@@ -55,7 +62,8 @@ class NewMessage extends React.Component {
       const { m, sendingMessage } = this.state;
       const { t, i18n } = this.props;
       const { messageID, type, date } = this.props.navigation.state.params;
-      const { messages } = this.props;
+      const { messages, contacts, idColegio, idxMaestro, tipoMaestro, cedula, nombre } = this.props;
+
       var message;
       const currentDate = new Date();
       currentDate.setTime(currentDate.getTime() - currentDate.getTimezoneOffset()*60*1000);
@@ -127,10 +135,16 @@ class NewMessage extends React.Component {
         case 'ReplyAll':
         case 'Forward':
         case 'New':
+          var sendOptions;
+          if(tipoMaestro == 'F'){
+            sendOptions = <Text></Text>
+          } else {
+            sendOptions = <Text>.. not F</Text>;
+          }
+
           return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white}}>
               <View style={{height: '100%', width: '100%'}}>
-
                 <View style={styles.newMsgBar}>
                   <TouchableOpacity
                     style={styles.cancel}
@@ -149,13 +163,13 @@ class NewMessage extends React.Component {
                 <ScrollView style={{flex: 1, backgroundColor: '#fff', padding: 10 }}>
                     <View>
                       <Text style={styles.infoHeader}>{t('message:from')}</Text>
-                      <Text>You</Text>
+                      <Text>{t('message:you')}</Text>
                       <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                      <Text>{}...</Text>
+                      {sendOptions}
                       <View style={styles.divider}></View>
                       <TextInput 
                         style={styles.infoHeader}
-                        placeholder="Subject"
+                        placeholder={t('message:subject')}
                         multiline={false}
                         onChangeText={(text) => this.setState({
                           m: {
@@ -171,7 +185,7 @@ class NewMessage extends React.Component {
                     <View style={{paddingBottom: 100}}>
                       <TextInput
                         style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
-                        placeholder="Type here..."
+                        placeholder="..."
                         multiline={true}
                         numberOfLines={10}
                         onChangeText={(text) => this.setState({
@@ -278,6 +292,7 @@ const mapStateToProps = (state) => {
     idColegio: state.loginReducer.Student.IdColegio,
     idxMaestro: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].IdxEstudiante : state.loginReducer.Student.IdxMaestro,
     tipoMaestro: state.loginReducer.Student.TipoMaestro,
+    contacts: state.loginReducer.Contactos,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
     messages: state.messagesReducer.messages,
     nombre: state.loginReducer.IsFamilia ? state.loginReducer.FamilyOptions[state.loginReducer.CurrentFamilyMemberIndex] : state.loginReducer.Student.Nombre

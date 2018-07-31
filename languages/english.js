@@ -84,12 +84,15 @@ const english = {
     },
     message: {
         from: 'From: ',
+        you: 'You',
         to: 'To: ',
+
         title: '',
         reply: 'Reply',
         replyall: 'Reply All',
         forward: 'Forward',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+        subject: 'Subject'
     },
     navigation: {
         homeTab: 'Home',

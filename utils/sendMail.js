@@ -3,21 +3,28 @@ import fetch from 'cross-fetch';
 const sendMail = (m, token) => {
     const postBody = {
         idColegio: m.idColegio,
+
         RemidxMaestro: m.remidxMaestro,
         RemTipoMaestro: m.remTipoMaestro,
         RemCedula: m.remCedula,
         RemNombre: m.remNombre,
+
         RespondeAidxMsg: m.respondeAidxMsg,
+
         DesidxMaestro: m.desidxMaestro,
         DesNombre: m.desNombre,
         DesidxMaestroCC: m.desidxMaestroCC,
         DesNombreCC: m.desNombreCC,
+
+        DesidxMaestroCCO: m.desidxMaestroCCO,
+        DesNombreCCO: m.desNombreCCO,
+
         Asunto: m.asunto,
         Contenido: m.contenido,
         Urgente: m.urgente,
         Archivo: m.archivo,
         ParaApps: m.paraApps,
-        backgrount: m.backgrount
+        background: m.background
     }
 
     var options = {
