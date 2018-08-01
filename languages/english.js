@@ -86,6 +86,8 @@ const english = {
         from: 'From: ',
         you: 'You',
         to: 'To: ',
+        cc: 'CC: ',
+        bcc: 'BCC: ',
 
         title: '',
         reply: 'Reply',

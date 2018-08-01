@@ -19,11 +19,14 @@ import HTML from 'react-native-render-html';
 import timeConvert from '../utils/timeConvert';
 import sendMail from '../utils/sendMail';
 import { invalidateCache } from "redux-cache";
+import SelectMultiple from 'react-native-select-multiple';
 
 class NewMessage extends React.Component {
     state = {
       sendingMessage: false,
-      
+      selectedContacts: [],
+      selectedContactsCC: [],
+      selectedContactsBCC: [],
       m: {
         idColegio: this.props.idColegio,
 
@@ -50,18 +53,90 @@ class NewMessage extends React.Component {
       }
     }
 
-    handleMessageSend = (m) => {
+    constructor (props) {
+      super(props);
+      NavigationStateNotifier.newListener(
+        this,
+        () => {
+          // anything else that you'd like to do when this screen is navigated to
+          console.log('new message screen was navigated to');
+          this.updateContactInfo();
+        },
+        () => {
+          // anything else that you'd like to do when this screen is navigated off of
+          console.log('new message screen was navigated away from');
+        }
+      );
+    }
+
+    updateContactInfo = () => {
+      const { m } = this.state;
+          const { navigation } = this.props;
+          const contactType = navigation.getParam('contactType', '');
+          const desidxMaestro = navigation.getParam('desidxMaestro', '');
+          const desNombre = navigation.getParam('desNombre', '');
+          const selectedContacts = navigation.getParam('selectedContacts', []);
+
+          console.log('data sent back to new message screen: ');
+          console.log('contacttype: ' + contactType);
+          console.log('desidxMaestro: ' + desidxMaestro);
+          console.log('desNombre: ' + desNombre);
+          console.log('contacts: ' + selectedContacts);
+
+
+            if(contactType === 'to'){
+              this.setState({
+                selectedContacts: selectedContacts,
+                m: {
+                  ...m,
+                  desidxMaestro: desidxMaestro,
+                  desNombre: desNombre
+                }
+              });
+            } else if(contactType === 'cc'){
+              this.setState({
+                selectedContactsCC: selectedContacts,
+                m: {
+                  ...m,
+                  desidxMaestroCC: desidxMaestro,
+                  desNombreCC: desNombre
+                }
+              });
+            } else if(contactType === 'bcc'){
+              this.setState({
+                selectedContactsBCC: selectedContacts,
+                m: {
+                  ...m,
+                  desidxMaestroCCO: desidxMaestro,
+                  desNombreCCO: desNombre
+                }
+              });
+            }
+
+          console.log(desNombre);
+          console.log(m.desNombre);
+          console.log(m);
+    }
+
+    handleMessageSend = () => {
       this.setState({sendingMessage: true})
+    }
+
+    componentDidUpdate = () => {
+      const { m, sendingMessage } = this.state;
       const { token, navigation, invalidate } = this.props;
-      sendMail(m, token);
-      invalidate();
-      navigation.goBack();
+
+      if(sendingMessage){
+        sendMail(m, token);
+        invalidate();
+        navigation.goBack();
+      }
     }
 
     render() {
       const { m, sendingMessage } = this.state;
-      const { t, i18n } = this.props;
-      const { messageID, type, date } = this.props.navigation.state.params;
+      const { t, i18n, navigation } = this.props;
+      const { messageID, type, date } = navigation.state.params;
       const { messages, contacts, idColegio, idxMaestro, tipoMaestro, cedula, nombre } = this.props;
 
       var message;
@@ -135,13 +210,6 @@ class NewMessage extends React.Component {
         case 'ReplyAll':
         case 'Forward':
         case 'New':
-          var sendOptions;
-          if(tipoMaestro == 'F'){
-            sendOptions = <Text></Text>
-          } else {
-            sendOptions = <Text>.. not F</Text>;
-          }
-
           return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white}}>
               <View style={{height: '100%', width: '100%'}}>
@@ -165,7 +233,32 @@ class NewMessage extends React.Component {
                       <Text style={styles.infoHeader}>{t('message:from')}</Text>
                       <Text>{t('message:you')}</Text>
                       <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                      {sendOptions}
+                        <TouchableOpacity 
+                          onPress={() => navigation.navigate('ToOptions', {
+                            selectedContacts: this.state.selectedContacts,
+                            contactType: 'to'
+                          })}
+                        >
+                          <Text>{this.state.m.desNombre} ></Text>
+                        </TouchableOpacity>
+                      <Text style={styles.infoHeader}>{t('message:cc')}</Text>
+                        <TouchableOpacity 
+                          onPress={() => navigation.navigate('ToOptions', {
+                            selectedContactsCC: this.state.selectedContactsCC,
+                            contactType: 'cc'
+                          })}
+                        >
+                          <Text>{this.state.m.desNombreCC} ></Text>
+                        </TouchableOpacity>
+                      <Text style={styles.infoHeader}>{t('message:bcc')}</Text>
+                        <TouchableOpacity 
+                          onPress={() => navigation.navigate('ToOptions', {
+                            selectedContactsBCC: this.state.selectedContactsBCC,
+                            contactType: 'bcc'
+                          })}
+                        >
+                          <Text>{this.state.m.desNombreCCO} ></Text>
+                        </TouchableOpacity>
                       <View style={styles.divider}></View>
                       <TextInput 
                         style={styles.infoHeader}

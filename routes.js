@@ -16,7 +16,9 @@ import InboxScreen from './screens/inbox';
 import MessageScreen from './screens/messageScreen';
 import SentScreen from './screens/sent';
 import DeletedScreen from './screens/deleted';
+
 import NewMessageScreen from './screens/newMessage';
+import ToOptionsScreen from './screens/toOptions';
 
 import CouponsScreen from './screens/coupons';
 import CouponViewerScreen from './screens/couponViewer';
@@ -64,6 +66,15 @@ const mainInboxStack = createStackNavigator(
           marginTop: Expo.Constants.statusBarHeight 
         }
       } 
+    },
+    ToOptions: {
+      screen: ToOptionsScreen,
+      navigationOptions: {
+        gesturesEnabled: false,
+        headerStyle: {
+          marginTop: Expo.Constants.statusBarHeight
+        }
+      }
     }
   }, 
   {

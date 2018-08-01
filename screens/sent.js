@@ -132,7 +132,7 @@ class Sent extends React.Component {
                           )}
                         >
                           <Text style={styles.name}>
-                              {message.DesNombre}
+                              {message.DesNombre.substring(0,14)}...
                           </Text>
                           <Text style={styles.date}>
                               {date}
