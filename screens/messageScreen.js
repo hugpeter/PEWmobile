@@ -40,6 +40,7 @@ class Message extends React.Component {
         const { messageID } = this.props.navigation.state.params;
         const { getMessage, idxMaestro, tipoMaestro, token } = this.props;
         getMessage(messageID, idxMaestro, tipoMaestro, token);
+        
       },
       () => {
         // anything else that you'd like to do when this screen is navigated off of
@@ -49,6 +50,7 @@ class Message extends React.Component {
           const { updateMessageState } = this.props;
           updateMessageState(messageID);
         }
+        this.closeMessageOptions();
       }
     );
 
@@ -209,7 +211,7 @@ class Message extends React.Component {
                 <Text style={styles.infoHeader}>{t('message:from')}</Text>
                 <Text>{message.RemNombre}</Text>
                 <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                <Text>{message.DesNombre.substring(0,14)}...</Text>
+                <Text>{message.DesNombre}</Text>
                 <View style={styles.divider}></View>
                 <Text style={styles.infoHeader}>{message.Asunto}</Text>
                 <Text style={styles.date}>{date}</Text>

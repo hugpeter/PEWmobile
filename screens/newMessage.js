@@ -19,11 +19,11 @@ import HTML from 'react-native-render-html';
 import timeConvert from '../utils/timeConvert';
 import sendMail from '../utils/sendMail';
 import { invalidateCache } from "redux-cache";
-import SelectMultiple from 'react-native-select-multiple';
 
 class NewMessage extends React.Component {
     state = {
       sendingMessage: false,
+      contactsValidated: false,
       selectedContacts: [],
       selectedContactsCC: [],
       selectedContactsBCC: [],
@@ -77,13 +77,6 @@ class NewMessage extends React.Component {
           const desNombre = navigation.getParam('desNombre', '');
           const selectedContacts = navigation.getParam('selectedContacts', []);
 
-          console.log('data sent back to new message screen: ');
-          console.log('contacttype: ' + contactType);
-          console.log('desidxMaestro: ' + desidxMaestro);
-          console.log('desNombre: ' + desNombre);
-          console.log('contacts: ' + selectedContacts);
-
-
             if(contactType === 'to'){
               this.setState({
                 selectedContacts: selectedContacts,
@@ -112,14 +105,13 @@ class NewMessage extends React.Component {
                 }
               });
             }
-
-          console.log(desNombre);
-          console.log(m.desNombre);
-          console.log(m);
     }
 
     handleMessageSend = () => {
-      this.setState({sendingMessage: true})
+      const { m } = this.state;
+      if(m.desidxMaestro != ''){
+        this.setState({sendingMessage: true})
+      }
     }
 
     componentDidUpdate = () => {
@@ -129,8 +121,89 @@ class NewMessage extends React.Component {
       if(sendingMessage){
         sendMail(m, token);
         invalidate();
+        this.setState({sendingMessage: false});
         navigation.goBack();
       }
+    }
+
+    componentDidMount = () => {
+      const { m, contactsValidated } = this.state;
+      const { messageID, type } = this.props.navigation.state.params;
+      const { messages, tipoMaestro } = this.props;
+      var message;
+      
+      if(type != 'New'){
+
+        if(messages.length > 0){
+          message = messages.filter(message => message.idxMensaje == messageID)[0];
+        }
+  
+        if(m.asunto == '' && message.Asunto != '' && type == 'Reply'){
+          this.setState({
+            m: {
+              ...m,
+              desidxMaestro: message.RemidxMaestro + '@' + message.RemTipoMaestro + ';',
+              desNombre: message.RemNombre + ';',
+              respondeAidxMsg: message.idxMensaje,
+              asunto: message.Asunto
+            }
+          });
+        }
+  
+        if(type == 'ReplyAll' && tipoMaestro == 'F' && !contactsValidated){
+          //if it is a parent trying to reply all, go through their available contacts and make sure everyone being sent the email is valid.
+          this.validateContacts(message);
+        }
+  
+        if(type == 'Forward'){
+          this.setState({
+            m: {
+              ...m,
+              asunto: message.Asunto,
+              contenido: message.Contenido
+            }
+          });
+        }
+      }
+    }
+
+    validateContacts = (message) => {
+      const { m } = this.state;
+      const { contacts } = this.props;
+
+      var validContacts = [];
+
+      contacts.forEach(contact => {
+        validContacts.push(contact.CodigoContacto);
+      });
+
+      var desidxMaestroArray = message.DesidxMaestro.split(";");
+      var desNombreArray = message.DesNombre.split(';');
+
+      var desidxMaestroValid = '';
+      var desNombreValid = '';
+
+      desidxMaestroArray.forEach((contact, index) => {
+        if(validContacts.includes(contact)){
+          desidxMaestroValid += desidxMaestroArray[index] + ';';
+          desNombreValid += desNombreArray[index] + ';';
+        }
+      });
+
+      desidxMaestroValid += message.RemidxMaestro.toString() + '@' + message.RemTipoMaestro + ';';
+      desNombreValid += message.RemNombre + ';';
+
+      this.setState({
+        contactsValidated: true,
+        m: {
+          ...m,
+          desidxMaestro: desidxMaestroValid,
+          desNombre: desNombreValid,
+          asunto: message.Asunto,
+          respondeAidxMsg: message.idxMensaje
+        }
+      })
+      
     }
 
     render() {
@@ -170,7 +243,7 @@ class NewMessage extends React.Component {
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.sendMsg}
-                    onPress={() => console.log('messege sent')}
+                    onPress={() => this.handleMessageSend()}
                   >
                     <FontAwesome name={'send'} size={25} color={colors.blue} />
                   </TouchableOpacity>
@@ -179,16 +252,21 @@ class NewMessage extends React.Component {
                 <ScrollView style={{flex: 1, backgroundColor: '#fff', padding: 10 }}>
                     <View>
                       <Text style={styles.infoHeader}>{t('message:from')}</Text>
-                      <Text>You</Text>
+                      <Text>{m.remNombre}</Text>
                       <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                      <Text>{}...</Text>
+                      <Text>{message.RemNombre}</Text>
                       <View style={styles.divider}></View>
                       <TextInput 
                         style={styles.infoHeader}
                         placeholder="Subject"
                         multiline={false}
-                        onChangeText={(text) => this.setState({subject: text})}
-                        value={this.state.subject}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            asunto: text
+                          }
+                        })}
+                        value={m.asunto}
                       />
                       <Text style={styles.date}>{timeConvert(currentDate.toJSON(), i18n.language)}</Text>
                       <View style={styles.divider}></View>
@@ -199,8 +277,13 @@ class NewMessage extends React.Component {
                         placeholder="Type here..."
                         multiline={true}
                         numberOfLines={10}
-                        onChangeText={(text) => this.setState({body: text})}
-                        value={this.state.body}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            contenido: text
+                          }
+                        })}
+                        value={m.contenido}
                       />
                     </View>
                 </ScrollView>
@@ -208,7 +291,154 @@ class NewMessage extends React.Component {
             </View>
           );
         case 'ReplyAll':
+          return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white}}>
+              <View style={{height: '100%', width: '100%'}}>
+
+                <View style={styles.newMsgBar}>
+                  <TouchableOpacity
+                    style={styles.cancel}
+                    onPress={() => this.props.navigation.goBack()}
+                  >
+                    <FontAwesome name={'close'} size={25} color={colors.blue} />
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.sendMsg}
+                    onPress={() => this.handleMessageSend()}
+                  >
+                    <FontAwesome name={'send'} size={25} color={colors.blue} />
+                  </TouchableOpacity>
+                </View>
+                
+                <ScrollView style={{flex: 1, backgroundColor: '#fff', padding: 10 }}>
+                    <View>
+                      <Text style={styles.infoHeader}>{t('message:from')}</Text>
+                      <Text>{m.remNombre}</Text>
+                      <Text style={styles.infoHeader}>{t('message:to')}</Text>
+                      <Text>{m.desNombre}</Text>
+                      <View style={styles.divider}></View>
+                      <TextInput 
+                        style={styles.infoHeader}
+                        placeholder="Subject"
+                        multiline={false}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            asunto: text
+                          }
+                        })}
+                        value={m.asunto}
+                      />
+                      <Text style={styles.date}>{timeConvert(currentDate.toJSON(), i18n.language)}</Text>
+                      <View style={styles.divider}></View>
+                    </View>
+                    <View style={{paddingBottom: 100}}>
+                      <TextInput
+                        style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
+                        placeholder="Type here..."
+                        multiline={true}
+                        numberOfLines={10}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            contenido: text
+                          }
+                        })}
+                        value={m.contenido}
+                      />
+                    </View>
+                </ScrollView>
+              </View>
+            </View>
+          );
         case 'Forward':
+          return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white}}>
+              <View style={{height: '100%', width: '100%'}}>
+                <View style={styles.newMsgBar}>
+                  <TouchableOpacity
+                    style={styles.cancel}
+                    onPress={() => this.props.navigation.goBack()}
+                  >
+                    <FontAwesome name={'close'} size={25} color={colors.blue} />
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.sendMsg}
+                    onPress={() => this.handleMessageSend(m)}
+                  >
+                    <FontAwesome name={'send'} size={25} color={colors.blue} />
+                  </TouchableOpacity>
+                </View>
+                
+                <ScrollView style={{flex: 1, backgroundColor: '#fff', padding: 10 }}>
+                    <View>
+                      <Text style={styles.infoHeader}>{t('message:from')}</Text>
+                      <Text>{t('message:you')}</Text>
+                      <Text style={styles.infoHeader}>{t('message:to')}</Text>
+                        <TouchableOpacity 
+                          onPress={() => navigation.navigate('ToOptions', {
+                            selectedContacts: this.state.selectedContacts,
+                            contactType: 'to'
+                          })}
+                        >
+                          <Text>{this.state.m.desNombre}</Text>
+                          <Ionicons style={{alignSelf: 'flex-end'}} name={'md-person-add'} size={25} color={colors.blue} />
+                        </TouchableOpacity>
+                      <Text style={styles.infoHeader}>{t('message:cc')}</Text>
+                        <TouchableOpacity 
+                          onPress={() => navigation.navigate('ToOptions', {
+                            selectedContactsCC: this.state.selectedContactsCC,
+                            contactType: 'cc'
+                          })}
+                        >
+                          <Text>{this.state.m.desNombreCC}</Text>
+                          <Ionicons style={{alignSelf: 'flex-end'}} name={'md-person-add'} size={25} color={colors.blue} />
+                        </TouchableOpacity>
+                      <Text style={styles.infoHeader}>{t('message:bcc')}</Text>
+                        <TouchableOpacity 
+                          onPress={() => navigation.navigate('ToOptions', {
+                            selectedContactsBCC: this.state.selectedContactsBCC,
+                            contactType: 'bcc'
+                          })}
+                        >
+                          <Text>{m.desNombreCCO}</Text>
+                          <Ionicons style={{alignSelf: 'flex-end'}} name={'md-person-add'} size={25} color={colors.blue} />
+                        </TouchableOpacity>
+                      <View style={styles.divider}></View>
+                      <TextInput 
+                        style={styles.infoHeader}
+                        placeholder={t('message:subject')}
+                        multiline={false}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            asunto: text
+                          }
+                        })}
+                        value={m.asunto}
+                      />
+                      <Text style={styles.date}>{timeConvert(currentDate.toJSON(), i18n.language)}</Text>
+                      <View style={styles.divider}></View>
+                    </View>
+                    <View style={{paddingBottom: 100}}>
+                      <TextInput
+                        style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
+                        placeholder="..."
+                        multiline={true}
+                        numberOfLines={10}
+                        onChangeText={(text) => this.setState({
+                          m: {
+                            ...m,
+                            contenido: text
+                          }
+                        })}
+                        value={m.contenido}
+                      />
+                    </View>
+                </ScrollView>
+              </View>
+            </View>
+          );
         case 'New':
           return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white}}>
@@ -239,7 +469,8 @@ class NewMessage extends React.Component {
                             contactType: 'to'
                           })}
                         >
-                          <Text>{this.state.m.desNombre} ></Text>
+                          <Text>{this.state.m.desNombre}</Text>
+                          <Ionicons style={{alignSelf: 'flex-end'}} name={'md-person-add'} size={25} color={colors.blue} />
                         </TouchableOpacity>
                       <Text style={styles.infoHeader}>{t('message:cc')}</Text>
                         <TouchableOpacity 
@@ -248,7 +479,8 @@ class NewMessage extends React.Component {
                             contactType: 'cc'
                           })}
                         >
-                          <Text>{this.state.m.desNombreCC} ></Text>
+                          <Text>{this.state.m.desNombreCC}</Text>
+                          <Ionicons style={{alignSelf: 'flex-end'}} name={'md-person-add'} size={25} color={colors.blue} />
                         </TouchableOpacity>
                       <Text style={styles.infoHeader}>{t('message:bcc')}</Text>
                         <TouchableOpacity 
@@ -257,7 +489,8 @@ class NewMessage extends React.Component {
                             contactType: 'bcc'
                           })}
                         >
-                          <Text>{this.state.m.desNombreCCO} ></Text>
+                          <Text>{m.desNombreCCO}</Text>
+                          <Ionicons style={{alignSelf: 'flex-end'}} name={'md-person-add'} size={25} color={colors.blue} />
                         </TouchableOpacity>
                       <View style={styles.divider}></View>
                       <TextInput 
@@ -270,7 +503,7 @@ class NewMessage extends React.Component {
                             asunto: text
                           }
                         })}
-                        value={this.state.m.asunto}
+                        value={m.asunto}
                       />
                       <Text style={styles.date}>{timeConvert(currentDate.toJSON(), i18n.language)}</Text>
                       <View style={styles.divider}></View>
@@ -287,7 +520,7 @@ class NewMessage extends React.Component {
                             contenido: text
                           }
                         })}
-                        value={this.state.m.contenido}
+                        value={m.contenido}
                       />
                     </View>
                 </ScrollView>
