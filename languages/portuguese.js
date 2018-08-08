@@ -16,11 +16,9 @@ const portuguese = {
         buttons: {
             alerts: 'Alertas',
             messages: 'Mensagens',
-            browse: 'Descobrir',
             calendar: 'Calendário',
             cashflow: 'Pagamentos',
             grades: 'Notas',
-            print: 'Imprimir',
             logout: 'Sair',
             coupons: 'Cupões',
             documents: 'Documentos'
@@ -37,24 +35,24 @@ const portuguese = {
         chooseLanguage: 'Mudar idioma'
     },
     grades: {
-        title: 'Grades',
+        title: 'Notas',
         headers: {
-            class: 'Class',
-            grade: 'Average'
+            class: 'Classe',
+            grade: 'Média'
         },
-        isFetching: 'Searching for classes...',
-        hasError: 'We\'re sorry, there was an issue retrieving the data. Please try again later.',
-        noClasses: 'Sorry, we could not find any classes for you.'
+        isFetching: 'Procurando por classes...',
+        hasError: 'Lamentamos, houve um problema ao recuperar os dados. Por favor, tente novamente mais tarde.',
+        noClasses: 'Desculpe, não conseguimos encontrar nenhuma aula para você.'
     },
     gradesDetail: {
         headers: {
-            assignment: 'Assignment',
-            grade: 'Grade'
+            assignment: 'Tarefa',
+            grade: 'Nota'
         }
     },
     calendar: {
-        title: 'Calendar',
-        noEvents: 'There is nothing on the calendar for this day.'
+        title: 'Calendário',
+        noEvents: 'Não há nada no calendário para este dia.'
     },
     calendarDetail: {
         title: 'Esta Semana',
@@ -72,18 +70,35 @@ const portuguese = {
     },
     inbox: {
         title: 'Entrada',
+        noMessages: 'Você não tem novas mensagens no momento.',
+        hasError: 'Ops! Parece que algo deu errado, por favor, tente novamente mais tarde.'
     },
     sent: {
         title: 'Enviado',
+        noMessages: 'Você não tem mensagens enviadas.',
+        hasError: 'Ops! Parece que algo deu errado, por favor, tente novamente mais tarde.'
+    },
+    deleted: {
+        title: 'Excluído',
+        noMessages: 'Não há mensagens excluídas.',
+        hasError: 'Ops! Parece que algo deu errado, por favor, tente novamente mais tarde.'
+    },
+    documents: {
+        title: 'Documentos'
     },
     message: {
         from: 'De: ',
+        you: 'Você',
         to: 'Para: ',
+        cc: 'CC: ',
+        bcc: 'CCO: ',
+
         title: '',
-        reply: 'Resposta',
+        reply: 'Responder',
         replyall: 'Responder todos',
-        forward: 'Frente',
-        cancel: 'Cancelar'
+        forward: 'Encaminhar',
+        cancel: 'Cancelar',
+        subject: 'Assunto'
     },
     coupons: {
         title: 'Cupões',

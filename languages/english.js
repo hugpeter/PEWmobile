@@ -70,14 +70,18 @@ const english = {
     },
     inbox: {
         title: 'Inbox',
+        noMessages: 'You do not have new messages at the moment.',
+        hasError: 'Whoops! Looks like something went wrong, please try again later.'
     },
     sent: {
         title: 'Sent',
-        noMessages: 'No Sent Messages'
+        noMessages: 'You have no sent messages.',
+        hasError: 'Whoops! Looks like something went wrong, please try again later.'
     },
     deleted: {
         title: 'Deleted',
-        noMessages: 'No Deleted Messages'
+        noMessages: 'There are no deleted messages',
+        hasError: 'Whoops! Looks like something went wrong, please try again later.'
     },
     documents: {
         title: 'Documents'

@@ -72,18 +72,35 @@ const chinese = {
     },
     inbox: {
         title: '收件箱',
+        noMessages: '您目前没有新消息。',
+        hasError: '哎呦！看起来出了问题，请稍后再试。'
     },
     sent: {
         title: '发送',
+        noMessages: '您没有发送消息。',
+        hasError: '哎呦！看起来出了问题，请稍后再试。'
+    },
+    deleted: {
+        title: '删除',
+        noMessages: '没有已删除的邮件。',
+        hasError: '哎呦！看起来出了问题，请稍后再试。'
+    },
+    documents: {
+        title: '文件'
     },
     message: {
         from: '从: ',
-        to: '对于: ',
+        you: '您',
+        to: '给: ',
+        cc: 'CC: ',
+        bcc: 'BCC: ',
+
         title: '',
         reply: '回复',
         replyall: '全部回复',
-        forward: '前锋',
-        cancel: '取消'
+        forward: '发',
+        cancel: '废止',
+        subject: '科目'
     },
     coupons: {
         title: '优惠券',

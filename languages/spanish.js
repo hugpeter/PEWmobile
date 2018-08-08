@@ -16,11 +16,9 @@ const spanish = {
         buttons: {
             alerts: 'Alertas',
             messages: 'Mensajes',
-            browse: 'Vistazo',
             calendar: 'Calendario',
             cashflow: 'Pagos',
             grades: 'Notas',
-            print: 'Imprimir',
             logout: 'Cerrar Sesión',
             coupons: 'Cupones',
             documents: 'Documentos'
@@ -72,18 +70,34 @@ const spanish = {
     },
     inbox: {
         title: 'Entrada',
+        noMessages: 'No tienes mensajes nuevos en este momento.',
+        hasError: '¡Ups! Parece que algo salió mal. Inténtalo de nuevo más tarde.'
     },
     sent: {
         title: 'Expedido',
+        noMessages: 'No tienes mensajes enviados.',
+        hasError: '¡Ups! Parece que algo salió mal. Inténtalo de nuevo más tarde.'
+    },
+    deleted: {
+        title: 'Eliminado',
+        noMessages: 'No hay mensajes eliminados.',
+        hasError: '¡Ups! Parece que algo salió mal. Inténtalo de nuevo más tarde.'
+    },
+    documents: {
+        title: 'Documentos'
     },
     message: {
         from: 'De: ',
+        you: 'Tú',
         to: 'Para: ',
+        cc: 'CC:',
+        bcc: 'CCO:',
         title: '',
         reply: 'Respuesta',
         replyall: 'Responder a todos',
         forward: 'Reenviar',
-        cancel: 'Cancelar'
+        cancel: 'Cancelar',
+        subject: 'Asunto'
     },
     navigation: {
         homeTab: 'Inicio',
@@ -101,10 +115,6 @@ const spanish = {
     },
     common: {
         currentLanguage: 'El idioma actual es "{{lng}}"',
-        actions: {
-          toggleToSpanish: 'Español',
-          toggleToEnglish: 'Inglés'
-        }
     }
 };
 

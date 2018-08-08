@@ -56,7 +56,7 @@ class Message extends React.Component {
 
     //define animation props
     this.aBottom = new Animated.Value(0);
-    
+    this.aOpacity = new Animated.Value(0);
   }
 
   componentDidMount = () => {
@@ -65,6 +65,7 @@ class Message extends React.Component {
 
   openMessageOptions = () => {
     this.aBottom.setValue(0);
+    this.aOpacity.setValue(0);
 
     const createAnimation = function (value, duration, easing, delay = 0) {
       return Animated.timing(
@@ -79,12 +80,14 @@ class Message extends React.Component {
     }
 
     Animated.parallel([
-      createAnimation(this.aBottom, 300, Easing.ease),       
+      createAnimation(this.aBottom, 300, Easing.ease),
+      createAnimation(this.aOpacity, 300, Easing.ease)       
     ]).start();
   }
 
   closeMessageOptions = () => {
     this.aBottom.setValue(1);
+    this.aOpacity.setValue(1);
 
     const createAnimation = function (value, duration, easing, delay = 0) {
       return Animated.timing(
@@ -100,6 +103,7 @@ class Message extends React.Component {
 
     Animated.parallel([
       createAnimation(this.aBottom, 300, Easing.ease),
+      createAnimation(this.aOpacity, 300, Easing.ease)
     ]).start();
   }
 
@@ -114,6 +118,11 @@ class Message extends React.Component {
       inputRange: [0, 1],
       outputRange: [-300, 0]
     })
+
+    const aOpacity = this.aOpacity.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1]
+    });
 
     if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
@@ -158,6 +167,7 @@ class Message extends React.Component {
             position: 'absolute',
             left: 0,
             bottom: aBottom,
+            opacity: aOpacity,
             backgroundColor: colors.white,
             padding: 10,
             width: '100%',
@@ -218,7 +228,7 @@ class Message extends React.Component {
                 <View style={styles.divider}></View>
               </View>
               <View style={{paddingBottom: 100}}>
-                  <HTML html={message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
+                  <HTML html={message.Contenido === '' ? ' ' : message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
               </View>
           </ScrollView>
         </View>

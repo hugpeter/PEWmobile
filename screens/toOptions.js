@@ -46,9 +46,14 @@ class ToOptions extends React.Component{
         var listOfNames = '';
         var listOfIds = '';
   
-        selectedContacts.forEach(contact => {
-          listOfNames += contact.label + ';';
-          listOfIds += contact.value + ';';
+        selectedContacts.forEach((contact, index, arr) => {
+            if(Object.is(arr.length - 1, index)){
+                listOfNames += contact.label;
+                listOfIds += contact.value;
+            } else {
+                listOfNames += contact.label + ';';
+                listOfIds += contact.value + ';';
+            }
         });
   
         this.setState({

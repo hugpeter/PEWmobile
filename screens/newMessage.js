@@ -183,15 +183,15 @@ class NewMessage extends React.Component {
       var desidxMaestroValid = '';
       var desNombreValid = '';
 
-      desidxMaestroArray.forEach((contact, index) => {
+      desidxMaestroArray.forEach((contact, index, arr) => {
         if(validContacts.includes(contact)){
-          desidxMaestroValid += desidxMaestroArray[index] + ';';
-          desNombreValid += desNombreArray[index] + ';';
+            desidxMaestroValid += desidxMaestroArray[index] + ';';
+            desNombreValid += desNombreArray[index] + ';';
         }
       });
 
-      desidxMaestroValid += message.RemidxMaestro.toString() + '@' + message.RemTipoMaestro + ';';
-      desNombreValid += message.RemNombre + ';';
+      desidxMaestroValid += message.RemidxMaestro.toString() + '@' + message.RemTipoMaestro;
+      desNombreValid += message.RemNombre;
 
       this.setState({
         contactsValidated: true,
