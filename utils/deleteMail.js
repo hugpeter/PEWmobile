@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch';
+import conn from './dbConnection';
 
 export function deleteMail(idMensaje, idMaestro, token){
     const postBody = {
@@ -7,16 +8,16 @@ export function deleteMail(idMensaje, idMaestro, token){
     }
 
     var options = {
-        headers: new Headers({
+        headers: {
             'content-type': 'application/json',
             'Cache-Control': 'no-cache',
             'Authorization' : 'Bearer ' + token
-        }),
+        },
         method: 'post',
         body: JSON.stringify(postBody)
     }
 
-    fetch(`http://192.168.111.62:3000/api/eliminarMensajeEntrada`, options)
+    fetch(`${conn}api/eliminarMensajeEntrada`, options)
     .then(response => {
         console.log(response.status);
         if(response.status != 200){
@@ -44,16 +45,16 @@ export function deleteSentMail(idMensaje, idMaestro, token){
     }
 
     var options = {
-        headers: new Headers({
+        headers: {
             'content-type': 'application/json',
             'Cache-Control': 'no-cache',
             'Authorization' : 'Bearer ' + token
-        }),
+        },
         method: 'post',
         body: JSON.stringify(postBody)
     }
 
-    fetch(`http://192.168.111.62:3000/api/eliminarMensajeSalida`, options)
+    fetch(`${conn}api/eliminarMensajeSalida`, options)
     .then(response => {
         console.log(response.status);
         if(response.status != 200){

@@ -70,21 +70,19 @@ const spanish = {
     },
     inbox: {
         title: 'Entrada',
-        noMessages: 'No tienes mensajes nuevos en este momento.',
-        hasError: '¡Ups! Parece que algo salió mal. Inténtalo de nuevo más tarde.'
+        noMessages: 'No tienes mensajes nuevos en este momento.'
     },
     sent: {
         title: 'Expedido',
-        noMessages: 'No tienes mensajes enviados.',
-        hasError: '¡Ups! Parece que algo salió mal. Inténtalo de nuevo más tarde.'
+        noMessages: 'No tienes mensajes enviados.'
     },
     deleted: {
         title: 'Eliminado',
-        noMessages: 'No hay mensajes eliminados.',
-        hasError: '¡Ups! Parece que algo salió mal. Inténtalo de nuevo más tarde.'
+        noMessages: 'No hay mensajes eliminados.'
     },
     documents: {
-        title: 'Documentos'
+        title: 'Documentos',
+        noMessages: 'Actualmente no hay documentos para que veas aquí.'
     },
     message: {
         from: 'De: ',
@@ -115,6 +113,7 @@ const spanish = {
     },
     common: {
         currentLanguage: 'El idioma actual es "{{lng}}"',
+        hasError: 'Su tiempo de sesión ha expirado, por favor vuelva a iniciar sesión.'
     }
 };
 

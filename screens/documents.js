@@ -6,7 +6,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity,
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import { 
-  Ionicons
+  SimpleLineIcons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import { invalidateCache } from "redux-cache";
@@ -48,6 +48,26 @@ class Documents extends React.Component {
 
     const { isFetching, hasError } = this.props;
 
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={
+              () => navigation.navigate('Auth', {
+                errorMsg: t('common:hasError')
+              })
+            }
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
     if(documents.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
@@ -60,14 +80,6 @@ class Documents extends React.Component {
       return (
         <View style={styles.msgContainer}>
           <ActivityIndicator size='large'/>
-        </View>
-      )
-    }
-
-    if (hasError) {
-      return (
-        <View style={styles.msgContainer}>
-              <Text>{t('documents:hasError')}</Text>
         </View>
       )
     }
@@ -112,7 +124,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    padding: 20
   },
   scrollView: {
     width: '100%',

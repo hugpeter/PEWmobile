@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-
+import conn from '../utils/dbConnection';
 export const REQUEST_SESSION = 'REQUEST_SESSION';
 export const SESSION = 'SESSION';
 export const SESSION_HAS_ERROR = 'SESSION_HAS_ERROR';
@@ -33,18 +33,18 @@ export function sessionFetchDataSuccess(session) {
   };
 }
 
-export function sessionFetchData(url) {
+export function sessionFetchData(username, password) {
   return (dispatch) => {
       dispatch(sessionIsLoading(true));
 
       const options = {
-        headers: new Headers({
+        headers: {
           'content-type': 'application/json',
           'Cache-Control': 'no-cache'
-        })
+        }
       }
 
-      fetch(url, options)
+      fetch(`${conn}api/auth?username=${username}&password=${password}`, options)
       .then(response => {
           console.log(response.status);
           if(response.status != 200){

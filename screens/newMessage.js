@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
-    TouchableOpacity, ActivityIndicator, 
-    Dimensions, Animated, Easing, Button, TextInput } from 'react-native';
+    TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import { connect } from 'react-redux';
-import { messageFetchData, messageIsRead } from '../actions/inboxActions';
 import colors from '../utils/colors';
 import { 
   Ionicons,
   FontAwesome, 
-  Entypo,
-  MaterialCommunityIcons,
-  MaterialIcons,
-  SimpleLineIcons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import HTML from 'react-native-render-html';
@@ -209,8 +203,8 @@ class NewMessage extends React.Component {
     render() {
       const { m, sendingMessage } = this.state;
       const { t, i18n, navigation } = this.props;
-      const { messageID, type, date } = navigation.state.params;
-      const { messages, contacts, idColegio, idxMaestro, tipoMaestro, cedula, nombre } = this.props;
+      const { messageID, type } = navigation.state.params;
+      const { messages } = this.props;
 
       var message;
       const currentDate = new Date();

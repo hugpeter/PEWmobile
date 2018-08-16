@@ -1,7 +1,6 @@
 import React from 'react';
 import { 
-  translate, 
-  Trans 
+  translate
 } from 'react-i18next';
 import { 
   StyleSheet, 
@@ -9,7 +8,6 @@ import {
   View, 
   TouchableOpacity,
   ScrollView,
-  FlatList,
   Dimensions
 } from 'react-native';
 import {
@@ -21,12 +19,9 @@ import {
   ListItem
 } from 'react-native-elements';
 import { 
-  Ionicons, 
   FontAwesome, 
   Entypo,
   Feather,
-  MaterialCommunityIcons,
-  MaterialIcons,
   SimpleLineIcons
 } from 'react-native-vector-icons';
 import colors from '../utils/colors';
@@ -63,11 +58,11 @@ const buttons = [
     navTo: 'Documents',
     symbol: (<Feather name={'file-text'} size={symbolSize} color={colors.blue}/>)
   },
-  {
-    name: 'home:buttons.coupons',
-    navTo: 'Coupons',
-    symbol: (<Entypo name={'ticket'} size={symbolSize} color={colors.blue}/>)
-  },
+  // {
+  //   name: 'home:buttons.coupons',
+  //   navTo: 'Coupons',
+  //   symbol: (<Entypo name={'ticket'} size={symbolSize} color={colors.blue}/>)
+  // },
   {
     name: 'home:buttons.logout',
     navTo: 'Auth',
@@ -253,6 +248,7 @@ const mapStateToProps = (state) => {
     currentFamilyMemberIndex: state.loginReducer.CurrentFamilyMemberIndex,
     student: state.loginReducer.Student,
     familyOptions: state.loginReducer.FamilyOptions,
+    token: state.loginReducer.Token
   }
 }
 

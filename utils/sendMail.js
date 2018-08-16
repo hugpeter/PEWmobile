@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch';
+import conn from './dbConnection';
 
 const sendMail = (m, token) => {
     const postBody = {
@@ -28,16 +29,16 @@ const sendMail = (m, token) => {
     }
 
     var options = {
-        headers: new Headers({
+        headers: {
             'content-type': 'application/json',
             'Cache-Control': 'no-cache',
             'Authorization' : 'Bearer ' + token
-        }),
+        },
         method: 'post',
         body: JSON.stringify(postBody)
     }
 
-    fetch(`http://192.168.111.62:3000/api/enviarMensaje`, options)
+    fetch(`${conn}api/enviarMensaje`, options)
     .then(response => {
         console.log(response.status);
         if(response.status != 200){

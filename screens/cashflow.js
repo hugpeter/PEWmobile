@@ -1,6 +1,6 @@
 import React from 'react';
-import { translate, Trans } from 'react-i18next';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { translate } from 'react-i18next';
+import { StyleSheet, Text, View } from 'react-native';
 
 @translate(['cashflow', 'common'], { wait: true })
 export default class Cashflow extends React.Component {

@@ -43,7 +43,6 @@ const chinese = {
             grade: '平均'
         },
         isFetching: '寻找课程',
-        hasError: '很抱歉，检索数据时出现问题。 请稍后再试。',
         noClasses: '对不起，我们找不到任何课程给你。'
     },
     gradesDetail: {
@@ -72,21 +71,19 @@ const chinese = {
     },
     inbox: {
         title: '收件箱',
-        noMessages: '您目前没有新消息。',
-        hasError: '哎呦！看起来出了问题，请稍后再试。'
+        noMessages: '您目前没有新消息。'
     },
     sent: {
         title: '发送',
-        noMessages: '您没有发送消息。',
-        hasError: '哎呦！看起来出了问题，请稍后再试。'
+        noMessages: '您没有发送消息。'
     },
     deleted: {
         title: '删除',
-        noMessages: '没有已删除的邮件。',
-        hasError: '哎呦！看起来出了问题，请稍后再试。'
+        noMessages: '没有已删除的邮件。'
     },
     documents: {
-        title: '文件'
+        title: '文件',
+        noMessages: '目前没有文件可供您查看。'
     },
     message: {
         from: '从: ',
@@ -117,7 +114,8 @@ const chinese = {
         messagesTab: '消息'
     },
     common: {
-        currentLanguage: '目前的语言是 "{{lng}}"'
+        currentLanguage: '目前的语言是 "{{lng}}"',
+        hasError: '您的会话时间已过，请重新登录。'
     }
 };
 

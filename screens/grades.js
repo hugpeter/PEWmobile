@@ -1,13 +1,12 @@
 import React from 'react';
-import { translate, Trans } from 'react-i18next';
+import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import { Button, Input, Overlay, CheckBox } from 'react-native-elements';
 import { notasFetchData } from '../actions/notasActions';
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import gradeColor from '../utils/gradeColor';
 import { 
-  Entypo
+  SimpleLineIcons
 } from 'react-native-vector-icons';
 
 class Grades extends React.Component {
@@ -44,16 +43,32 @@ class Grades extends React.Component {
     const { navigate } = navigation;
     const { notas } = this.props;
 
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={
+              () => navigation.navigate('Auth', {
+                errorMsg: t('common:hasError')
+              })
+            }
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
     if(notas.length == 0 && !isFetching){
       return <View style={styles.msgContainer}><Text>{t('grades:noClasses')}</Text></View>
     }
 
     if (isFetching) {
       return <View style={styles.msgContainer}><Text>{t('grades:isFetching')}</Text><ActivityIndicator size='large'/></View>
-    }
-
-    if (hasError) {
-      return <View style={styles.msgContainer}><Text>{t('grades:hasError')}</Text></View>
     }
 
     return (
@@ -120,11 +135,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.greyLight,
     width: '100%'
   },
+  logoutBtn:{
+    padding: 50
+  },
   msgContainer: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    padding: 20
   },
   scrollView: {
     paddingTop: 0,

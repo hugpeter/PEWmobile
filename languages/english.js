@@ -41,7 +41,6 @@ const english = {
             grade: 'Average'
         },
         isFetching: 'Searching for classes...',
-        hasError: 'We\'re sorry, there was an issue retrieving the data. Please try again later.',
         noClasses: 'Sorry, we could not find any classes for you.'
     },
     gradesDetail: {
@@ -52,7 +51,7 @@ const english = {
     },
     calendar: {
         title: 'Calendar',
-        noEvents: 'There is nothing on the calendar for this day.'
+        noEvents: 'There is nothing on the calendar for this day.',
     },
     calendarDetail: {
         title: 'This Week',
@@ -71,20 +70,18 @@ const english = {
     inbox: {
         title: 'Inbox',
         noMessages: 'You do not have new messages at the moment.',
-        hasError: 'Whoops! Looks like something went wrong, please try again later.'
     },
     sent: {
         title: 'Sent',
         noMessages: 'You have no sent messages.',
-        hasError: 'Whoops! Looks like something went wrong, please try again later.'
     },
     deleted: {
         title: 'Deleted',
         noMessages: 'There are no deleted messages',
-        hasError: 'Whoops! Looks like something went wrong, please try again later.'
     },
     documents: {
-        title: 'Documents'
+        title: 'Documents',
+        noMessages: 'There are currently no documents for you to see here.',
     },
     message: {
         from: 'From: ',
@@ -115,7 +112,8 @@ const english = {
         }
     },
     common: {
-        currentLanguage: 'The current language is "{{lng}}"'
+        currentLanguage: 'The current language is "{{lng}}"',
+        hasError: 'Your session time has expired, please log back in.'
     }
 };
 

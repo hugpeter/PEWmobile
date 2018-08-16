@@ -1,14 +1,16 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, 
-  ActivityIndicator
+  ActivityIndicator, Platform
  } from 'react-native';
 import { connect } from 'react-redux';
 import { sentBoxFetchData } from '../actions/sentBoxActions';
 import colors from '../utils/colors';
 import timeConvert from '../utils/timeConvert';
 import { 
-  Ionicons
+  Ionicons,
+  SimpleLineIcons,
+  MaterialCommunityIcons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import Swipeout from 'react-native-swipeout';
@@ -16,21 +18,29 @@ import { deleteSentMail } from '../utils/deleteMail';
 import { invalidateCache } from "redux-cache";
 
 class Sent extends React.Component {
-  static navigationOptions = ({ navigation, screenProps }) => ({
-    drawerLabel: screenProps.t('sent:title'),
-    headerStyle: {
-      backgroundColor: colors.white
-    },
-    headerTintColor: colors.blue,
-    headerLeft: (
-      <TouchableOpacity
-        style={styles.drawerToggle}
-        onPress={() => navigation.toggleDrawer()}
-      > 
-        <Ionicons name={'ios-menu'} size={30} color={colors.blue} />
-      </TouchableOpacity>
-    )
-  });
+  static navigationOptions = ({ navigation, screenProps }) => {
+    var leftHeader;
+
+    if(Platform.OS === 'ios'){
+      leftHeader =  <TouchableOpacity
+                      style={styles.drawerToggle}
+                      onPress={() => navigation.toggleDrawer()}
+                    > 
+                      <Ionicons name={'ios-menu'} size={30} color={colors.blue} />
+                    </TouchableOpacity>
+    } else {
+      leftHeader = <MaterialCommunityIcons style={styles.drawerToggle} name={'gesture-swipe-right'} size={30} color={colors.blue} />
+    }
+
+    return {
+      drawerLabel: screenProps.t('sent:title'),
+      headerStyle: {
+        backgroundColor: colors.white
+      },
+      headerTintColor: colors.blue,
+      headerLeft: leftHeader
+    }
+  };
 
   constructor (props) {
     super(props);
@@ -67,6 +77,26 @@ class Sent extends React.Component {
     const { sentBox } = this.props;
     const { isFetching, hasError } = this.props;
 
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={
+              () => navigation.navigate('Auth', {
+                errorMsg: t('common:hasError')
+              })
+            }
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
     if(sentBox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
@@ -79,14 +109,6 @@ class Sent extends React.Component {
       return (
         <View style={styles.msgContainer}>
           <ActivityIndicator size='large'/>
-        </View>
-      )
-    }
-
-    if (hasError) {
-      return (
-        <View style={styles.msgContainer}>
-              <Text>{t('sent:hasError')}</Text>
         </View>
       )
     }
@@ -164,7 +186,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    padding: 20
+  },
+  logoutBtn:{
+    padding: 50
   },
   drawerToggle:{
     marginLeft: 20

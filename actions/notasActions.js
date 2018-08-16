@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
-
+import conn from '../utils/dbConnection';
 export const REQUEST_NOTAS = 'REQUEST_NOTAS';
 export const NOTAS = 'NOTAS';
 export const NOTAS_HAVE_ERROR = 'NOTAS_HAVE_ERROR';
@@ -41,16 +41,16 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, token) 
       }
 
       var options = {
-        headers: new Headers({
+        headers: {
           'content-type': 'application/json',
           'Cache-Control': 'no-cache',
           'Authorization' : 'Bearer ' + token
-        }),
+        },
         method: 'post',
         body: JSON.stringify(postBody)
       }
 
-      fetch(`http://192.168.111.62:3000/api/boletin`, options)
+      fetch(`${conn}api/boletin`, options)
       .then(response => {
           console.log(response.status);
           if(response.status != 200){
@@ -71,18 +71,18 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, token) 
             var notasList = json;
 
             options = {
-              headers: new Headers({
+              headers: {
                 'content-type': 'application/json',
                 'Cache-Control': 'no-cache',
                 'Authorization' : 'Bearer ' + token
-              })
+              }
             }
 
             if(json){
               //take list of classes and store in notas object  
               const getNotasDetalle = async () => {
                 await asyncForEach(notasList, async (currentNota) => {
-                  await fetch(`http://192.168.111.62:3000/api/notasDetalle?ano=${ano}&bimestre=${bimestre}&idColegio=${idColegio}&idioma=${idioma}&cedula=${cedula}&codmat=${currentNota.codmat}`, options)
+                  await fetch(`${conn}api/notasDetalle?ano=${ano}&bimestre=${bimestre}&idColegio=${idColegio}&idioma=${idioma}&cedula=${cedula}&codmat=${currentNota.codmat}`, options)
                   .then(response => {
                       console.log(response.status);
                       if(response.status != 200){

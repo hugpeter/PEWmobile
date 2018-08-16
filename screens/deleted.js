@@ -1,34 +1,41 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, 
-  ActivityIndicator
+  ActivityIndicator, Platform
  } from 'react-native';
 import { connect } from 'react-redux';
 import { deletedBoxFetchData } from '../actions/deletedBoxActions';
 import colors from '../utils/colors';
 import timeConvert from '../utils/timeConvert';
 import { 
-  Ionicons
+  Ionicons,
+  SimpleLineIcons,
+  MaterialCommunityIcons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
-import Swipeout from 'react-native-swipeout';
 
 class Deleted extends React.Component {
-  static navigationOptions = ({ navigation, screenProps }) => ({
-    drawerLabel: screenProps.t('deleted:title'),
-    headerStyle: {
-      backgroundColor: colors.white
-    },
-    headerTintColor: colors.blue,
-    headerLeft: (
-      <TouchableOpacity
-        style={styles.drawerToggle}
-        onPress={() => navigation.toggleDrawer()}
-      > 
-        <Ionicons name={'ios-menu'} size={30} color={colors.blue} />
-      </TouchableOpacity>
-    )
-  });
+  static navigationOptions = ({ navigation, screenProps }) => {
+    if(Platform.OS === 'ios'){
+      leftHeader =  <TouchableOpacity
+                      style={styles.drawerToggle}
+                      onPress={() => navigation.toggleDrawer()}
+                    > 
+                      <Ionicons name={'ios-menu'} size={30} color={colors.blue} />
+                    </TouchableOpacity>
+    } else {
+      leftHeader = <MaterialCommunityIcons style={styles.drawerToggle} name={'gesture-swipe-right'} size={30} color={colors.blue} />
+    }
+
+    return {
+      drawerLabel: screenProps.t('deleted:title'),
+      headerStyle: {
+        backgroundColor: colors.white
+      },
+      headerTintColor: colors.blue,
+      headerLeft: leftHeader
+    }
+  };
 
   constructor (props) {
     super(props);
@@ -57,6 +64,26 @@ class Deleted extends React.Component {
     const { deletedBox } = this.props;
     const { isFetching, hasError } = this.props;
 
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={
+              () => navigation.navigate('Auth', {
+                errorMsg: t('common:hasError')
+              })
+            }
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
     if(deletedBox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
@@ -69,14 +96,6 @@ class Deleted extends React.Component {
       return (
         <View style={styles.msgContainer}>
           <ActivityIndicator size='large'/>
-        </View>
-      )
-    }
-
-    if (hasError) {
-      return (
-        <View style={styles.msgContainer}>
-              <Text>{t('deleted:hasError')}</Text>
         </View>
       )
     }
@@ -138,11 +157,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  logoutBtn:{
+    padding: 50
+  },
   msgContainer: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    padding: 20
   },
   drawerToggle:{
     marginLeft: 20

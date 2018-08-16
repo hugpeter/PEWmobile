@@ -1,14 +1,9 @@
 import React from 'react';
-import { translate, Trans } from 'react-i18next';
+import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { 
-  Ionicons, 
-  FontAwesome, 
-  Entypo,
-  Feather,
   MaterialCommunityIcons,
-  MaterialIcons,
-  SimpleLineIcons
+  MaterialIcons
 } from 'react-native-vector-icons';
 import colors from '../utils/colors';
 

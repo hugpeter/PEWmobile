@@ -1,24 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { 
   StyleSheet, 
   Text, 
   View,
   Image,  
   KeyboardAvoidingView, 
-  TouchableHighlight,
   ActivityIndicator,
-  AsyncStorage 
+  AsyncStorage,
+  Platform
 } from 'react-native';
 import { translate } from 'react-i18next';
 import { 
-  fetchLogin, 
-  sessionFetchData, 
-  updateUsername, 
-  updatePassword } from '../actions/loginActions';
-import biosLogo from '../logos/bios.png';
-import {Button, Input, Overlay, CheckBox } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+  sessionFetchData } from '../actions/loginActions';
+import logo from '../img/logos/PEW-Logo-180x180.png';
+import {Button, Input, CheckBox } from 'react-native-elements';
 import colors from '../utils/colors';
 import { connect } from 'react-redux';
 
@@ -89,53 +84,18 @@ class SignInScreen extends React.Component {
   }
 
   render() {
-      const {getSession} = this.props;
+      const {getSession, hasError} = this.props;
       const {t, i18n, navigation} = this.props;
-      const {navigate} = navigation;
 
-      if (this.props.hasError) {
-          return (
-            <KeyboardAvoidingView
-              style={styles.container}
-              behavior="padding"
-            >
-              <Image 
-                source={biosLogo} 
-                style={styles.logo}
-              />
-              <Input
-                type='text'
-                inputContainerStyle={styles.input}
-                placeholder={t('signInScreen:user')}
-                leftIcon={{ type: 'font-awesome', name: 'user' }}
-                onChangeText={this.onChangeUsername}
-                value={this.state.localUsername}
-              />
-              <Input
-                type='text'
-                secureTextEntry={true}
-                inputContainerStyle={styles.input}
-                placeholder={t('signInScreen:pass')}
-                leftIcon={{ type: 'font-awesome', name: 'unlock' }}
-                onChangeText={this.onChangePassword}
-                value={this.state.localPassword}
-              />
-              <CheckBox
-                center
-                containerStyle={styles.checkbox}
-                title={t('signInScreen:rememberUsername')}
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checked={this.state.rememberUsernameChecked}
-                onPress={this.toggleUsername}
-              />
-              <Button
-                onPress={() => getSession(this.state.localUsername, this.state.localPassword)}  
-                title={t('signInScreen:actions.signIn')}
-              />
-              <Text>{t('signInScreen:loginError')}</Text>
-            </KeyboardAvoidingView>
-          )
+      const errorMsg  = navigation.getParam('errorMsg', '');
+      var errorItem;
+
+      if (hasError || errorMsg != '') {
+        if(hasError){
+          errorItem = t('signInScreen:loginError');
+        } else {
+          errorItem = errorMsg;
+        }
       }
 
       if (this.props.isFetching) {
@@ -148,7 +108,7 @@ class SignInScreen extends React.Component {
           behavior="padding"
         >
           <Image 
-            source={biosLogo} 
+            source={logo} 
             style={styles.logo}
           />
           <Input
@@ -189,6 +149,7 @@ class SignInScreen extends React.Component {
               borderRadius: 5
             }}
           />
+          <Text style={{marginTop: 30}}>{errorItem}</Text>
         </KeyboardAvoidingView>
       );
   }
@@ -199,7 +160,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 20
   },
   fetchingContainer: {
     flex: 1,
@@ -208,11 +170,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   logo: {
-    borderRadius: 3,
-    marginBottom: 100
+    borderRadius: 5,
+    marginBottom: Platform.OS === 'ios' ? 100: 20,
   },
   checkbox: {
-    marginBottom: 60
+    marginBottom: Platform.OS === 'ios' ? 60 : 10
   },
   input: {
     marginBottom: 20
@@ -231,8 +193,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getSession: (username, password ) => {
-      const url = `http://192.168.111.62:3000/api/auth?username=${username}&password=${password}`;
-      dispatch(sessionFetchData(url)); 
+      dispatch(sessionFetchData(username, password)); 
     }
   }
 }

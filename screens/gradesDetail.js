@@ -1,6 +1,6 @@
 import React from 'react';
-import { translate, Trans } from 'react-i18next';
-import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { translate } from 'react-i18next';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import colors from '../utils/colors';
 import { 
   Entypo

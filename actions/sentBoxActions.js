@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
-
+import conn from '../utils/dbConnection';
 export const REQUEST_SENTBOX = 'REQUEST_SENTBOX';
 export const SENTBOX = 'SENTBOX';
 export const SENTBOX_HAS_ERROR = 'SENTBOX_HAS_ERROR';
@@ -34,14 +34,14 @@ export function sentBoxFetchData(idColegio, cedula, token) {
         dispatch(fetchingSentBox(true));
   
         const options = {
-          headers: new Headers({
+          headers: {
             'content-type': 'application/json',
             'Cache-Control': 'no-cache',
             'Authorization' : 'Bearer ' + token
-          })
+          }
         }
   
-        fetch(`http://192.168.111.62:3000/api/sent?idColegio=${idColegio}&cedula=${cedula}`, options)
+        fetch(`${conn}api/sent?idColegio=${idColegio}&cedula=${cedula}`, options)
         .then(response => {
             console.log(response.status);
             if(response.status != 200){

@@ -1,7 +1,6 @@
 import React from 'react';
-import { translate, Trans } from 'react-i18next';
-import { StyleSheet, Text, View, Button, Picker, PickerIOS, 
-  Animated, Dimensions } from 'react-native';
+import { translate } from 'react-i18next';
+import { StyleSheet, Text, View, Picker } from 'react-native';
 import colors from '../utils/colors';
 
 @translate(['settings', 'common'], { wait: true })

@@ -70,21 +70,19 @@ const portuguese = {
     },
     inbox: {
         title: 'Entrada',
-        noMessages: 'Você não tem novas mensagens no momento.',
-        hasError: 'Ops! Parece que algo deu errado, por favor, tente novamente mais tarde.'
+        noMessages: 'Você não tem novas mensagens no momento.'
     },
     sent: {
         title: 'Enviado',
-        noMessages: 'Você não tem mensagens enviadas.',
-        hasError: 'Ops! Parece que algo deu errado, por favor, tente novamente mais tarde.'
+        noMessages: 'Você não tem mensagens enviadas.'
     },
     deleted: {
         title: 'Excluído',
-        noMessages: 'Não há mensagens excluídas.',
-        hasError: 'Ops! Parece que algo deu errado, por favor, tente novamente mais tarde.'
+        noMessages: 'Não há mensagens excluídas.'
     },
     documents: {
-        title: 'Documentos'
+        title: 'Documentos',
+        noMessages: 'Atualmente, não há documentos para você ver aqui.'
     },
     message: {
         from: 'De: ',
@@ -115,7 +113,8 @@ const portuguese = {
         messagesTab: 'Mensagens'
     },
     common: {
-        currentLanguage: 'A linguagem atual é "{{lng}}"'
+        currentLanguage: 'A linguagem atual é "{{lng}}"',
+        hasError: 'O seu tempo de sessão expirou, por favor, faça o login novamente.'
     }
 };
 

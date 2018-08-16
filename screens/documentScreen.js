@@ -1,10 +1,8 @@
 import React from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
-    TouchableOpacity, ActivityIndicator, 
-    Dimensions, Animated, Easing } from 'react-native';
+    Dimensions } from 'react-native';
 import { connect } from 'react-redux';
-import { messageFetchData, messageIsRead } from '../actions/inboxActions';
 import colors from '../utils/colors';
 import { 
   Ionicons,

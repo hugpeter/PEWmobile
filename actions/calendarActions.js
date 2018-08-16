@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
+import conn from '../utils/dbConnection';
 
 export const REQUEST_CALENDAR_DATA = 'REQUEST_CALENDAR_DATA';
 export const CALENDAR = 'CALENDAR';
@@ -34,11 +35,11 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
         dispatch(fetchingCalendarData(true));
   
         var options = {
-          headers: new Headers({
+          headers: {
             'content-type': 'application/json',
             'Cache-Control': 'no-cache',
             'Authorization' : 'Bearer ' + token
-          }),
+          },
           method: 'POST',
           body: JSON.stringify({
                 idColegio: idColegio, 
@@ -48,7 +49,7 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
             })
         }
 
-        fetch(`http://192.168.111.62:3000/api/boletin`, options)
+        fetch(`${conn}api/boletin`, options)
         .then(response => {
             console.log(response.status);
             if(response.status != 200){
@@ -65,14 +66,14 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
                     gradeData[grade.codmat] = grade.I;
                 });
                 options = {
-                    headers: new Headers({
+                    headers: {
                       'content-type': 'application/json',
                       'Cache-Control': 'no-cache',
                       'Authorization' : 'Bearer ' + token
-                    })
+                    }
                 }
     
-                fetch(`http://192.168.111.62:3000/api/agenda?idColegio=${idColegio}&ano=${ano}&cedula=${cedula}&bimestre=${bimestre}&fechaI=${fechaI}&fechaF=${fechaF}`, options)
+                fetch(`${conn}api/agenda?idColegio=${idColegio}&ano=${ano}&cedula=${cedula}&bimestre=${bimestre}&fechaI=${fechaI}&fechaF=${fechaF}`, options)
                 .then(response => {
                     console.log(response.status);
                     if(response.status != 200){
@@ -176,14 +177,14 @@ export function calendarDetailFetchData(idColegio, ano, currentDate, cedula, tok
         dispatch(fetchingCalendarDetailData(true));
 
         const options = {
-            headers: new Headers({
+            headers: {
               'content-type': 'application/json',
               'Cache-Control': 'no-cache',
               'Authorization' : 'Bearer ' + token
-            })
+            }
         }
 
-        fetch(`http://192.168.111.62:3000/api/agendaDetalle?idColegio=${idColegio}&ano=${ano}&currentDate=${currentDate}&cedula=${cedula}`, options)
+        fetch(`${conn}api/agendaDetalle?idColegio=${idColegio}&ano=${ano}&currentDate=${currentDate}&cedula=${cedula}`, options)
         .then(response => {
             console.log(response.status);
             if(response.status != 200){

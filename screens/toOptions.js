@@ -1,24 +1,12 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
-    TouchableOpacity, ActivityIndicator, 
-    Dimensions, Animated, Easing, Button, TextInput } from 'react-native';
+    TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { messageFetchData, messageIsRead } from '../actions/inboxActions';
 import colors from '../utils/colors';
 import { 
-  Ionicons,
   FontAwesome, 
-  Entypo,
-  MaterialCommunityIcons,
-  MaterialIcons,
-  SimpleLineIcons
 } from 'react-native-vector-icons';
-import NavigationStateNotifier from '../NavigationStateNotifier';
-import HTML from 'react-native-render-html';
-import timeConvert from '../utils/timeConvert';
-import sendMail from '../utils/sendMail';
-import { invalidateCache } from "redux-cache";
 import SelectMultiple from 'react-native-select-multiple';
 
 class ToOptions extends React.Component{

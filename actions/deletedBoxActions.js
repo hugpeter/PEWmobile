@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
-
+import conn from '../utils/dbConnection';
 export const REQUEST_DELETEDBOX = 'REQUEST_DELETEDBOX';
 export const DELETEDBOX = 'DELETEDBOX';
 export const DELETEDBOX_HAS_ERROR = 'DELETEDBOX_HAS_ERROR';
@@ -34,14 +34,14 @@ export function deletedBoxFetchData(idColegio, cedula, token) {
         dispatch(fetchingDeletedBox(true));
   
         const options = {
-          headers: new Headers({
+          headers: {
             'content-type': 'application/json',
             'Cache-Control': 'no-cache',
             'Authorization' : 'Bearer ' + token
-          })
+          }
         }
   
-        fetch(`http://192.168.111.62:3000/api/deleted?idColegio=${idColegio}&cedula=${cedula}`, options)
+        fetch(`${conn}api/deleted?idColegio=${idColegio}&cedula=${cedula}`, options)
         .then(response => {
             console.log(response.status);
             if(response.status != 200){

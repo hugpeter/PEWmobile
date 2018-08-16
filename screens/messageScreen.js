@@ -7,10 +7,7 @@ import { connect } from 'react-redux';
 import { messageFetchData, messageIsRead } from '../actions/inboxActions';
 import colors from '../utils/colors';
 import { 
-  Ionicons,
-  FontAwesome, 
   Entypo,
-  MaterialCommunityIcons,
   MaterialIcons,
   SimpleLineIcons
 } from 'react-native-vector-icons';
@@ -124,6 +121,26 @@ class Message extends React.Component {
       outputRange: [0, 1]
     });
 
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={
+              () => navigation.navigate('Auth', {
+                errorMsg: t('common:hasError')
+              })
+            }
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
     if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
         
@@ -140,14 +157,6 @@ class Message extends React.Component {
       return (
         <View style={styles.msgContainer}>
           <ActivityIndicator size='large'/>
-        </View>
-      )
-    }
-
-    if (hasError) {
-      return (
-        <View style={styles.msgContainer}>
-              <Text>{t('message:hasError')}</Text>
         </View>
       )
     }

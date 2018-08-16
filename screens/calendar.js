@@ -1,11 +1,11 @@
 import React from 'react';
-import { translate, Trans } from 'react-i18next';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { translate } from 'react-i18next';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import colors from '../utils/colors';
 import { connect } from 'react-redux';
-import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calendars';
+import { Agenda, LocaleConfig } from 'react-native-calendars';
 import { 
-  Entypo,
+  SimpleLineIcons
 } from 'react-native-vector-icons';
 import { calendarFetchData } from '../actions/calendarActions';
 import gradeColor from '../utils/gradeColor';
@@ -108,9 +108,29 @@ class CalendarScreen extends React.Component {
   }
 
   render() {
-    const { t, navigation, calendarData } = this.props;
+    const { t, navigation, calendarData, hasError } = this.props;
     const currentDate = new Date();
     const formattedCurrentDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
+
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={
+              () => navigation.navigate('Auth', {
+                errorMsg: t('common:hasError')
+              })
+            }
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
 
     return (
       <View style={styles.container}>
@@ -125,14 +145,15 @@ class CalendarScreen extends React.Component {
           onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
           // callback that gets called on day press
           onDayPress={(day)=>{console.log('day pressed')}}
+          // onDayLongPress={(day)=>{console.log('day long pressed')}}
           // callback that gets called when day changes while scrolling agenda list
           onDayChange={(day)=>{console.log('day changed')}}
           // initially selected day
           selected={formattedCurrentDate}
           // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          // minDate={'2017-05-10'}
+          minDate={'2017-05-10'}
           // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          // maxDate={'2019-05-30'}
+          maxDate={'2019-05-30'}
           // Max amount of months allowed to scroll to the past. Default = 50
           pastScrollRange={2}
           // Max amount of months allowed to scroll to the future. Default = 50
@@ -228,6 +249,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  msgContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    padding: 20
+  },
   item: {
     width: '100%',
     height: 100,
@@ -240,6 +268,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-evenly',
     alignItems: 'center'
+  },
+  logoutBtn:{
+    padding: 50
   },
   itemFont: {
     color: colors.black,
