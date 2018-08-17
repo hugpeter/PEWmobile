@@ -171,13 +171,13 @@ const styles = StyleSheet.create({
   },
   logo: {
     borderRadius: 5,
-    marginBottom: Platform.OS === 'ios' ? 100: 20,
+    marginBottom: 20,
   },
   checkbox: {
-    marginBottom: Platform.OS === 'ios' ? 60 : 10
+   marginBottom: 10,
   },
   input: {
-    marginBottom: 20
+   marginBottom: 10,
   }
 });
 

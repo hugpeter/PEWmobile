@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { StyleSheet, Text, View, Picker } from 'react-native';
+import { StyleSheet, Text, View, Picker, Platform } from 'react-native';
 import colors from '../utils/colors';
 
 @translate(['settings', 'common'], { wait: true })
@@ -19,16 +19,33 @@ export default class Settings extends React.Component {
   }
   
   state={
-      language: this.props.i18n.language
+      language: this.props.i18n.language,
+      count: 0
   }
 
   componentDidUpdate(){
-    console.log("did update: " + this.state.language);
+    const { count } = this.state;
+
+    if(Platform.OS == 'ios'){
+      console.log("did update: " + this.state.language);
+    } else {
+      if(count == 1){
+        console.log("did update: " + this.state.language);
+      } else if(count > 1){
+        this.setState({count: 0});
+      }
+    }
+  }
+
+  getCount = () => {
+    const { count } = this.state;
+
+    return count;
   }
 
   render() {
     const { t, i18n, navigation } = this.props;
-
+    
     return (
       <View style={styles.container}>
         <Text style={styles.text}>{t('settings:chooseLanguage')}</Text>
@@ -37,8 +54,20 @@ export default class Settings extends React.Component {
             style={styles.twoPickers}
             itemStyle={styles.twoPickerItems}
             onValueChange={(itemValue, itemIndex) => {
+              var count = this.getCount();
+
+              if(Platform.OS == 'ios'){
                 this.setState({language: itemValue});
                 i18n.changeLanguage(itemValue);
+              } else {
+                if(count==0){
+                  this.setState({language: itemValue, count: ++count});
+                  i18n.changeLanguage(itemValue);
+                } else {
+                  this.setState({count: ++count});
+                }
+              }
+                
             }}
         >
             <Picker.Item label={t('settings:languages.english')} value="en" />
@@ -64,7 +93,7 @@ const styles = StyleSheet.create({
   },
   twoPickers: {
     width: '80%',
-    height: 132,
+    height: Platform.OS == 'ios' ? 132 : 45,
     backgroundColor: colors.greyLight,
     borderRadius: 10
   },

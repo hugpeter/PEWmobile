@@ -107,9 +107,9 @@ class Message extends React.Component {
   render() {
     const { t, i18n, navigation } = this.props;
     const { messageID, date } = this.props.navigation.state.params;
-    const { messages, showDetail } = this.props;
+    const { messages } = this.props;
     const { isFetching, hasError } = this.props;
-    var message;
+    const { showDetail } = this.state;
 
     const aBottom = this.aBottom.interpolate({
       inputRange: [0, 1],
@@ -141,9 +141,10 @@ class Message extends React.Component {
       )
     }
 
+    var message;
+    var toText;
     if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
-        
     }
 
     if(message == undefined && !isFetching){
@@ -159,6 +160,24 @@ class Message extends React.Component {
           <ActivityIndicator size='large'/>
         </View>
       )
+    }
+
+    if(message != undefined){
+      if(!showDetail){
+        toText = <TouchableOpacity onPress={
+          () => this.setState({showDetail: true})
+        }>
+          <Text>{message.DesNombre.substring(0,30)}...</Text>
+          <View style={styles.divider}></View>
+        </TouchableOpacity>
+      } else {
+        toText = <TouchableOpacity onPress={
+          () => this.setState({showDetail: false})
+        }>
+          <Text>{message.DesNombre}</Text>
+          <View style={styles.divider}></View>
+        </TouchableOpacity>
+      }
     }
 
     return (
@@ -226,12 +245,11 @@ class Message extends React.Component {
         </Animated.View>
         <View style={{height: '100%', width: '100%'}}>
           <ScrollView style={{ width: '100%', flex: 1, backgroundColor: '#fff', padding: 10 }}>
-              <View>
+              <View style={{zIndex: 0}}>
                 <Text style={styles.infoHeader}>{t('message:from')}</Text>
                 <Text>{message.RemNombre}</Text>
                 <Text style={styles.infoHeader}>{t('message:to')}</Text>
-                <Text>{message.DesNombre}</Text>
-                <View style={styles.divider}></View>
+                {toText}
                 <Text style={styles.infoHeader}>{message.Asunto}</Text>
                 <Text style={styles.date}>{date}</Text>
                 <View style={styles.divider}></View>

@@ -253,7 +253,8 @@ class NewMessage extends React.Component {
                       <TextInput 
                         style={styles.infoHeader}
                         placeholder="Subject"
-                        multiline={false}
+                        multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
                         onChangeText={(text) => this.setState({
                           m: {
                             ...m,
@@ -270,6 +271,8 @@ class NewMessage extends React.Component {
                         style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
                         placeholder="Type here..."
                         multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
+                        textAlignVertical="top"
                         numberOfLines={10}
                         onChangeText={(text) => this.setState({
                           m: {
@@ -314,7 +317,8 @@ class NewMessage extends React.Component {
                       <TextInput 
                         style={styles.infoHeader}
                         placeholder="Subject"
-                        multiline={false}
+                        multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
                         onChangeText={(text) => this.setState({
                           m: {
                             ...m,
@@ -331,6 +335,8 @@ class NewMessage extends React.Component {
                         style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
                         placeholder="Type here..."
                         multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
+                        textAlignVertical="top"
                         numberOfLines={10}
                         onChangeText={(text) => this.setState({
                           m: {
@@ -402,7 +408,8 @@ class NewMessage extends React.Component {
                       <TextInput 
                         style={styles.infoHeader}
                         placeholder={t('message:subject')}
-                        multiline={false}
+                        multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
                         onChangeText={(text) => this.setState({
                           m: {
                             ...m,
@@ -419,6 +426,8 @@ class NewMessage extends React.Component {
                         style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
                         placeholder="..."
                         multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
+                        textAlignVertical="top"
                         numberOfLines={10}
                         onChangeText={(text) => this.setState({
                           m: {
@@ -490,7 +499,8 @@ class NewMessage extends React.Component {
                       <TextInput 
                         style={styles.infoHeader}
                         placeholder={t('message:subject')}
-                        multiline={false}
+                        multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
                         onChangeText={(text) => this.setState({
                           m: {
                             ...m,
@@ -507,6 +517,8 @@ class NewMessage extends React.Component {
                         style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
                         placeholder="..."
                         multiline={true}
+                        underlineColorAndroid='rgba(0,0,0,0)'
+                        textAlignVertical="top"
                         numberOfLines={10}
                         onChangeText={(text) => this.setState({
                           m: {

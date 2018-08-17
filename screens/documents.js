@@ -100,7 +100,7 @@ class Documents extends React.Component {
                       }
                     )}
                   >
-                    <Text style={{fontSize: 30}}>{doc.Descripcion}</Text>
+                    <Text style={{fontSize: 25}}>{doc.Descripcion}</Text>
                     <View style={styles.divider}></View>
                   </TouchableOpacity>
                 )  

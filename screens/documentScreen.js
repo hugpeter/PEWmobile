@@ -52,8 +52,10 @@ class DocumentScreen extends React.Component {
     const { document } = this.props.navigation.state.params;
     
     var cleanHtml = document.documentoHtml.replace(new RegExp('&amp;', 'g'), '&');
-    cleanHtml = cleanHtml.replace(new RegExp('&lt;p&gt;', 'g'), '<p>');
-    cleanHtml = cleanHtml.replace(new RegExp('&lt;/p&gt;', 'g'), '</p>'); 
+    cleanHtml = cleanHtml.replace(new RegExp('&lt;', 'g'), '<');
+    cleanHtml = cleanHtml.replace(new RegExp('&gt;', 'g'), '>');
+    cleanHtml = cleanHtml.replace(new RegExp('&quot;', 'g'), '"');
+    // cleanHtml = cleanHtml.replace(new RegExp('', 'g'), '');
     console.log(cleanHtml);
 
     const customRenderTags = {
