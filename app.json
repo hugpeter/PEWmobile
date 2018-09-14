@@ -1,5 +1,20 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "name": "Plataforma Educativo Web",
+    "slug": "plataforma-educativo-web",
+    "sdkVersion": "27.0.0",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": ["ios", "android"],
+    "orientation": "portrait",
+    "primaryColor": "#091B4C",
+    "icon": "./img/logos/PEW-Logo-1024x1024.png",
+    "ios": {
+      "bundleIdentifier": "bios.software.pew"
+    },
+    "android": {
+      "package": "bios.software.pew"
+    }
+
   }
 }
