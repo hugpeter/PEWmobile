@@ -100,7 +100,7 @@ class Sent extends React.Component {
     if(sentBox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
-          <ActivityIndicator size='large'/>
+          <Text>{t('sent:noMessages')}</Text>
         </View>
       )
     }
