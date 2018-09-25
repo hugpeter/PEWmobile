@@ -108,7 +108,16 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, token) 
                           });
 
                           //get average grade for the class
-                          nota.average = currentNota.I;
+                          if(bimestre == 1){
+                            nota.average = currentNota.I;
+                          } else if(bimestre == 2){
+                            nota.average = currentNota.II;
+                          } else if(bimestre == 3){
+                            nota.average = currentNota.III;
+                          } else if(bimestre == 4){
+                            nota.average = currentNota.IV;
+                          }
+                          
                           nota.needed = 0;
                           nota.assignments = assignmentsPost;
 

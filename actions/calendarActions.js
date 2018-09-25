@@ -62,9 +62,19 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
             if(json){
                 gradeData = {};
                 console.log(gradeData);
+                
                 json.forEach(function(grade) {
-                    gradeData[grade.codmat] = grade.I;
+                    if(bimestre == 1){
+                        gradeData[grade.codmat] = grade.I;
+                    } else if(bimestre == 2){
+                        gradeData[grade.codmat] = grade.II;
+                    } else if(bimestre == 3){
+                        gradeData[grade.codmat] = grade.III;
+                    } else if(bimestre == 4){
+                        gradeData[grade.codmat] = grade.IV;
+                    }
                 });
+
                 options = {
                     headers: {
                       'content-type': 'application/json',
