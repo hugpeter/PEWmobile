@@ -60,7 +60,7 @@ class CalendarDetail extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          <View style={{height: '100%'}} > 
+          <View style={{height: '100%', width: '100%'}} > 
             <ScrollView 
               ref={scroll => { this.scroll = scroll; }}
               contentContainerStyle={styles.scrollView}
