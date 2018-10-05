@@ -32,7 +32,8 @@ const english = {
             portuguese: 'Portuguese',
             chinese: 'Chinese'
         },
-        chooseLanguage: 'Change language'
+        chooseLanguage: 'Change language',
+        privacyPolicy: 'Privacy Policy'
     },
     grades: {
         title: 'Grades',

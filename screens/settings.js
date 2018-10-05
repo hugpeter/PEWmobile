@@ -1,6 +1,6 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { StyleSheet, Text, View, Picker, Platform } from 'react-native';
+import { StyleSheet, Text, View, Picker, Platform, Linking, Button } from 'react-native';
 import colors from '../utils/colors';
 
 @translate(['settings', 'common'], { wait: true })
@@ -48,33 +48,39 @@ export default class Settings extends React.Component {
     
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>{t('settings:chooseLanguage')}</Text>
-        <Picker
-            selectedValue={this.state.language}
-            style={styles.twoPickers}
-            itemStyle={styles.twoPickerItems}
-            onValueChange={(itemValue, itemIndex) => {
-              var count = this.getCount();
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <Text style={styles.text}>{t('settings:chooseLanguage')}</Text>
+          <Picker
+              selectedValue={this.state.language}
+              style={styles.twoPickers}
+              itemStyle={styles.twoPickerItems}
+              onValueChange={(itemValue, itemIndex) => {
+                var count = this.getCount();
 
-              if(Platform.OS == 'ios'){
-                this.setState({language: itemValue});
-                i18n.changeLanguage(itemValue);
-              } else {
-                if(count==0){
-                  this.setState({language: itemValue, count: ++count});
+                if(Platform.OS == 'ios'){
+                  this.setState({language: itemValue});
                   i18n.changeLanguage(itemValue);
                 } else {
-                  this.setState({count: ++count});
+                  if(count==0){
+                    this.setState({language: itemValue, count: ++count});
+                    i18n.changeLanguage(itemValue);
+                  } else {
+                    this.setState({count: ++count});
+                  }
                 }
-              }
-                
-            }}
-        >
-            <Picker.Item label={t('settings:languages.english')} value="en" />
-            <Picker.Item label={t('settings:languages.spanish')} value="es" />
-            <Picker.Item label={t('settings:languages.portuguese')} value="pt" />
-            <Picker.Item label={t('settings:languages.chinese')} value="ch" />
-        </Picker>
+                  
+              }}
+          >
+              <Picker.Item label={t('settings:languages.english')} value="en" />
+              <Picker.Item label={t('settings:languages.spanish')} value="es" />
+              <Picker.Item label={t('settings:languages.portuguese')} value="pt" />
+              <Picker.Item label={t('settings:languages.chinese')} value="ch" />
+          </Picker>
+        </View>
+        
+        <Button title={t('settings:privacyPolicy')} onPress={()=>
+          { Linking.openURL('http://biossoft.net/biossoft/PrivacyPolicy/PEWprivacypolicy.html')}
+          } />
       </View>
     );
   }
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
   text:{
     fontSize: 25,

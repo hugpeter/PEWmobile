@@ -32,7 +32,8 @@ const spanish = {
             portuguese: 'Portugués',
             chinese: 'Chino'
         },
-        chooseLanguage: 'Cambiar idioma'
+        chooseLanguage: 'Cambiar idioma',
+        privacyPolicy: 'Política de Privacidad'
     },
     grades: {
         title: 'Notas',

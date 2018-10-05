@@ -34,7 +34,8 @@ const chinese = {
             portuguese: '葡萄牙语',
             chinese: '中文'
         },
-        chooseLanguage: '改变语言'
+        chooseLanguage: '改变语言',
+        privacyPolicy: '隐私政策'
     },
     grades: {
         title: '等级',
