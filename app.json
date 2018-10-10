@@ -10,10 +10,10 @@
     "primaryColor": "#091B4C",
     "icon": "./img/logos/PEW-Logo-1024x1024.png",
     "ios": {
-      "bundleIdentifier": "bios.software.pew"
+      "bundleIdentifier": "bios.software.BSEDUCATIVO"
     },
     "android": {
-      "package": "bios.software.pew"
+      "package": "bios.software.BSEDUCATIVO"
     }
 
   }
