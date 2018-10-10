@@ -11,7 +11,7 @@
     "icon": "./img/logos/PEW-Logo-1024x1024.png",
     "ios": {
       "bundleIdentifier": "bios.software.BSEDUCATIVO",
-      "supportsTablet": "true"
+      "supportsTablet": true
     },
     "android": {
       "package": "bios.software.BSEDUCATIVO"
