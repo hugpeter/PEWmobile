@@ -79,7 +79,7 @@ class Inbox extends React.Component {
     if (hasError) {
       return (
         <View style={styles.msgContainer}>
-          <Text>
+          <Text adjustsFontSizeToFit>
             {t('common:hasError')}
           </Text>
           <TouchableOpacity
@@ -99,7 +99,7 @@ class Inbox extends React.Component {
     if(inbox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
-          <Text>{t('inbox:noMessages')}</Text>
+          <Text adjustsFontSizeToFit>{t('inbox:noMessages')}</Text>
         </View>
       )
     }
@@ -152,13 +152,19 @@ class Inbox extends React.Component {
                         >
                           <View style={styles.new}>
                           </View>
-                          <Text style={styles.name}>
+                          <Text 
+                            adjustsFontSizeToFit
+                            style={styles.name}>
                               {message.REMITENTE_NOMBRE}
                           </Text>
-                          <Text style={styles.date}>
+                          <Text 
+                            adjustsFontSizeToFit
+                            style={styles.date}>
                               {date}
                           </Text>
-                          <Text style={styles.subject}>
+                          <Text 
+                            adjustsFontSizeToFit
+                            style={styles.subject}>
                               {message.asunto}
                           </Text>
                           <View style={styles.divider}></View>
@@ -177,13 +183,19 @@ class Inbox extends React.Component {
                             }
                           )}
                         >
-                          <Text style={styles.name}>
+                          <Text
+                            adjustsFontSizeToFit
+                            style={styles.name}>
                               {message.REMITENTE_NOMBRE}
                           </Text>
-                          <Text style={styles.date}>
+                          <Text 
+                            adjustsFontSizeToFit
+                            style={styles.date}>
                               {date}
                           </Text>
-                          <Text style={styles.subject}>
+                          <Text 
+                            adjustsFontSizeToFit
+                            style={styles.subject}>
                               {message.asunto}
                           </Text>
                           <View style={styles.divider}></View>
@@ -290,7 +302,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     width: '50%',
-    fontSize: 18,
     fontWeight: 'bold',
     // alignSelf: 'flex-start'
   },
@@ -299,12 +310,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
     width: '50%',
-    fontSize: 15,
     // alignSelf: 'flex-end'
   },
   subject: {
     width: '100%',
-    fontSize: 16,
+  
     marginTop: 15,
     alignSelf: 'flex-start'
   }

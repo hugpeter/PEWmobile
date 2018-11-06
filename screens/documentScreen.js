@@ -1,19 +1,9 @@
 import React from 'react';
 import { translate } from 'react-i18next';
-import { StyleSheet, Text, View, ScrollView, 
-    Dimensions } from 'react-native';
+import { StyleSheet, WebView } from 'react-native';
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
-import { 
-  Ionicons,
-  FontAwesome, 
-  Entypo,
-  MaterialCommunityIcons,
-  MaterialIcons,
-  SimpleLineIcons
-} from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
-import HTML from 'react-native-render-html';
 
 class DocumentScreen extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -58,33 +48,17 @@ class DocumentScreen extends React.Component {
     // cleanHtml = cleanHtml.replace(new RegExp('', 'g'), '');
     console.log(cleanHtml);
 
-    const customRenderTags = {
-        hello: () => <Text>Test</Text>
-    }
-
     return (
-      <View style={styles.container}>
-        <View style={{height: '100%', width: '100%'}}>
-          <ScrollView style={{ width: '100%', flex: 1, backgroundColor: '#fff', padding: 10 }}>
-            <HTML 
-                html={cleanHtml} 
-                renderers={customRenderTags}
-                imagesMaxWidth={Dimensions.get('window').width} 
+      <WebView
+        originWhitelist={["*"]}
+        source={{html: cleanHtml}}
             />  
-          </ScrollView>
-        </View>
-      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  }
+
 });
 
 const mapStateToProps = (state) => {

@@ -116,7 +116,7 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
                                     fecha: currentDate,
                                     actividad: date.actividad,
                                     titulo: date.titulo,
-                                    grade: gradeData[date.codmat]
+                                    grade: gradeData[date.codmatespe]
                                 });
         
                                 finalDateList[currentDate] = eventList;
@@ -125,7 +125,7 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
                                     fecha: currentDate,
                                     actividad: date.actividad,
                                     titulo: date.titulo,
-                                    grade: gradeData[date.codmat]
+                                    grade: gradeData[date.codmatespe]
                                 });
                             }
         

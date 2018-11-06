@@ -162,6 +162,12 @@ class CalendarScreen extends React.Component {
           renderItem={(item, firstItemInDay) => {
               const ano = item.fecha.slice(0,4);
               const { idColegio, cedula } = this.props;
+              var grade;
+              if(item.grade == undefined){
+                grade = <View></View>
+              } else {
+                grade = <Text style={{...gradeColor[Math.floor(item.grade)]}}>{item.grade.toFixed(1)}</Text>
+              }
               return (
                 <TouchableOpacity  
                   style={styles.item}
@@ -176,7 +182,7 @@ class CalendarScreen extends React.Component {
                 >
                     <Text style={styles.itemFont}>{item.titulo}</Text>
                     <Text style={styles.itemFont}>{item.actividad}</Text>
-                    <Text style={{...gradeColor[Math.floor(item.grade)]}}>{item.grade.toFixed(1)}</Text>
+                    {grade}
                 </TouchableOpacity>
               );
             }

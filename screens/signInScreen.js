@@ -7,12 +7,14 @@ import {
   KeyboardAvoidingView, 
   ActivityIndicator,
   AsyncStorage,
-  Platform
+  Platform,
+  TouchableOpacity
 } from 'react-native';
+import { LinearGradient } from 'expo';
 import { translate } from 'react-i18next';
 import { 
   sessionFetchData } from '../actions/loginActions';
-import logo from '../img/logos/PEW-Logo-180x180.png';
+import logo from '../img/logos/transparent/LOGO-ACUDIENTES.png';
 import {Button, Input, CheckBox } from 'react-native-elements';
 import colors from '../utils/colors';
 import { connect } from 'react-redux';
@@ -102,63 +104,71 @@ class SignInScreen extends React.Component {
           return <View style={styles.fetchingContainer}><Text>{t('signInScreen:loggingIn')}</Text><ActivityIndicator size='large'/></View>
       }
 
-      return (
+      return (  
         <KeyboardAvoidingView
-          style={styles.container}
+          style={styles.keyboardAvoidingStyle}
           behavior="padding"
         >
-          <Image 
-            source={logo} 
-            style={styles.logo}
-          />
-          <Input
-            type='text'
-            inputContainerStyle={styles.input}
-            placeholder={t('signInScreen:user')}
-            leftIcon={{ type: 'font-awesome', name: 'user' }}
-            onChangeText={this.onChangeUsername}
-            value={this.state.localUsername}
-          />
-          <Input
-            type='text'
-            secureTextEntry={true}
-            inputContainerStyle={styles.input}
-            placeholder={t('signInScreen:pass')}
-            leftIcon={{ type: 'font-awesome', name: 'unlock' }}
-            onChangeText={this.onChangePassword}
-            value={this.state.localPassword}
-          />
-          <CheckBox
-            center
-            containerStyle={styles.checkbox}
-            title={t('signInScreen:rememberUsername')}
-            checked={this.state.rememberUsernameChecked}
-            uncheckedColor={colors.blue}
-            checkedColor={colors.blue}
-            onPress={this.toggleUsername}
-          />
-          <Button
-            onPress={() => getSession(this.state.localUsername, this.state.localPassword)}  
-            title={t('signInScreen:actions.signIn')}
-            buttonStyle={{
-              backgroundColor: colors.blue,
-              width: 300,
-              height: 45,
-              borderColor: "transparent",
-              borderWidth: 0,
-              borderRadius: 5
-            }}
-          />
-          <Text style={{marginTop: 30}}>{errorItem}</Text>
-        </KeyboardAvoidingView>
+          <LinearGradient 
+            colors={[colors.blue, colors.white]}
+            start={[0,0]}
+            end={[1,1]}
+            style={styles.container}
+          >
+            <Image 
+              source={logo} 
+              style={styles.logo}
+            />
+            <Input
+              type='text'
+              inputStyle={{color: 'white'}}
+              inputContainerStyle={styles.input}
+              placeholder={t('signInScreen:user')}
+              placeholderTextColor={colors.greyLight}
+              leftIcon={{ type: 'font-awesome', name: 'user', color: 'white' }}
+              onChangeText={this.onChangeUsername}
+              value={this.state.localUsername}
+            />
+            <Input
+              type='text'
+              inputStyle={{color: 'white'}}
+              secureTextEntry={true}
+              inputContainerStyle={styles.input}
+              placeholder={t('signInScreen:pass')}
+              placeholderTextColor={colors.greyLight}
+              leftIcon={{ type: 'font-awesome', name: 'unlock', color: 'white' }}
+              onChangeText={this.onChangePassword}
+              value={this.state.localPassword}
+            />
+            <CheckBox
+              center
+              containerStyle={styles.checkbox}
+              title={t('signInScreen:rememberUsername')}
+              textStyle={{color: colors.white}}
+              checked={this.state.rememberUsernameChecked}
+              uncheckedColor={colors.white}
+              checkedColor={colors.white}
+              onPress={this.toggleUsername}
+            />
+            <TouchableOpacity
+              onPress={() => getSession(this.state.localUsername, this.state.localPassword)}  
+              style={styles.button}
+            >
+              <Text style={{color: colors.white, fontSize: 18}}>{t('signInScreen:actions.signIn')}</Text>
+            </TouchableOpacity>
+            <Text style={{marginTop: 30}}>{errorItem}</Text>
+          </LinearGradient>
+        </KeyboardAvoidingView>       
       );
   }
 }
 
 const styles = StyleSheet.create({
+  keyboardAvoidingStyle: {
+    flex: 1
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20
@@ -170,14 +180,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   logo: {
-    borderRadius: 5,
+    borderRadius: 15,
     marginBottom: 20,
   },
+  button: {
+    backgroundColor: 'transparent',
+    width: '80%',
+    padding: 10,
+    alignItems: 'center',
+    borderColor: colors.white,
+    borderWidth: 2,
+    borderRadius: 5
+  },
   checkbox: {
-   marginBottom: 10,
+   marginBottom: 30,
+   backgroundColor: 'transparent',
+   borderWidth: 0
   },
   input: {
    marginBottom: 10,
+   borderBottomWidth: 0
   }
 });
 

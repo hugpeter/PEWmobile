@@ -2,7 +2,7 @@ const spanish = {
     signInScreen: {
         loggingIn: 'iniciar sesión...',
         loginError: 'Lo sentimos, no hemos podido reconocer su nombre de cuenta o contraseña.',
-        rememberUsername: 'Activar reconocimiento digital',
+        rememberUsername: 'Recordar Usuario',
         title: 'Bienvenido',
         user: 'Usuario',
         pass: 'Contraseña',

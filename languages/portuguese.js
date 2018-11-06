@@ -2,7 +2,7 @@ const portuguese = {
     signInScreen: {
         loggingIn: 'Login...',
         loginError: 'Desculpe, não foi possível reconhecer o nome ou a senha da sua conta.',
-        rememberUsername: 'lembre de mim',
+        rememberUsername: 'Lembre de Mim',
         title: 'Bem vinda',
         user: 'Username',
         pass: 'Senha',

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
-    TouchableOpacity } from 'react-native';
+    TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import { 
@@ -90,15 +90,38 @@ class ToOptions extends React.Component{
         }
     }
 
+    renderLabel = (label, style) => {
+        var labelArray = label.split("~");
+        var name = labelArray[0] == undefined ? '' : labelArray[0];
+        var title = labelArray[1] == undefined ? '' : labelArray[1];
+
+        return (
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{marginLeft: 10}}>
+                    <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>{name}</Text>
+                    <Text style={{fontSize: 15, fontStyle: 'italic'}}>{title}</Text>
+                </View>
+            </View>
+        )
+    }
+
     render(){
         const { contacts, tipoMaestro } = this.props;
         var desNombre;
           if(tipoMaestro == 'F'){
             //get list of all contacts
             var allContacts = [];
+            contacts.sort((a,b) => (a.Cargo > b.Cargo) ? 1 : ((b.Cargo > a.Cargo) ? -1 : 0));
             contacts.forEach(element => {
+                var name = element.NombreContacto
+                .toLowerCase()
+                .split(' ')
+                .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ');
+
+
               var item = {
-                label: element.NombreContacto,
+                label: name + '~' + element.Cargo,
                 value: element.CodigoContacto
               }
 
@@ -107,6 +130,7 @@ class ToOptions extends React.Component{
             
             desNombre = <SelectMultiple
                             items={allContacts}
+                            renderLabel={this.renderLabel}
                             selectedItems={this.state.selectedContacts}
                             onSelectionsChange={this.onSelectionsChange} />
         } else {
