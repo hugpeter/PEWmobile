@@ -3,6 +3,7 @@ import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
     TouchableOpacity, ActivityIndicator, 
     Dimensions, Animated, Easing } from 'react-native';
+import WebViewAutoHeight from 'react-native-webview-autoheight';
 import { connect } from 'react-redux';
 import { messageFetchData, messageIsRead } from '../actions/inboxActions';
 import colors from '../utils/colors';
@@ -143,8 +144,21 @@ class Message extends React.Component {
 
     var message;
     var toText;
+    var emailText;
     if(messages.length > 0){
         message = messages.filter(message => message.idxMensaje == messageID)[0];
+        if(message != undefined){
+          console.log(message.Contenido);
+          emailText = message.Contenido
+          .replace(new RegExp('&amp;', 'g'), '&');
+          emailText = emailText.replace(new RegExp(/&lt;/, 'g'), '<');
+          emailText = emailText.replace(new RegExp(/&gt;/, 'g'), '>');
+          emailText = emailText.replace(new RegExp(/&quot;/, 'g'), '"');
+          // emailText = emailText.replace(new RegExp(/font-family:.*?;/, 'g'), '');
+          // emailText = emailText.replace(new RegExp(/text-align:.*?;/, 'g'), '');
+          // emailText = emailText.replace(new RegExp(/line-height:.*?"/, 'g'), '"');
+          console.log(emailText);
+        }
     }
 
     if(message == undefined && !isFetching){
@@ -254,9 +268,15 @@ class Message extends React.Component {
                 <Text style={styles.date}>{date}</Text>
                 <View style={styles.divider}></View>
               </View>
-              <View style={{paddingBottom: 100}}>
-                  <HTML html={message.Contenido === '' ? ' ' : message.Contenido} imagesMaxWidth={Dimensions.get('window').width} />
-              </View>
+              {/* <View style={{paddingBottom: 100, width: '100%'}}>
+                  <HTML html={emailText} imagesMaxWidth={Dimensions.get('window').width} />
+                  
+              </View> */}
+              <WebViewAutoHeight
+                    style={{padding: 20, paddingBottom: 100}}
+                    startInloadingState={true}
+                    source={{html: emailText}}
+                  />
           </ScrollView>
         </View>
       </View>

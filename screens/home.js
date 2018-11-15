@@ -140,7 +140,14 @@ class Home extends React.Component {
                   <TouchableOpacity 
                     key={index}
                     style={styles.buttons} 
-                    onPress={() => navigation.navigate(button.navTo)}
+                    onPress={() => {
+                      if(button.navTo == 'Auth'){
+                        this.props.logOut();
+                        navigation.navigate(button.navTo);
+                      } else {
+                        navigation.navigate(button.navTo);
+                      }
+                    }}
                   >
                     {button.symbol}
                     <Text style={styles.buttonText}>{t(button.name)}</Text>
@@ -267,6 +274,18 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         'documentsReducer'
       ]));
       dispatch(changeFamilyMember(index));
+    },
+    logOut: () => {
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
+      ]));
     },
     newMessageCount: (idColegio, cedula, token) => {
       dispatch(getNewMessageCount(idColegio, cedula, token));

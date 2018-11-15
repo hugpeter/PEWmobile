@@ -156,7 +156,7 @@ class SignInScreen extends React.Component {
             >
               <Text style={{color: colors.white, fontSize: 18}}>{t('signInScreen:actions.signIn')}</Text>
             </TouchableOpacity>
-            <Text style={{marginTop: 30}}>{errorItem}</Text>
+            <Text style={{marginTop: 30, color: 'white'}}>{errorItem}</Text>
           </LinearGradient>
         </KeyboardAvoidingView>       
       );

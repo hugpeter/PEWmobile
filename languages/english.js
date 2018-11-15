@@ -39,7 +39,8 @@ const english = {
         title: 'Grades',
         headers: {
             class: 'Class',
-            grade: 'Average'
+            grade: 'Average',
+            area: 'Area'
         },
         isFetching: 'Searching for classes...',
         noClasses: 'Sorry, we could not find any classes for you.'
@@ -47,7 +48,8 @@ const english = {
     gradesDetail: {
         headers: {
             assignment: 'Assignment',
-            grade: 'Grade'
+            grade: 'Grade',
+            materia: 'Competency'
         }
     },
     calendar: {

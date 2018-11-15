@@ -41,7 +41,8 @@ const chinese = {
         title: '等级',
         headers: {
             class: '课时',
-            grade: '平均'
+            grade: '平均',
+            area: '领域'
         },
         isFetching: '寻找课程',
         noClasses: '对不起，我们找不到任何课程给你。'
@@ -49,7 +50,8 @@ const chinese = {
     gradesDetail: {
         headers: {
             assignment: '任务',
-            grade: '平均'
+            grade: '平均',
+            materia: '东西'
         }
     },
     calendar: {

@@ -24,10 +24,61 @@ export default class GradesDetail extends React.Component {
 
   render() {
     const { t, i18n } = this.props;
-    const { assignments } = this.props.navigation.state.params;
+    const { assignments, areaDetails, bimestre } = this.props.navigation.state.params;
+    var view;
 
-    return (
-      <View style={styles.container}>
+    if(areaDetails != undefined){
+      view = (
+        <View style={{height: '100%'}} >
+          <View style={styles.notas}>
+            <View style={styles.grade}>
+              <Text style={styles.header}>
+                {t('gradesDetail:headers.materia')}
+              </Text>
+            </View>
+            <View style={styles.grade}>
+              <Text style={styles.header}>
+              {t('gradesDetail:headers.grade')}
+              </Text>
+            </View>
+          </View>
+          <ScrollView contentContainerStyle={styles.scrollView}>
+            {
+              areaDetails.map((area, index) => {
+
+                var grades = new Array();
+                    grades.push(area.I_y1);
+                    grades.push(area.II_y1);
+                    grades.push(area.III_y1);
+                    grades.push(area.IV_y2);
+
+
+
+                  return (
+                    <View 
+                      style={styles.notas}
+                      key={index}
+                    >
+                      <View style={styles.class}>
+                        <Text style={styles.data}>
+                          {area.materia.replace(/<(?:.|\n)*?>/gm, '')}
+                        </Text>
+                      </View>
+                      <View style={styles.grade}>
+                        <Text style={styles.data}>
+                          {grades[bimestre - 1]}
+                        </Text>
+                      </View>
+                      <View style={styles.divider}></View>
+                    </View>
+                  )
+              })
+            }
+          </ScrollView>
+        </View>
+      )
+    } else {
+      view = (
         <View style={{height: '100%'}} >
           <View style={styles.notas}>
             <View style={styles.grade}>
@@ -66,6 +117,12 @@ export default class GradesDetail extends React.Component {
             }
           </ScrollView>
         </View>
+      )
+    }
+
+    return (
+      <View style={styles.container}>
+        {view}
       </View>
     );
   }

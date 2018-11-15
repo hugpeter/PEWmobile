@@ -34,6 +34,7 @@
     "react-native-select-multiple": "^1.2.0",
     "react-native-swipeout": "^2.3.3",
     "react-native-vector-icons": "^4.6.0",
+    "react-native-webview-autoheight": "^1.0.5",
     "react-navigation": "^2.11.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",

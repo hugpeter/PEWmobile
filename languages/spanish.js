@@ -39,7 +39,8 @@ const spanish = {
         title: 'Notas',
         headers: {
             class: 'Materia',
-            grade: 'Promedio'
+            grade: 'Promedio',
+            area: 'Area'
         },
         isFetching: 'Buscando materias...',
         hasError: 'Lo sentimos, hubo un problema al recuperar los datos. Por favor, inténtelo de nuevo más tarde.',
@@ -48,7 +49,8 @@ const spanish = {
     gradesDetail: {
         headers: {
             assignment: 'Tarea',
-            grade: 'Nota'
+            grade: 'Nota',
+            materia: 'Materia'
         }
     },
     calendar: {

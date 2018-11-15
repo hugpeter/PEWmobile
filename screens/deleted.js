@@ -87,6 +87,15 @@ class Deleted extends React.Component {
     if(deletedBox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
+          <TouchableOpacity 
+            style={styles.composeMsg}
+            onPress={() => navigation.navigate('NewMessage', {
+              messageID: 0,
+              type: 'New'
+            })}
+          >
+            <Ionicons name={'md-create'} size={30} color={colors.white} />
+          </TouchableOpacity>
           <Text>{t('deleted:noMessages')}</Text>
         </View>
       )

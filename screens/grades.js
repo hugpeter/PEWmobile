@@ -29,8 +29,8 @@ class Grades extends React.Component {
 
   componentDidMount = () => {
     const { getNotas } = this.props;
-    const {ano, idColegio, idioma, cedula, bimestre, token} = this.props;
-    getNotas(ano, idColegio, idioma, cedula, bimestre, token);
+    const {ano, idColegio, idioma, cedula, bimestre, nivel, token} = this.props;
+    getNotas(ano, idColegio, idioma, cedula, bimestre, nivel, token);
   }
 
   componentWillReceiveProps(nextProps){
@@ -39,9 +39,10 @@ class Grades extends React.Component {
 
   render() {
     const { isFetching, hasError } = this.props;
-    const {t, i18n, navigation} = this.props;
+    const {t, i18n, navigation, idColegio, nivel, bimestre} = this.props;
     const { navigate } = navigation;
     const { notas } = this.props;
+    var view;
 
     if (hasError) {
       return (
@@ -71,54 +72,95 @@ class Grades extends React.Component {
       return <View style={styles.msgContainer}><Text>{t('grades:isFetching')}</Text><ActivityIndicator size='large'/></View>
     }
 
-    return (
-      <View style={styles.container}>
-        <View style={{height: '100%'}} >
-          <View style={styles.notas}>
-            <View style={styles.grade}>
-              <Text style={styles.header}>
-                {t('grades:headers.class')}
-              </Text>
+    if(nivel < 1 && idColegio != 800){
+
+      view = (
+          <View style={{height: '100%'}} >
+            <View style={styles.notas}>
+              <View style={styles.grade}>
+                <Text style={styles.header}>
+                  {t('grades:headers.area')}
+                </Text>
+              </View>          
             </View>
-            <View style={styles.grade}>
-              <Text style={styles.header}>
-              {t('grades:headers.grade')}
-              </Text>
-            </View>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              {
+                notas[1].map((nota, index) => {
+                  console.log(notas[0].filter(x => x.idarea == nota.idarea));
+                    return (
+                      <TouchableOpacity 
+                        style={styles.notas}
+                        key={index}
+                        onPress={() => navigation.navigate('GradesDetail',
+                          {
+                            areaDetails: notas[0].filter(x => x.idarea == nota.idarea),
+                            bimestre: bimestre
+                          }
+                        )}
+                      >
+                        <View style={styles.classPreescolar}>
+                          <Text style={styles.data}>
+                            {nota.area}
+                          </Text>
+                        </View>
+                        <View style={styles.divider}></View>
+                      </TouchableOpacity>
+                    )  
+                  })
+              }
+            </ScrollView>
           </View>
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            {
-              notas.map((nota, index) => {
-                  return (
-                    <TouchableOpacity 
-                      style={styles.notas}
-                      key={index}
-                      onPress={() => navigation.navigate('GradesDetail',
-                        {
-                          assignments: nota.assignments,
-                          class: nota.class
-                        }
-                      )}
-                    >
-                      <View style={styles.class}>
-                        <Text style={styles.data}>
-                          {nota.class}
-                        </Text>
-                      </View>
-                      <View style={styles.grade}>
-                        <Text style={{...gradeColor[Math.floor(nota.average)]}}>
-                          { (Math.round(nota.average * 10) / 10).toFixed(1) }
-                        </Text>
-                      </View>
-                      <View style={styles.divider}></View>
-                    </TouchableOpacity>
-                  )  
-                })
-            }
-          </ScrollView>
-        </View>
-      </View>
-    );
+      );
+    } else {
+      view = (
+          <View style={{height: '100%'}} >
+            <View style={styles.notas}>
+              <View style={styles.grade}>
+                <Text style={styles.header}>
+                  {t('grades:headers.class')}
+                </Text>
+              </View>
+              <View style={styles.grade}>
+                <Text style={styles.header}>
+                {t('grades:headers.grade')}
+                </Text>
+              </View>
+            </View>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              {
+                notas.map((nota, index) => {
+                    return (
+                      <TouchableOpacity 
+                        style={styles.notas}
+                        key={index}
+                        onPress={() => navigation.navigate('GradesDetail',
+                          {
+                            assignments: nota.assignments,
+                            class: nota.class
+                          }
+                        )}
+                      >
+                        <View style={styles.class}>
+                          <Text style={styles.data}>
+                            {nota.class}
+                          </Text>
+                        </View>
+                        <View style={styles.grade}>
+                          <Text style={{...gradeColor[Math.floor(nota.average)]}}>
+                            { (Math.round(nota.average * 10) / 10).toFixed(1) }
+                          </Text>
+                        </View>
+                        <View style={styles.divider}></View>
+                      </TouchableOpacity>
+                    )  
+                  })
+              }
+            </ScrollView>
+          </View>
+      );
+    }
+
+    return (<View style={styles.container}>{view}</View>);
   }
 }
 
@@ -153,6 +195,12 @@ const styles = StyleSheet.create({
   },
   class: {
     width: '50%',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: '10%'
+  },
+  classPreescolar: {
+    width: '100%',
     alignItems: 'flex-start',
     justifyContent: 'center',
     paddingLeft: '10%'
@@ -198,6 +246,7 @@ const mapStateToProps = (state) => {
     token: state.loginReducer.Token,
     ano: state.loginReducer.Student.Ano,
     idColegio: state.loginReducer.Student.IdColegio,
+    nivel: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].anocursa : state.loginReducer.Student.Nivel,
     idioma: state.loginReducer.Student.Idioma,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
     bimestre: state.loginReducer.Student.Periodo,
@@ -207,8 +256,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getNotas: (ano, idColegio, idioma, cedula, bimestre, token) => {
-      dispatch(notasFetchData(ano, idColegio, idioma, cedula, bimestre, token)); 
+    getNotas: (ano, idColegio, idioma, cedula, bimestre, nivel, token) => {
+      dispatch(notasFetchData(ano, idColegio, idioma, cedula, bimestre, nivel, token)); 
     }
   }
 }

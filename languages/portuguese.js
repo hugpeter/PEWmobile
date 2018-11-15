@@ -39,7 +39,8 @@ const portuguese = {
         title: 'Notas',
         headers: {
             class: 'Classe',
-            grade: 'Média'
+            grade: 'Média',
+            area: 'Área'
         },
         isFetching: 'Procurando por classes...',
         hasError: 'Lamentamos, houve um problema ao recuperar os dados. Por favor, tente novamente mais tarde.',
@@ -48,7 +49,8 @@ const portuguese = {
     gradesDetail: {
         headers: {
             assignment: 'Tarefa',
-            grade: 'Nota'
+            grade: 'Nota',
+            materia: 'Importa'
         }
     },
     calendar: {

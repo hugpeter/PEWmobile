@@ -99,6 +99,15 @@ class Inbox extends React.Component {
     if(inbox.length == 0 && !isFetching){
       return (
         <View style={styles.msgContainer}>
+          <TouchableOpacity 
+            style={styles.composeMsg}
+            onPress={() => navigation.navigate('NewMessage', {
+              messageID: 0,
+              type: 'New'
+            })}
+          >
+            <Ionicons name={'md-create'} size={30} color={colors.white} />
+          </TouchableOpacity>
           <Text adjustsFontSizeToFit>{t('inbox:noMessages')}</Text>
         </View>
       )

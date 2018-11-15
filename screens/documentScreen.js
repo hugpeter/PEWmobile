@@ -41,10 +41,10 @@ class DocumentScreen extends React.Component {
     const { t, i18n, navigation } = this.props;
     const { document } = this.props.navigation.state.params;
     
-    var cleanHtml = document.documentoHtml.replace(new RegExp('&amp;', 'g'), '&');
-    cleanHtml = cleanHtml.replace(new RegExp('&lt;', 'g'), '<');
-    cleanHtml = cleanHtml.replace(new RegExp('&gt;', 'g'), '>');
-    cleanHtml = cleanHtml.replace(new RegExp('&quot;', 'g'), '"');
+    var cleanHtml = document.documentoHtml.replace(new RegExp(/&amp;/, 'g'), '&');
+    cleanHtml = cleanHtml.replace(new RegExp(/&lt;/, 'g'), '<');
+    cleanHtml = cleanHtml.replace(new RegExp(/&gt;/, 'g'), '>');
+    cleanHtml = cleanHtml.replace(new RegExp(/&quot;/, 'g'), '"');
     // cleanHtml = cleanHtml.replace(new RegExp('', 'g'), '');
     console.log(cleanHtml);
 
