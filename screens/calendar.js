@@ -13,29 +13,29 @@ import gradeColor from '../utils/gradeColor';
 LocaleConfig.locales['en'] = {
   monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
   monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-  dayNames: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-  dayNamesShort: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+  dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+  dayNamesShort: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 };
 
 LocaleConfig.locales['es'] = {
   monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
   monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-  dayNames: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'],
-  dayNamesShort: ['Lun','Mar','Mie','Jue','Vie','Sab','Dom']
+  dayNames: ['Domingo', 'Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],
+  dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sab']
 };
 
 LocaleConfig.locales['pt'] = {
   monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Septembro','Outubro','Novembro','Dezembro'],
   monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Sep','Out','Nov','Dez'],
-  dayNames: ['Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado','Domingo'],
-  dayNamesShort: ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom']
+  dayNames: ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'],
+  dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb']
 };
 
 LocaleConfig.locales['ch'] = {
   monthNames: ['一月','二月','三 月','四 月','五 月','六 月','七 月','八 月','九 月','十 月','十一 月','十二 月'],
   monthNamesShort: ['一月','二月','三 月','四 月','五 月','六 月','七 月','八 月','九 月','十 月','十一 月','十二 月'],
-  dayNames: ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'],
-  dayNamesShort: ['一','二','三','四','五','六','日']
+  dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+  dayNamesShort: ['日','一','二','三','四','五','六']
 };
 
 class CalendarScreen extends React.Component {
