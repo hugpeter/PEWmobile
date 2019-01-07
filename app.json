@@ -4,7 +4,7 @@
     "slug": "plataforma-educativo-web",
     "sdkVersion": "27.0.0",
     "privacy": "public",
-    "version": "3.1.1",
+    "version": "3.1.2",
     "platforms": ["ios", "android"],
     "orientation": "portrait",
     "primaryColor": "#091B4C",
@@ -14,8 +14,9 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 3,
-      "package": "bios.software.BSEDUCATIVO"
+      "versionCode": 4,
+      "package": "bios.software.BSEDUCATIVO",
+      "permissions": []
     }
 
   }
