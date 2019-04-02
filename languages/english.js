@@ -116,7 +116,8 @@ const english = {
     },
     common: {
         currentLanguage: 'The current language is "{{lng}}"',
-        hasError: 'Your session time has expired, please log back in.'
+        hasError: 'It looks like something went wrong with accessing this data. Please contact us and we will get this fixed for you!',
+        timeout: 'Your session time has expired, please log back in.'
     }
 };
 

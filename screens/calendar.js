@@ -5,10 +5,12 @@ import colors from '../utils/colors';
 import { connect } from 'react-redux';
 import { Agenda, LocaleConfig } from 'react-native-calendars';
 import { 
-  SimpleLineIcons
+  SimpleLineIcons,
+  MaterialIcons
 } from 'react-native-vector-icons';
 import { calendarFetchData } from '../actions/calendarActions';
 import gradeColor from '../utils/gradeColor';
+import { invalidateCache } from "redux-cache";
 
 LocaleConfig.locales['en'] = {
   monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -108,26 +110,37 @@ class CalendarScreen extends React.Component {
   }
 
   render() {
-    const { t, navigation, calendarData, hasError } = this.props;
-    const currentDate = new Date();
-    const formattedCurrentDate = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
+    const { t, navigation, calendarData, hasError, sessionTimeout } = this.props;
+
+    if (sessionTimeout) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:timeout')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={ () => {
+              this.props.logOut();
+              navigation.navigate('Auth', {
+                errorMsg: t('common:timeout')
+              })
+              
+            }}
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
 
     if (hasError) {
       return (
         <View style={styles.msgContainer}>
+          <MaterialIcons name={'error'} size={60} color={colors.blue}/>
           <Text>
             {t('common:hasError')}
           </Text>
-          <TouchableOpacity
-            style={styles.logoutBtn}
-            onPress={
-              () => navigation.navigate('Auth', {
-                errorMsg: t('common:hasError')
-              })
-            }
-          >
-            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
-          </TouchableOpacity>
         </View>
       )
     }
@@ -138,28 +151,29 @@ class CalendarScreen extends React.Component {
           // the list of items that have to be displayed in agenda. If you want to render item as empty date
           // the value of date key kas to be an empty array []. If there exists no value for date key it is
           // considered that the date in question is not yet loaded
-          items={calendarData}
-          // callback that gets called when items for a certain month should be loaded (month became visible)
-          loadItemsForMonth={(month) => {console.log('trigger items loading')}}
-          // callback that fires when the calendar is opened or closed
-          onCalendarToggled={(calendarOpened) => {console.log(calendarOpened)}}
-          // callback that gets called on day press
-          onDayPress={(day)=>{console.log('day pressed')}}
-          // onDayLongPress={(day)=>{console.log('day long pressed')}}
-          // callback that gets called when day changes while scrolling agenda list
-          onDayChange={(day)=>{console.log('day changed')}}
-          // initially selected day
-          selected={formattedCurrentDate}
-          // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={'2017-05-10'}
-          // Maximum date that can be selected, dates after maxDate will be grayed out. Default = undefined
-          maxDate={'2019-05-30'}
           // Max amount of months allowed to scroll to the past. Default = 50
-          pastScrollRange={2}
+          pastScrollRange={3}
           // Max amount of months allowed to scroll to the future. Default = 50
-          futureScrollRange={2}
+          futureScrollRange={3}
+          items={
+            calendarData
+          }
+          //demo data
+          // {
+          //   '2019-03-19': [
+          //     {fecha: '2019-03-19', actividad: 'ÁLBUM1', titulo: '2D(INFORMÁTICA)', grade: 3.65 }
+          //   ],
+          //   '2019-03-20': [
+          //     {fecha: '2019-03-20', actividad: "Baile", titulo: '2D(FOLKLORE)', grade: 5},
+          //     {fecha: '2019-03-20', actividad: 'EVALUACIÓN ORAL1', titulo:'2D(INGLÉS EXPRESIÓN ORAL)', grade: 4.56}
+          //   ],
+          //   '2019-03-29': [
+          //     {fecha: '2019-03-29', actividad: 'skate', titulo: '2D(SKATEBOARDING)', grade: 1.342}
+          //   ]
+          // }
           // specify how each item should be rendered in agenda
           renderItem={(item, firstItemInDay) => {
+              console.log(item);
               const ano = item.fecha.slice(0,4);
               const { idColegio, cedula } = this.props;
               var grade;
@@ -187,8 +201,8 @@ class CalendarScreen extends React.Component {
               );
             }
           }
-          // specify how each date should be rendered. day can be undefined if the item is not first in that day.
-          // renderDay={(day, item) => {return (<Text>{day}</Text>);}}
+          // specify your item comparison function for increased performance
+          rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
           // specify how empty date content with no items should be rendered
           renderEmptyDate={() => {
               return (
@@ -198,8 +212,6 @@ class CalendarScreen extends React.Component {
               );
             }
           }
-          // specify how agenda knob should look like
-          // renderKnob={() => {return (<View />);}}
           // specify what should be rendered instead of ActivityIndicator
           renderEmptyData = {() => {
               return (
@@ -209,19 +221,6 @@ class CalendarScreen extends React.Component {
               );
             }
           }
-          // specify your item comparison function for increased performance
-          rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
-          // Hide knob button. Default = false
-          hideKnob={false}
-          // By default, agenda dates are marked if they have at least one item, but you can override this if needed
-          // markedDates={{
-          //   '2018-05-22': {selected: true, marked: true},
-          //   '2018-05-17': {marked: true},
-          //   '2018-05-18': {disabled: true}
-          // }}
-          // style={{
-            
-          // }}
           // Specify theme properties to override specific styles for calendar parts. Default = {}
           theme={{
             backgroundColor: '#f2f2f2',
@@ -233,16 +232,10 @@ class CalendarScreen extends React.Component {
             dayTextColor: '#2d4150',
             textDisabledColor: '#d9e1e8',
             dotColor: colors.blue,
+            agendaKnobColor: colors.blue,
             selectedDotColor: '#ffffff',
             arrowColor: 'orange',
             monthTextColor: colors.blue,
-            // textDayFontFamily: 'monospace',
-            // textMonthFontFamily: 'monospace',
-            // textDayHeaderFontFamily: 'monospace',
-            textMonthFontWeight: 'bold',
-            textDayFontSize: 16,
-            textMonthFontSize: 16,
-            textDayHeaderFontSize: 16
           }}
           agenda container
         />
@@ -313,6 +306,7 @@ const mapStateToProps = (state) => {
   return {
     isFetching: state.calendarReducer.isFetching,
     hasError: state.calendarReducer.hasError,
+    sessionTimeout: state.loginReducer.sessionTimeout,
     token: state.loginReducer.Token,
     ano: state.loginReducer.Student.Ano,
     idColegio: state.loginReducer.Student.IdColegio,
@@ -327,7 +321,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getDates: (idColegio, ano, cedula, bimestre, fechaI, fechaF, token) => {
       dispatch(calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fechaF, token)); 
-    }
+    },
+    logOut: () => {
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer',
+        'loginReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
+      ]));
+    },
   }
 }
 

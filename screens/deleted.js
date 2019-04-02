@@ -10,9 +10,11 @@ import timeConvert from '../utils/timeConvert';
 import { 
   Ionicons,
   SimpleLineIcons,
-  MaterialCommunityIcons
+  MaterialCommunityIcons,
+  MaterialIcons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
+import { invalidateCache } from "redux-cache";
 
 class Deleted extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => {
@@ -62,24 +64,36 @@ class Deleted extends React.Component {
   render() {
     const { t, i18n, navigation } = this.props;
     const { deletedBox } = this.props;
-    const { isFetching, hasError } = this.props;
+    const { isFetching, hasError, sessionTimeout } = this.props;
+
+    if (sessionTimeout) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:timeout')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={ () => {
+              this.props.logOut();
+              navigation.navigate('Auth', {
+                errorMsg: t('common:timeout')
+              })
+            }}
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
 
     if (hasError) {
       return (
         <View style={styles.msgContainer}>
+          <MaterialIcons name={'error'} size={60} color={colors.blue}/>
           <Text>
             {t('common:hasError')}
           </Text>
-          <TouchableOpacity
-            style={styles.logoutBtn}
-            onPress={
-              () => navigation.navigate('Auth', {
-                errorMsg: t('common:hasError')
-              })
-            }
-          >
-            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
-          </TouchableOpacity>
         </View>
       )
     }
@@ -273,6 +287,7 @@ const mapStateToProps = (state) => {
   return {
     isFetching: state.inboxReducer.isFetchingInbox,
     hasError: state.inboxReducer.inboxHasError,
+    sessionTimeout: state.loginReducer.sessionTimeout,
     token: state.loginReducer.Token,
     idColegio: state.loginReducer.Student.IdColegio,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
@@ -284,7 +299,20 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getDeletedBox: (idColegio, cedula, token) => {
       dispatch(deletedBoxFetchData(idColegio, cedula, token)); 
-    }
+    },
+    logOut: () => {
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer',
+        'loginReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
+      ]));
+    },
   }
 }
 

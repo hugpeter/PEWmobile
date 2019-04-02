@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
 import conn from '../utils/dbConnection';
+import { userSessionTimeout } from './userSessionTimeout';
 export const REQUEST_DOCUMENTS = 'REQUEST_DOCUMENTS';
 export const DOCUMENTS = 'DOCUMENTS';
 export const DOCUMENTS_HAVE_ERROR = 'DOCUMENTS_HAVE_ERROR';
@@ -26,7 +27,7 @@ export function fetchingDocumentsSuccess(documents) {
     };
 }
   
-export function documentsFetchData(idColegio, cedula, userId, token) {
+export function documentsFetchData(idColegio, cedula, userId, tipoMaestro, token) {
     return (dispatch, getState) => {
         const isCacheValid = checkCacheValid(getState, "documentsReducer");
         if (isCacheValid) { return null; }
@@ -43,13 +44,15 @@ export function documentsFetchData(idColegio, cedula, userId, token) {
         
         console.log(options);
 
-        fetch(`${conn}api/documents?idColegio=${idColegio}&cedula=${cedula}&userID=${userId}`, options)
+        fetch(`${conn}api/documents?idColegio=${idColegio}&cedula=${cedula}&userID=${userId}&tipoMaestro=${tipoMaestro}`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
-              dispatch(documentsHaveError(true));
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
+                dispatch(documentsHaveError(true));
             } else {
-              return response.json();
+                return response.json();
             }
         }
           // Do not use catch, because that will also catch

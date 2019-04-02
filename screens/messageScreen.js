@@ -10,10 +10,11 @@ import colors from '../utils/colors';
 import { 
   Entypo,
   MaterialIcons,
-  SimpleLineIcons
+  SimpleLineIcons,
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import HTML from 'react-native-render-html';
+import { invalidateCache } from "redux-cache";
 
 class Message extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -109,7 +110,7 @@ class Message extends React.Component {
     const { t, i18n, navigation } = this.props;
     const { messageID, date } = this.props.navigation.state.params;
     const { messages } = this.props;
-    const { isFetching, hasError } = this.props;
+    const { isFetching, hasError, sessionTimeout } = this.props;
     const { showDetail } = this.state;
 
     const aBottom = this.aBottom.interpolate({
@@ -122,22 +123,34 @@ class Message extends React.Component {
       outputRange: [0, 1]
     });
 
-    if (hasError) {
+    if (sessionTimeout) {
       return (
         <View style={styles.msgContainer}>
           <Text>
-            {t('common:hasError')}
+            {t('common:timeout')}
           </Text>
           <TouchableOpacity
             style={styles.logoutBtn}
-            onPress={
-              () => navigation.navigate('Auth', {
-                errorMsg: t('common:hasError')
+            onPress={ () => {
+              this.props.logOut();
+              navigation.navigate('Auth', {
+                errorMsg: t('common:timeout')
               })
-            }
+            }}
           >
             <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
           </TouchableOpacity>
+        </View>
+      )
+    }
+
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <MaterialIcons name={'error'} size={60} color={colors.blue}/>
+          <Text>
+            {t('common:hasError')}
+          </Text>
         </View>
       )
     }
@@ -352,6 +365,7 @@ const mapStateToProps = (state) => {
   return {
     isFetching: state.messagesReducer.isFetchingMessage,
     hasError: state.messagesReducer.messageHasError,
+    sessionTimeout: state.loginReducer.sessionTimeout,
     token: state.loginReducer.Token,
     idColegio: state.loginReducer.Student.IdColegio,
     idxMaestro: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].IdxEstudiante : state.loginReducer.Student.IdxMaestro,
@@ -368,7 +382,20 @@ const mapDispatchToProps = (dispatch) => {
     },
     updateMessageState: (idMensaje) => {
       dispatch(messageIsRead(idMensaje));
-    }
+    },
+    logOut: () => {
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer',
+        'loginReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
+      ]));
+    },
   }
 }
 

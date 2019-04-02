@@ -7,10 +7,13 @@ import {
     CHANGE_FAMILY_MEMBER
 } from '../actions/loginActions';
 
+import { TIMEOUT } from '../actions/userSessionTimeout';
+
 export default function loginReducer(state = 
     {
         isFetching: false,
         hasError: false,
+        sessionTimeout: false,
         Usuario: '',
         Password: '',
         Token: '',
@@ -38,6 +41,10 @@ export default function loginReducer(state =
         Contactos: []
     }, action) {
     switch (action.type) {
+      case TIMEOUT:
+        return Object.assign({}, state, {
+           sessionTimeout: true
+        })
       case REQUEST_SESSION:
         return Object.assign({}, state, {
             isFetching: true

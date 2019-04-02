@@ -2,6 +2,8 @@ import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
 import conn from '../utils/dbConnection';
 
+import { userSessionTimeout } from './userSessionTimeout';
+
 export const REQUEST_CALENDAR_DATA = 'REQUEST_CALENDAR_DATA';
 export const CALENDAR = 'CALENDAR';
 export const CALENDAR_HAS_ERROR = 'CALENDAR_HAS_ERROR';
@@ -52,7 +54,10 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
         fetch(`${conn}api/boletin`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
+            if(response.status == 401){
+              dispatch(userSessionTimeout(true));
+            }
+            else if (response.status != 200) {
               dispatch(calendarHasError(true));
             } else {
               return response.json();
@@ -131,7 +136,7 @@ export function calendarFetchData(idColegio, ano, cedula, bimestre, fechaI, fech
         
                             prevDate = currentDate;
                         });
-        
+
                         dispatch(fetchingCalendarDataSuccess(finalDateList));
                     }
                 }
@@ -196,8 +201,9 @@ export function calendarDetailFetchData(idColegio, ano, currentDate, cedula, tok
 
         fetch(`${conn}api/agendaDetalle?idColegio=${idColegio}&ano=${ano}&currentDate=${currentDate}&cedula=${cedula}`, options)
         .then(response => {
-            console.log(response.status);
-            if(response.status != 200){
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
                 dispatch(calendarDetailHasError(true));
             } else {
                 return response.json();

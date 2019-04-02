@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch';
 import conn from '../utils/dbConnection';
+import { userSessionTimeout } from './userSessionTimeout';
 export const REQUEST_SESSION = 'REQUEST_SESSION';
 export const SESSION = 'SESSION';
 export const SESSION_HAS_ERROR = 'SESSION_HAS_ERROR';
@@ -44,13 +45,15 @@ export function sessionFetchData(username, password) {
         }
       }
 
-      fetch(`${conn}api/auth?username=${username}&password=${password}`, options)
+      fetch(`${conn}api/auth?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, options)
       .then(response => {
           console.log(response.status);
-          if(response.status != 200){
-            dispatch(sessionHasError(true));
+          if(response.status == 401){
+              dispatch(userSessionTimeout(true));
+          } else if(response.status != 200){
+              dispatch(sessionHasError(true));
           } else {
-            return response.json();
+              return response.json();
           }
       }
         // Do not use catch, because that will also catch

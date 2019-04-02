@@ -117,7 +117,8 @@ const portuguese = {
     },
     common: {
         currentLanguage: 'A linguagem atual é "{{lng}}"',
-        hasError: 'O seu tempo de sessão expirou, por favor, faça o login novamente.'
+        hasError: 'Parece que algo deu errado ao acessar esses dados. Por favor, entre em contato conosco e nós vamos consertar isso para você!',
+        timeout: 'O seu tempo de sessão expirou, por favor, faça o login novamente.'
     }
 };
 

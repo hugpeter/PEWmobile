@@ -4,7 +4,8 @@ import { StyleSheet, Text, View, ScrollView, ActivityIndicator } from 'react-nat
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import { 
-  Entypo
+  SimpleLineIcons,
+  MaterialIcons
 } from 'react-native-vector-icons';
 import { calendarDetailFetchData, updateCalendarDetailInfo } from '../actions/calendarActions';
 import { invalidateCache } from "redux-cache";
@@ -50,13 +51,43 @@ class CalendarDetail extends React.Component {
   }
 
   render() {
-    const { t, calendarDetails, isFetching, hasError } = this.props;
+    const { t, calendarDetails, isFetching, hasError, sessionTimeout } = this.props;
     const { assignments } = this.props.navigation.state.params;
+
+    if (sessionTimeout) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:timeout')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={ () => {
+              this.props.logOut();
+              navigation.navigate('Auth', {
+                errorMsg: t('common:timeout')
+              })
+            }}
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <MaterialIcons name={'error'} size={60} color={colors.blue}/>
+          <Text>
+            {t('common:hasError')}
+          </Text>
+        </View>
+      )
+    }
 
     if(isFetching){
       return <View style={styles.msgContainer}><ActivityIndicator size='large'/></View>
-    } else if(hasError){
-      return <View style={styles.msgContainer}><Text>{t('calendarDetail:hasError')}</Text></View>
     } else {
       return (
         <View style={styles.container}>
@@ -237,6 +268,7 @@ const mapStateToProps = (state) => {
     return {
       isFetching: state.calendarReducer.isFetching,
       hasError: state.calendarReducer.hasError,
+      sessionTimeout: state.loginReducer.sessionTimeout,
       token: state.loginReducer.Token,
       ano: state.loginReducer.Student.Ano,
       idColegio: state.loginReducer.Student.IdColegio,
@@ -259,6 +291,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       },
       invalidate: () => {
         dispatch(invalidateCache(['calendarDetailReducer']));
+      },
+      logOut: () => {
+        dispatch(invalidateCache([
+          'notasReducer', 
+          'calendarReducer', 
+          'calendarDetailReducer', 
+          'inboxReducer',
+          'loginReducer',
+          'sentBoxReducer',
+          'deletedBoxReducer',
+          'messagesReducer',
+          'documentsReducer'
+        ]));
       },
       updateDetailInfo: (idColegio, ano, currentDate, cedula) => {
         dispatch(updateCalendarDetailInfo(idColegio, ano, currentDate, cedula));

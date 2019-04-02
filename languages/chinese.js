@@ -118,7 +118,8 @@ const chinese = {
     },
     common: {
         currentLanguage: '目前的语言是 "{{lng}}"',
-        hasError: '您的会话时间已过，请重新登录。'
+        hasError: '看起来访问这些数据出了问题。 请联系我们，我们将为您解决此问题！',
+        timeout: '您的会话时间已过，请重新登录。'
     }
 };
 

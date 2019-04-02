@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
 import conn from '../utils/dbConnection';
+import { userSessionTimeout } from './userSessionTimeout';
 export const REQUEST_INBOX = 'REQUEST_INBOX';
 export const INBOX = 'INBOX';
 export const INBOX_HAS_ERROR = 'INBOX_HAS_ERROR';
@@ -44,10 +45,12 @@ export function inboxFetchData(idColegio, cedula, token) {
         fetch(`${conn}api/inbox?idColegio=${idColegio}&cedula=${cedula}`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
-              dispatch(inboxHasError(true));
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
+                dispatch(inboxHasError(true));
             } else {
-              return response.json();
+                return response.json();
             }
         }
           // Do not use catch, because that will also catch
@@ -106,10 +109,12 @@ export function getNewMessageCount(idColegio, cedula, token){
         fetch(`${conn}api/newMessageCount?idColegio=${idColegio}&cedula=${cedula}`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
-              dispatch(nmcHasError(true));
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
+                dispatch(nmcHasError(true));
             } else {
-              return response.json();
+                return response.json();
             }
         })
         .then(json => {
@@ -175,10 +180,12 @@ export function messageFetchData(idMensaje, idxMaestro, tipoMaestro, token){
         fetch(`${conn}api/mensaje?idMensaje=${idMensaje}`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
-              dispatch(messageHasError(true));
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
+                dispatch(messageHasError(true));
             } else {
-              return response.json();
+                return response.json();
             }
         }
           // Do not use catch, because that will also catch
@@ -192,8 +199,10 @@ export function messageFetchData(idMensaje, idxMaestro, tipoMaestro, token){
                 fetch(`${conn}api/mensajeLeido?idMensaje=${idMensaje}&idxMaestro=${idxMaestro}&tipoMaestro=${tipoMaestro}`, options)
                 .then(response => {
                     console.log(response.status);
-                    if(response.status != 200){
-                    dispatch(messageHasError(true));
+                    if(response.status == 401){
+                        dispatch(userSessionTimeout(true));
+                    } else if(response.status != 200){
+                        dispatch(messageHasError(true));
                     } else {
                         dispatch(fetchingMessageSuccess(json[0]));
                     }

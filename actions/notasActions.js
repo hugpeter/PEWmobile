@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
 import conn from '../utils/dbConnection';
+import { userSessionTimeout } from './userSessionTimeout';
 export const REQUEST_NOTAS = 'REQUEST_NOTAS';
 export const NOTAS = 'NOTAS';
 export const NOTAS_HAVE_ERROR = 'NOTAS_HAVE_ERROR';
@@ -45,11 +46,13 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, nivel, 
         fetch(`${conn}api/preescolarboletineval?idcolegio=${idColegio}&ano=${ano}&bimestre=${bimestre}&codest=${cedula}`, options)
         .then(response => {
           console.log(response.status);
-            if(response.status != 200){
+          if(response.status == 401){
+              dispatch(userSessionTimeout(true));
+          } else if(response.status != 200){
               dispatch(notasHaveError(true));
-            } else {
+          } else {
               return response.json();
-            }
+          }
         })
         .then(json => {
           console.log(json);
@@ -96,10 +99,12 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, nivel, 
         fetch(`${conn}api/boletin`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
-              dispatch(notasHaveError(true));
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
+                dispatch(notasHaveError(true));
             } else {
-              return response.json();
+                return response.json();
             }
         }
           // Do not use catch, because that will also catch
@@ -128,7 +133,9 @@ export function notasFetchData(ano, idColegio, idioma, cedula, bimestre, nivel, 
                     await fetch(`${conn}api/notasDetalle?ano=${ano}&bimestre=${bimestre}&idColegio=${idColegio}&idioma=${idioma}&cedula=${cedula}&codmat=${currentNota.codmat}`, options)
                     .then(response => {
                         console.log(response.status);
-                        if(response.status != 200){
+                        if(response.status == 401){
+                            dispatch(userSessionTimeout(true));
+                        } else if(response.status != 200){
                             dispatch(notasHaveError(true));
                         } else {
                             return response.json();

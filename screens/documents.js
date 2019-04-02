@@ -6,12 +6,12 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity,
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import { 
-  SimpleLineIcons
+  SimpleLineIcons,
+  MaterialIcons
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
 import { invalidateCache } from "redux-cache";
 import { documentsFetchData } from '../actions/documentsActions.js';
-
 
 class Documents extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -25,11 +25,11 @@ class Documents extends React.Component {
       () => {
         // anything else that you'd like to do when this screen is navigated to
         console.log('documents screen was navigated to');
-        const { idColegio, idMaestro, idxEstudiante, cedula, token, getDocs } = this.props;
+        const { idColegio, idMaestro, tipoMaestro, idxEstudiante, cedula, token, getDocs } = this.props;
         if(idMaestro == 0){
-          getDocs(idColegio, cedula, idxEstudiante, token);
+          getDocs(idColegio, cedula, idxEstudiante, tipoMaestro, token);
         } else {
-          getDocs(idColegio, cedula, idMaestro, token);
+          getDocs(idColegio, cedula, idMaestro, tipoMaestro, token);
         }
       },
       () => {
@@ -46,24 +46,36 @@ class Documents extends React.Component {
   render() {
     const { t, i18n, documents, navigation } = this.props;
 
-    const { isFetching, hasError } = this.props;
+    const { isFetching, hasError, sessionTimeout } = this.props;
+
+    if (sessionTimeout) {
+      return (
+        <View style={styles.msgContainer}>
+          <Text>
+            {t('common:timeout')}
+          </Text>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={ () => {
+              this.props.logOut();
+              navigation.navigate('Auth', {
+                errorMsg: t('common:timeout')
+              })
+            }}
+          >
+            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
 
     if (hasError) {
       return (
         <View style={styles.msgContainer}>
+          <MaterialIcons name={'error'} size={60} color={colors.blue}/>
           <Text>
             {t('common:hasError')}
           </Text>
-          <TouchableOpacity
-            style={styles.logoutBtn}
-            onPress={
-              () => navigation.navigate('Auth', {
-                errorMsg: t('common:hasError')
-              })
-            }
-          >
-            <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
-          </TouchableOpacity>
         </View>
       )
     }
@@ -152,19 +164,21 @@ const mapStateToProps = (state) => {
   return {
     isFetching: state.documentsReducer.isFetchingDocuments,
     hasError: state.documentsReducer.documentsHaveError,
+    sessionTimeout: state.loginReducer.sessionTimeout,
     documents: state.documentsReducer.documents,
     token: state.loginReducer.Token,
     idColegio: state.loginReducer.Student.IdColegio,
     cedula: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].Cedula : state.loginReducer.Student.Cedula,
     idMaestro: state.loginReducer.Student.IdxMaestro,
+    tipoMaestro: state.loginReducer.Student.TipoMaestro,
     idxEstudiante: state.loginReducer.IsFamilia ? state.loginReducer.FamilyMembers[state.loginReducer.CurrentFamilyMemberIndex].IdxEstudiante : state.loginReducer.Student.IdxMaestro,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getDocs: (idColegio, cedula, userId, token) => {
-      dispatch(documentsFetchData(idColegio, cedula, userId, token)); 
+    getDocs: (idColegio, cedula, userId, tipoMaestro, token) => {
+      dispatch(documentsFetchData(idColegio, cedula, userId, tipoMaestro, token)); 
     },
     invalidate: () => {
       dispatch(invalidateCache([
@@ -173,7 +187,20 @@ const mapDispatchToProps = (dispatch) => {
         'deletedBoxReducer',
         'messagesReducer'
       ]));
-    }
+    },
+    logOut: () => {
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer',
+        'loginReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
+      ]));
+    },
   }
 }
 

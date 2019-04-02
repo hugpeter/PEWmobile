@@ -6,8 +6,10 @@ import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import gradeColor from '../utils/gradeColor';
 import { 
-  SimpleLineIcons
+  SimpleLineIcons,
+  MaterialIcons
 } from 'react-native-vector-icons';
+import { invalidateCache } from "redux-cache";
 
 class Grades extends React.Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -38,28 +40,40 @@ class Grades extends React.Component {
   }
 
   render() {
-    const { isFetching, hasError } = this.props;
+    const { isFetching, hasError, sessionTimeout } = this.props;
     const {t, i18n, navigation, idColegio, nivel, bimestre} = this.props;
     const { navigate } = navigation;
     const { notas } = this.props;
     var view;
 
-    if (hasError) {
+    if (sessionTimeout) {
       return (
         <View style={styles.msgContainer}>
           <Text>
-            {t('common:hasError')}
+            {t('common:timeout')}
           </Text>
           <TouchableOpacity
             style={styles.logoutBtn}
-            onPress={
-              () => navigation.navigate('Auth', {
-                errorMsg: t('common:hasError')
+            onPress={ () => {
+              this.props.logOut();
+              navigation.navigate('Auth', {
+                errorMsg: t('common:timeout')
               })
-            }
+            }}
           >
             <SimpleLineIcons name={'logout'} size={60} color={colors.blue}/>
           </TouchableOpacity>
+        </View>
+      )
+    }
+
+    if (hasError) {
+      return (
+        <View style={styles.msgContainer}>
+          <MaterialIcons name={'error'} size={60} color={colors.blue}/>
+          <Text>
+            {t('common:hasError')}
+          </Text>
         </View>
       )
     }
@@ -243,6 +257,7 @@ const mapStateToProps = (state) => {
   return {
     isFetching: state.notasReducer.isFetching,
     hasError: state.notasReducer.hasError,
+    sessionTimeout: state.loginReducer.sessionTimeout,
     token: state.loginReducer.Token,
     ano: state.loginReducer.Student.Ano,
     idColegio: state.loginReducer.Student.IdColegio,
@@ -258,7 +273,20 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getNotas: (ano, idColegio, idioma, cedula, bimestre, nivel, token) => {
       dispatch(notasFetchData(ano, idColegio, idioma, cedula, bimestre, nivel, token)); 
-    }
+    },
+    logOut: () => {
+      dispatch(invalidateCache([
+        'notasReducer', 
+        'calendarReducer', 
+        'calendarDetailReducer', 
+        'inboxReducer',
+        'loginReducer',
+        'sentBoxReducer',
+        'deletedBoxReducer',
+        'messagesReducer',
+        'documentsReducer'
+      ]));
+    },
   }
 }
 

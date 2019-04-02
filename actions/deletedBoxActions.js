@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch';
 import { checkCacheValid } from "redux-cache";
 import conn from '../utils/dbConnection';
+import { userSessionTimeout } from './userSessionTimeout';
 export const REQUEST_DELETEDBOX = 'REQUEST_DELETEDBOX';
 export const DELETEDBOX = 'DELETEDBOX';
 export const DELETEDBOX_HAS_ERROR = 'DELETEDBOX_HAS_ERROR';
@@ -44,10 +45,12 @@ export function deletedBoxFetchData(idColegio, cedula, token) {
         fetch(`${conn}api/deleted?idColegio=${idColegio}&cedula=${cedula}`, options)
         .then(response => {
             console.log(response.status);
-            if(response.status != 200){
-              dispatch(deletedBoxHasError(true));
+            if(response.status == 401){
+                dispatch(userSessionTimeout(true));
+            } else if(response.status != 200){
+                dispatch(deletedBoxHasError(true));
             } else {
-              return response.json();
+                return response.json();
             }
         }
           // Do not use catch, because that will also catch
