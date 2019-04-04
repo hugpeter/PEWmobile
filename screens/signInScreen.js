@@ -86,7 +86,7 @@ class SignInScreen extends React.Component {
   }
 
   render() {
-      const {getSession, hasError} = this.props;
+      const {getSession, hasError } = this.props;
       const {t, i18n, navigation} = this.props;
 
       const errorMsg  = navigation.getParam('errorMsg', '');

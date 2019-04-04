@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { StyleSheet, Text, View, ScrollView, 
-    TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
+    TouchableOpacity, ActivityIndicator, TextInput, WebView } from 'react-native';
 import { connect } from 'react-redux';
 import colors from '../utils/colors';
 import { 
@@ -9,6 +9,7 @@ import {
   FontAwesome, 
 } from 'react-native-vector-icons';
 import NavigationStateNotifier from '../NavigationStateNotifier';
+import WebViewAutoHeight from 'react-native-webview-autoheight';
 import HTML from 'react-native-render-html';
 import timeConvert from '../utils/timeConvert';
 import sendMail from '../utils/sendMail';
@@ -21,6 +22,7 @@ class NewMessage extends React.Component {
       selectedContacts: [],
       selectedContactsCC: [],
       selectedContactsBCC: [],
+      contenidoNuevo: '',
       m: {
         idColegio: this.props.idColegio,
 
@@ -109,14 +111,26 @@ class NewMessage extends React.Component {
     }
 
     componentDidUpdate = () => {
-      const { m, sendingMessage } = this.state;
+      const { m, sendingMessage, contenidoNuevo } = this.state;
       const { token, navigation, invalidate } = this.props;
 
+
+      var newMessage = '<p>'+ contenidoNuevo + '</p>' + m.contenido;
       if(sendingMessage){
-        sendMail(m, token);
-        invalidate();
-        this.setState({sendingMessage: false});
-        navigation.goBack();
+        if(contenidoNuevo != ''){
+          this.setState({
+            m:{
+              ...m,
+              contenido: newMessage
+            },
+            contenidoNuevo: ''
+          })
+        } else {
+          sendMail(m, token); 
+          invalidate();
+          this.setState({sendingMessage: false}); 
+          navigation.goBack();
+        }
       }
     }
 
@@ -150,11 +164,15 @@ class NewMessage extends React.Component {
         }
   
         if(type == 'Forward'){
+          var originalMsg = message.Contenido.replace(new RegExp('&amp;', 'g'), '&');
+          originalMsg = originalMsg.replace(new RegExp(/&lt;/, 'g'), '<');
+          originalMsg = originalMsg.replace(new RegExp(/&gt;/, 'g'), '>');
+          originalMsg = originalMsg.replace(new RegExp(/&quot;/, 'g'), '"');
           this.setState({
             m: {
               ...m,
               asunto: message.Asunto,
-              contenido: message.Contenido
+              contenido: originalMsg
             }
           });
         }
@@ -201,7 +219,7 @@ class NewMessage extends React.Component {
     }
 
     render() {
-      const { m, sendingMessage } = this.state;
+      const { m, sendingMessage, contenidoNuevo } = this.state;
       const { t, i18n, navigation } = this.props;
       const { messageID, type } = navigation.state.params;
       const { messages } = this.props;
@@ -423,19 +441,21 @@ class NewMessage extends React.Component {
                     </View>
                     <View style={{paddingBottom: 100}}>
                       <TextInput
-                        style={{width: '100%', height: 800, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
+                        style={{width: '100%', height: 400, borderWidth: 0.5, borderColor: colors.greyLight, padding: 10}}
                         placeholder="..."
                         multiline={true}
                         underlineColorAndroid='rgba(0,0,0,0)'
                         textAlignVertical="top"
                         numberOfLines={10}
                         onChangeText={(text) => this.setState({
-                          m: {
-                            ...m,
-                            contenido: text
-                          }
+                            contenidoNuevo: text
                         })}
-                        value={m.contenido}
+                        value={contenidoNuevo}
+                      />
+                      <WebViewAutoHeight
+                        style={{padding: 20, paddingBottom: 100}}
+                        startInloadingState={true}
+                        source={{html: m.contenido}}
                       />
                     </View>
                 </ScrollView>
