@@ -32,7 +32,8 @@ export default function loginReducer(state =
             GrupoUsuario: 0,
             Cambiarpass: 0,
             Idioma: 0,
-            IdxMaestro: 0
+            IdxMaestro: 0,
+            Produccion: 0
         },
         FamilyMembers: [],
         FamilyOptions: [],

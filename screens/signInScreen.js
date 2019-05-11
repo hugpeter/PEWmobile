@@ -80,7 +80,11 @@ class SignInScreen extends React.Component {
   componentWillReceiveProps(nextProps){
     if (this.props.token != nextProps.token){
       if(nextProps.token != null){
-        this.props.navigation.navigate('Home');
+        if(nextProps.produccion == 1){
+          this.props.navigation.navigate('Home');
+        } else {
+          this.props.navigation.navigate('Messages');
+        }
       }
     }      
   }
@@ -208,7 +212,8 @@ const mapStateToProps = (state) => {
   return {
     isFetching: state.loginReducer.isFetching,
     hasError: state.loginReducer.hasError,
-    token: state.loginReducer.Token
+    token: state.loginReducer.Token,
+    produccion: state.loginReducer.Student.Produccion
   }
 }
 

@@ -8,22 +8,9 @@ import {
   View, 
   TouchableOpacity,
   ScrollView,
-  Dimensions
+  Image
 } from 'react-native';
-import {
-  Button, 
-  Input, 
-  Overlay, 
-  CheckBox,
-  List,
-  ListItem
-} from 'react-native-elements';
-import { 
-  FontAwesome, 
-  Entypo,
-  Feather,
-  SimpleLineIcons
-} from 'react-native-vector-icons';
+
 import colors from '../utils/colors';
 import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -31,12 +18,18 @@ import { changeFamilyMember } from '../actions/loginActions';
 import { invalidateCache } from "redux-cache";
 import { getNewMessageCount } from '../actions/inboxActions';
 
-const symbolSize = 60;
+const iconStyle = {
+  flex: 1,
+  width: 80,
+  height: 80,
+  resizeMode: 'contain'
+};
+
 const buttons = [
   {
     name: 'home:buttons.grades',
     navTo: 'Grades',
-    symbol: (<FontAwesome name={'graduation-cap'} size={symbolSize} color={colors.blue}/>)
+    symbol: (<Image source={require('../img/icons/notasdiarias-256.png')} style={iconStyle} />)
   },
   // { 
   //   name: 'home:buttons.alerts',
@@ -51,12 +44,12 @@ const buttons = [
   {
     name: 'home:buttons.calendar',
     navTo: 'Calendar',
-    symbol: (<FontAwesome name={'calendar'} size={symbolSize} color={colors.blue}/>)
+    symbol: (<Image source={require('../img/icons/agenda-256.png')} style={iconStyle} />)
   },
   {
     name: 'home:buttons.documents',
     navTo: 'Documents',
-    symbol: (<Feather name={'file-text'} size={symbolSize} color={colors.blue}/>)
+    symbol: (<Image source={require('../img/icons/documento-256.png')} style={iconStyle} />)
   },
   // {
   //   name: 'home:buttons.coupons',
@@ -66,7 +59,45 @@ const buttons = [
   {
     name: 'home:buttons.logout',
     navTo: 'Auth',
-    symbol: (<SimpleLineIcons name={'logout'} size={symbolSize} color={colors.blue}/>)
+    symbol: (<Image source={require('../img/icons/exit-256.png')} style={iconStyle} />)
+  }
+];
+
+const buttonsLocked = [
+  {
+    name: 'home:buttons.grades',
+    navTo: 'Grades',
+    symbol: (<Image source={require('../img/icons/notasdiarias-gray256.png')} style={iconStyle} />)
+  },
+  // { 
+  //   name: 'home:buttons.alerts',
+  //   navTo: 'Alerts',
+  //   symbol: (<Entypo name={'bell'} size={symbolSize} color={colors.blue}/>)
+  // },
+  // {
+  //   name: 'home:buttons.cashflow',
+  //   navTo: 'Cashflow',
+  //   symbol: (<MaterialIcons name={'attach-money'} size={symbolSize} color={colors.blue}/>)
+  // },
+  {
+    name: 'home:buttons.calendar',
+    navTo: 'Calendar',
+    symbol: (<Image source={require('../img/icons/agenda-gray256.png')} style={iconStyle} />)
+  },
+  {
+    name: 'home:buttons.documents',
+    navTo: 'Documents',
+    symbol: (<Image source={require('../img/icons/documento-gray-256.png')} style={iconStyle} />)
+  },
+  // {
+  //   name: 'home:buttons.coupons',
+  //   navTo: 'Coupons',
+  //   symbol: (<Entypo name={'ticket'} size={symbolSize} color={colors.blue}/>)
+  // },
+  {
+    name: 'home:buttons.logout',
+    navTo: 'Auth',
+    symbol: (<Image source={require('../img/icons/exit-256.png')} style={iconStyle} />)
   }
 ];
 
@@ -98,14 +129,6 @@ class Home extends React.Component {
         return { 
           headerTitle:  <View />,
           headerTintColor: colors.blue,
-          headerRight: (
-            <TouchableOpacity  
-              style={styles.headerRight}
-              onPress={() => navigation.navigate('Alerts')}
-            >
-              <Entypo name={'bell'} size={25} color={colors.blue}/>
-            </TouchableOpacity> 
-          )
         }
       }
     }
@@ -127,38 +150,69 @@ class Home extends React.Component {
   }
 
   render() {
-    const { t, i18n, navigation } = this.props;
-    var {windowHeight, width} = Dimensions.get('window');
+    const { t, navigation, student } = this.props;
 
-    return (
-      <View style={styles.container}>
-        <View style={{height: '100%'}} >
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            {
-              buttons.map((button, index) => {
-                return (
-                  <TouchableOpacity 
-                    key={index}
-                    style={styles.buttons} 
-                    onPress={() => {
-                      if(button.navTo == 'Auth'){
-                        this.props.logOut();
-                        navigation.navigate(button.navTo);
-                      } else {
-                        navigation.navigate(button.navTo);
-                      }
-                    }}
-                  >
-                    {button.symbol}
-                    <Text style={styles.buttonText}>{t(button.name)}</Text>
-                  </TouchableOpacity>
-                )
-              })
-            }  
-          </ScrollView>
+    if(student.Produccion == 0){
+      return (
+        <View style={styles.container}>
+          <View style={{height: '100%'}} >
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              {
+                buttonsLocked.map((button, index) => {
+                  return (
+                    <TouchableOpacity 
+                      key={index}
+                      style={styles.buttons} 
+                      onPress={() => {
+                        if(button.navTo == 'Auth'){
+                          this.props.logOut();
+                          navigation.navigate(button.navTo);
+                        } else {
+                          //These buttons are deactivated, pressing them should do nothing.
+                        }
+                      }}
+                    >
+                      {button.symbol}
+                      <Text style={styles.buttonText}>{t(button.name)}</Text>
+                    </TouchableOpacity>
+                  )
+                })
+              }  
+            </ScrollView>
+          </View>
         </View>
-      </View>
-    );
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <View style={{height: '100%'}} >
+            <ScrollView contentContainerStyle={styles.scrollView}>
+              {
+                buttons.map((button, index) => {
+                  return (
+                    <TouchableOpacity 
+                      key={index}
+                      style={styles.buttons} 
+                      onPress={() => {
+                        if(button.navTo == 'Auth'){
+                          this.props.logOut();
+                          navigation.navigate(button.navTo);
+                        } else {
+                          navigation.navigate(button.navTo);
+                        }
+                      }}
+                    >
+                      {button.symbol}
+                      <Text style={styles.buttonText}>{t(button.name)}</Text>
+                    </TouchableOpacity>
+                  )
+                })
+              }  
+            </ScrollView>
+          </View>
+        </View>
+      );
+    }
   }
 }
 
@@ -166,6 +220,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white
+  },
+  noAccess:{
+    flex: 1,
+    backgroundColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   scrollView: {
     flexDirection: 'row',

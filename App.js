@@ -6,6 +6,16 @@ import configureStore from './configureStore';
 import i18n from './i18n';
 import NavigationStateNotifier from './NavigationStateNotifier';
 
+
+//--------------------IMPORTANT NOTE FOR ANYONE TRYING TO TEST THIS APP ON THEIR COMPUTER-------------
+// In order to have the PEW-API running locally, and test this app on their phone through expo, they will need
+// to install "iisexpress-proxy". Google that term and look for it on npm for installation instructions.
+// running this cmd will help remove a CORS issue when running the server locally.
+// you can type the following command in a secondary terminal --> iisexpress-proxy 56700 to 3000 <--- (leave it running when testing the app)
+// The first number is your local host, the second is what ever new port you want it to point to. 
+// In the dbConnection.js file in the utils folder, make sure the connection string has the new port you specificed in the above command.
+
+
 //this is just to remove a particular warning
 // import { YellowBox } from 'react-native';
 // YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
